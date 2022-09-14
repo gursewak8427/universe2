@@ -145,12 +145,42 @@ function QuestionsManager() {
             tooltip: "View",
             onClick: (event, rowData) => viewQuestion(rowData),
         },
-        // {
-        //     icon: DeleteIcon,
-        //     tooltip: "Delete",
-        //     onClick: (event, rowData) => null,
-        // },
+        {
+            icon: DeleteIcon,
+            tooltip: "Delete",
+            onClick: (event, rowData) => deleteQuestion(rowData),
+        },
     ];
+
+
+    const deleteQuestion = rowData => {
+        axios.delete(`${process.env.REACT_APP_API_URI}exams/question/`, {
+            headers: {
+                Authorization: `Bearer ${admin.token}`
+            },
+            data: { id: rowData.id }
+        }).then(() => {
+            dispatch(setSuccessMsg("Question Deleted Successfully"))
+            window.location.reload();
+        });
+    }
+
+    const AddNewQuestion = () => {
+        axios({
+            method: 'post',
+            url: `${process.env.REACT_APP_API_URI}exams/question/`,
+            data: {
+                topic: topicId
+            },
+            headers: {
+                'Authorization': `Bearer ${admin.token}`
+            }
+        }).then(response => {
+            dispatch(setSuccessMsg("Question Added Successfully"))
+            window.location.reload();
+        });
+
+    }
 
     const viewQuestion = rowData => {
         setState({
@@ -165,7 +195,7 @@ function QuestionsManager() {
             }
         }
         // Get topic details
-        axios.get(`${process.env.REACT_APP_API_URI}exams/subquestion?question=${rowData.id}`, config).then(response => {
+        axios.get(`${process.env.REACT_APP_API_URI}exams/subquestion/?question=${rowData.id}`, config).then(response => {
             const subQuestionsData = response.data;
             console.log("subquestions")
             console.log(subQuestionsData)
@@ -204,7 +234,7 @@ function QuestionsManager() {
             alert("Please Select Atleast 1 Question Type")
             return;
         }
-        
+
         if (state.questionType == "0" || state.questionType == "1") {
             if (state.Answer[0] == false && state.Answer[1] == false && state.Answer[2] == false && state.Answer[3] == false) {
                 alert("Please Select Atleast 1 Correct Option")
@@ -314,7 +344,7 @@ function QuestionsManager() {
                 rangeMin: "",
                 rangeMax: "",
                 updatedId: null,
-                
+
             })
             setIsAddQuestion(false)
         }).catch(err => {
@@ -455,6 +485,7 @@ function QuestionsManager() {
     }
 
 
+
     if (isWait) {
         return <>
             Waiting...
@@ -467,9 +498,10 @@ function QuestionsManager() {
                 <Sidebar />
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <Heading headingTitle={`ID-${topicId} ${state.topicDetails.Topicname} (Subject - ${state.topicDetails.subject.subject})`} />
+                    <Heading headingTitle={`ID - ${topicId} ${state.topicDetails.Topicname}(Subject - ${state.topicDetails.subject.subject})`} />
                     <div className='card_box questionManager' id='testExam'>
                         <div className="left">
+                            <button className="btn btn-primary" onClick={AddNewQuestion}>Add New</button>
                             <MaterialTable
                                 options={{
                                     actionsColumnIndex: -1,
@@ -518,7 +550,7 @@ function QuestionsManager() {
                                                     <>
                                                         {
                                                             state.subQuestionsList.map((subQuestion, index) => {
-                                                                if(typeof subQuestion.Answer === "string"){
+                                                                if (typeof subQuestion.Answer === "string") {
                                                                     subQuestion.Answer = subQuestion.Answer.split(",")
                                                                 }
                                                                 if (subQuestion.Answer[0] == 'true') subQuestion.Answer[0] = true
@@ -931,8 +963,8 @@ function QuestionsManager() {
                                                 </div>
                                                 <div className='btns-list'>
                                                     <button
-                                                    onClick={()=>setIsAddQuestion(false)}
-                                                    className="btn btn-danger">Cancel</button>
+                                                        onClick={() => setIsAddQuestion(false)}
+                                                        className="btn btn-danger">Cancel</button>
                                                     <span>
                                                         <button className="btn btn-primary mx-3">Preview</button>
                                                         <button className="btn btn-success" onClick={() => AddQuestion()}>{state.updatedId ? "Update" : "Add"}</button>

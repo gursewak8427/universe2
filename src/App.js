@@ -40,7 +40,7 @@ function App() {
       var data = {
         email: "abc@gmail.com",
         _id: "Qsda23dsdgs",
-        loginType: "STUDENT"
+        loginType: "INTERNAL_TEACHER"
       }
     return data;
   }

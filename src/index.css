@@ -1,0 +1,14 @@
+a{
+    text-decoration: none !important;
+}
+.modal{
+    z-index: 99999 !important;
+}
+.topicSelectMulti input{
+    height: 30px !important;
+}
+@media screen and (max-width : 650px) {
+    .modal {
+        padding-right: 0 !important;
+    }
+}

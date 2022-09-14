@@ -1,0 +1,105 @@
+#internalTeacher {
+    background: #FFF9CA;
+    display: flex;
+    justify-content: flex-start;
+    min-height: 100vh;
+    font-size: 15px;
+}
+
+#internalTeacher h1 {
+    font-weight: bolder;
+    margin-bottom: 20px;
+}
+
+#internalTeacher p {
+    color: black;
+}
+
+#internalTeacher .left {
+    width: 60%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: space-evenly;
+    flex-direction: column;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    padding-left: 120px;
+}
+
+#internalTeacher .right {
+    width: 40%;
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+}
+
+#internalTeacher .right img {
+    width: 70%;
+}
+
+#internalTeacher .input_row {
+    width: 100%;
+    margin: 20px 0;
+    display: flex;
+    align-items: center;
+}
+
+#internalTeacher .input_row label {
+    width: 40%;
+    font-weight: bolder;
+    font-size: 170%;
+    margin: 0;
+    padding: 0;
+}
+
+#internalTeacher .input_row input {
+    width: 60%;
+    border: none;
+    border-radius: 40px;
+    background: white;
+    padding: 10px 20px;
+    outline: none;
+}
+
+#internalTeacher .input_row p {
+    display: inline;
+    font-size: 70%;
+    color: blue;
+    margin-bottom: 0;
+}
+
+#internalTeacher .input_row input[type="checkbox"] {
+    width: 25px !important;
+    height: 25px !important;
+    cursor: pointer;
+    margin-right: 10px;
+}
+
+#internalTeacher .submitBtn {
+    width: 210px;
+    height: 50px;
+    margin: 0 auto;
+    background: #5C62FF;
+    border-radius: 150px;
+    font-size: 100%;
+    color: white;
+    font-weight: bold;
+}
+#internalTeacher .submitBtn.b{
+    width: 100%;
+    border-radius: 10px;
+}
+#internalTeacher span {
+    color: #4b51f0;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #4b51f0;
+    font-size: 120%;
+    font-weight: bolder;
+    cursor: pointer;
+}
+
+#internalTeacher .submitBtn:hover {
+    background: #4b51f0;
+    color: black;
+}

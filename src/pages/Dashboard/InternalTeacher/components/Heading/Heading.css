@@ -1,0 +1,67 @@
+@import url("https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Montserrat:wght@700&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&display=swap");
+
+.heading {
+  border: 1px solid #ddd5d5;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 3px 6px rgb(0 0 0 / 16%), 0 3px 6px rgb(0 0 0 / 2%);
+  font-size: 1.1rem;
+  font-weight: 700;
+}
+
+.heading_top {
+  font-size: 20px;
+  font-weight: 600;
+  padding-top: 24px;
+  padding-bottom: 14px;
+}
+
+button.MuiButtonBase-root.MuiButton-root.MuiButton-text.add_category_btn {
+  float: right;
+  background-color: #198CC9;
+  color: #fff;
+  font-weight: 600;
+  top: 13px;
+  right: 20px;
+  padding: 9px;
+}
+
+.edit_profile_btn {
+  float: right;
+  background-color: #198CC9 !important;
+  color: #fff;
+  font-weight: 600;
+  top: 15px;
+  right: 20px;
+  padding: 9px;
+  border: none !important;
+  position: relative;
+}
+
+.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation24.MuiDialog-paper.MuiDialog-paperScrollPaper.MuiDialog-paperWidthSm.css-1t1j96h-MuiPaper-root-MuiDialog-paper {
+  width: 100% !important;
+  border-radius: 10px;
+}
+
+.add_driver_link {
+  display: block;
+  text-align: right;
+}
+
+.add_product_btn {
+  background: #198CC9;
+  border: 1px solid transparent;
+  border-radius: 0.25rem;
+  color: #fff;
+  cursor: pointer;
+  display: inline-block;
+  font-size: 17px;
+  font-weight: 500;
+  line-height: 1.6;
+  padding: 8px 39px;
+  text-align: center;
+  text-decoration: none;
+  transition: color .15s ease-in-out, background-color .15s ease-in-out, border-color .15s ease-in-out, box-shadow .15s ease-in-out;
+  margin-top: 18px;
+}

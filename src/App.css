@@ -1,0 +1,12 @@
+
+.table_action_icons {
+  width: 25px;
+  padding: 0 0px;
+  transform: scale(0.85) !important;
+}
+.MuiTableSortLabel-root {
+  font-weight: 600;
+}
+.detailTable th{
+  font-weight: lighter !important;
+}

@@ -26,7 +26,7 @@ function CreateTopic() {
         status: false,
         time: "",
         calculatorStatus: false,
-        updatedId: false
+        updatedId: null
     })
 
 

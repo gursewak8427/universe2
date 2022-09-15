@@ -40,7 +40,7 @@ function CreateTopic() {
                     'Authorization': `Bearer ${admin.token}`
                 }
             }
-            axios.get(`${process.env.REACT_APP_API_URI}exams/topic/${id}`, config).then(response => {
+            axios.get(`${process.env.REACT_APP_API_URI}exams/topic/${id}/`, config).then(response => {
                 const responseData = response.data;
                 console.log("responseData topic")
                 console.log(responseData)

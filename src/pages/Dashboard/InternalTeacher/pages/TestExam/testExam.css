@@ -9,14 +9,14 @@
 }
 
 #testExam .left {
-    width: 30%;
+    width: 40%;
     border-radius: none;
     /* height: 100vh;
     overflow-y: auto; */
 }
 
 #testExam .right {
-    width: 70%;
+    width: 60%;
     height: 80vh;
     background: white;
     overflow-y: auto;

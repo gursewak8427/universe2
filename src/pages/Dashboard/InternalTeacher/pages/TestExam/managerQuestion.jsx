@@ -287,6 +287,15 @@ function QuestionsManager() {
             axios.post(`${process.env.REACT_APP_API_URI}exams/subquestion/`, formdata, config).then(response => {
                 const responseData = response.data;
                 console.log(responseData)
+                // update question number 
+                var oldQuestion = state.topicMainQuestions;
+                oldQuestion[state.selectedQuestion.tableData.id].questions++;
+                setState({
+                    ...state,
+                    topicMainQuestions: oldQuestion
+                })
+                // update question number end
+
                 getAgainQuestion()
             }).catch(err => {
                 console.log(err)
@@ -312,10 +321,12 @@ function QuestionsManager() {
         }
 
         // get sub questions
-        axios.get(`${process.env.REACT_APP_API_URI}exams/subquestion?question=${state.selectedQuestion.id}`, config).then(response => {
+        axios.get(`${process.env.REACT_APP_API_URI}exams/subquestion/?question=${state.selectedQuestion.id}`, config).then(response => {
             const subQuestionsData = response.data;
             console.log("subquestions")
             console.log(subQuestionsData)
+            var oldMainQuestions = state.topicMainQuestions;
+
             setState({
                 ...state,
                 subQuestionsList: subQuestionsData,

@@ -362,7 +362,7 @@ function QuestionsManager() {
             }
         }
 
-        axios.delete(`${process.env.REACT_APP_API_URI}exams/subquestion?id=${subQuestion.id}`, config).then(response => {
+        axios.delete(`${process.env.REACT_APP_API_URI}exams/subquestion/?id=${subQuestion.id}`, config).then(response => {
             const responseData = response.data;
             console.log(responseData)
 

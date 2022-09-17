@@ -87,9 +87,23 @@ function QuestionsManager() {
 
 
     const columns = [
-        { title: "Id", field: "id" },
-        { title: "Questions", field: "questions" },
-        { title: "Level", field: "level", render: (item) => getLevelOptions(item) },
+        {
+            title: "Id",
+            field: "id",
+            cellStyle: {
+                cellWidth: '5%'
+            }
+        },
+        {
+            title: "Que", field: "questions", width: "8%",
+            cellStyle: {
+                cellWidth: '5%'
+            }
+        },
+        {
+            title: "Level", field: "level", render: (item) => getLevelOptions(item),
+
+        },
     ];
 
 
@@ -115,6 +129,7 @@ function QuestionsManager() {
 
                 axios.put(`${process.env.REACT_APP_API_URI}exams/question/`, data, config).then(response => {
                     const subQuestionsData = response.data;
+                    dispatch(setSuccessMsg("Level Changed"))
                 }).catch(err => {
                     console.log(err)
                 })
@@ -154,6 +169,9 @@ function QuestionsManager() {
 
 
     const deleteQuestion = rowData => {
+        if (!window.confirm("Are you want to delete this question ?")) {
+            return;
+        }
         axios.delete(`${process.env.REACT_APP_API_URI}exams/question/`, {
             headers: {
                 Authorization: `Bearer ${admin.token}`
@@ -228,7 +246,9 @@ function QuestionsManager() {
         })
     }
 
-
+    const cancelUpdateQuestion = () => {
+        getAgainQuestion()
+    }
     const AddQuestion = async () => {
         if (state.questionType == "-1") {
             alert("Please Select Atleast 1 Question Type")
@@ -499,7 +519,10 @@ function QuestionsManager() {
 
     if (isWait) {
         return <>
-            Waiting...
+            <center style={{ "paddingTop": "50px" }}>
+                <div class="spinner-border"></div>
+                <p>Getting Topic details...</p>
+            </center>
         </>
     }
 
@@ -512,13 +535,16 @@ function QuestionsManager() {
                     <Heading headingTitle={`ID - ${topicId} ${state.topicDetails.Topicname}(Subject - ${state.topicDetails.subject.subject})`} />
                     <div className='card_box questionManager' id='testExam'>
                         <div className="left">
-                            <button className="btn btn-primary" onClick={AddNewQuestion}>Add New</button>
+                            <button className="btn btn-success" onClick={AddNewQuestion}>Add New</button>
                             <MaterialTable
                                 options={{
+                                    paging: false,
                                     actionsColumnIndex: -1,
                                     paginationType: "stepped",
-                                    exportButton: true,
-                                    pageSize: 10,
+                                    exportButton: false,
+                                    pageSize: 1000,
+                                    search: false,
+                                    tableLayout: "auto",
                                 }}
                                 localization={{
                                     header: {
@@ -530,6 +556,7 @@ function QuestionsManager() {
                                 title=""
                                 onRowClick={(event, rowData) => console.log(rowData)}
                                 actions={actions && actions}
+                                className="mainQuestionTable"
                             />
                         </div>
                         <div className="right">
@@ -556,9 +583,20 @@ function QuestionsManager() {
                                             {
                                                 state.fetchingSubQuestionsProgress ?
                                                     <>
-                                                        Please Wait...
+                                                        <center style={{ "paddingTop": "50px" }}>
+                                                            <div class="spinner-border"></div>
+                                                            <p>We are finding sub-questions...</p>
+                                                        </center>
                                                     </> :
                                                     <>
+                                                        {
+                                                            state.subQuestionsList.length == 0 ?
+                                                                <>
+                                                                    <center class="text-danger">
+                                                                        No Question
+                                                                    </center>
+                                                                </> : <></>
+                                                        }
                                                         {
                                                             state.subQuestionsList.map((subQuestion, index) => {
                                                                 if (typeof subQuestion.Answer === "string") {
@@ -577,7 +615,7 @@ function QuestionsManager() {
                                                                 else subQuestion.Answer[3] = false
 
 
-                                                                console.log(subQuestion.Answer)
+
                                                                 return (
                                                                     <>
                                                                         {
@@ -592,6 +630,9 @@ function QuestionsManager() {
                                                                                             </span>
                                                                                             {/* manage question */}
                                                                                             <div>
+                                                                                                <span onClick={() => alert("pending...")}>
+                                                                                                    <EyeIcon />
+                                                                                                </span>
                                                                                                 <span onClick={() => updateQuestion(subQuestion)}>
                                                                                                     <EditIcon />
                                                                                                 </span>
@@ -628,6 +669,9 @@ function QuestionsManager() {
                                                                                                 </span>
                                                                                                 {/* manage question */}
                                                                                                 <div>
+                                                                                                    <span onClick={() => alert("pending...")}>
+                                                                                                        <EyeIcon />
+                                                                                                    </span>
                                                                                                     <span onClick={() => updateQuestion(subQuestion)}>
                                                                                                         <EditIcon />
                                                                                                     </span>
@@ -664,6 +708,9 @@ function QuestionsManager() {
                                                                                                     </span>
                                                                                                     {/* manage question */}
                                                                                                     <div>
+                                                                                                        <span onClick={() => alert("pending...")}>
+                                                                                                            <EyeIcon />
+                                                                                                        </span>
                                                                                                         <span onClick={() => updateQuestion(subQuestion)}>
                                                                                                             <EditIcon />
                                                                                                         </span>
@@ -712,8 +759,8 @@ function QuestionsManager() {
                                                 <div className="my-3 imageUploadIcon">
                                                     <label for="QuestionImage" class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
                                                     <input class="form-control" type="file" name='QuestionImage' id='QuestionImage' onChange={handleFile} />
+                                                    {/* <img src="" alt="" width={"20px"} height={"20px"}/> */}
                                                 </div>
-
 
                                                 <h2 className='mb-3 mt-3'>Solution </h2>
                                                 {/* question field */}
@@ -974,10 +1021,10 @@ function QuestionsManager() {
                                                 </div>
                                                 <div className='btns-list'>
                                                     <button
-                                                        onClick={() => setIsAddQuestion(false)}
+                                                        onClick={() => cancelUpdateQuestion()}
                                                         className="btn btn-danger">Cancel</button>
                                                     <span>
-                                                        <button className="btn btn-primary mx-3">Preview</button>
+                                                        {/* <button className="btn btn-primary mx-3">Preview</button> */}
                                                         <button className="btn btn-success" onClick={() => AddQuestion()}>{state.updatedId ? "Update" : "Add"}</button>
                                                     </span>
                                                 </div>

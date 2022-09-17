@@ -1,6 +1,17 @@
 .sidebar_logo {
   width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
+.sidebar_logo img{
+  margin: 0 !important;
+  padding: 0 !important;
+  margin-bottom: 2px !important;
+  width: 60px;
+  margin: 10px;
+}
+
 
 .m-row {
   display: flex;

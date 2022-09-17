@@ -235,6 +235,7 @@ function Sidebar() {
       >
         <div className={classes.toolbar}>
           <div className="sidebar_logo">
+            <img src="/assets/images/logo.png" />
             <h6>CeletomUniverse</h6>
           </div>
           {/* <IconButton onClick={handleDrawerClose}>
@@ -321,7 +322,7 @@ const ClassesAlert = () => {
           <div class="modal-content">
             <div class="modal-header">
               <div className="logo_row">
-                <img src={require("./Icon.svg")} className="logoImg" />
+                <img src={"/assets/images/logo.png"} className="logoImg" />
                 <h1>CelatomUniverse</h1>
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
@@ -355,7 +356,7 @@ const SubjectsAlert = () => {
           <div class="modal-content">
             <div class="modal-header">
               <div className="logo_row">
-                <img src={require("./Icon.svg")} className="logoImg" />
+                <img src={"/assets/images/logo.png"} className="logoImg" />
                 <h1>CelatomUniverse</h1>
               </div>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

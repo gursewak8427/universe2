@@ -177,6 +177,48 @@ function CreateMainTopic() {
                     <div className='card_box'>
                         <Form className="form_activity form_add_product row row">
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
+                                <Form.Label className="label_grey">Select Classes</Form.Label>
+                                <InputGroup className="mb-2">
+                                    <Multiselect
+                                        className='topicSelectMulti'
+                                        options={state.myTopicsList} // Options to display in the dropdown
+                                        selectedValues={state.selectedValue} // Preselected value to persist in dropdown
+                                        onSelect={onSelect} // Function will trigger on select event
+                                        onRemove={onRemove} // Function will trigger on remove event
+                                        displayValue="name" // Property name to display in the dropdown options
+                                    />
+                                    {/* <select class="select" multiple data-mdb-filter="true">
+                                        {
+                                            state.myTopicsList.map(item =>
+                                            (
+                                                <option value={item.topic_name}>{item.topic_name}</option>
+                                            ))
+                                        }
+                                    </select> */}
+                                </InputGroup>
+                            </Form.Group>
+                            <Form.Group className="mb-2 col-sm-12 col-md-12">
+                                <Form.Label className="label_grey">Select Subjects</Form.Label>
+                                <InputGroup className="mb-2">
+                                    <Multiselect
+                                        className='topicSelectMulti'
+                                        options={state.myTopicsList} // Options to display in the dropdown
+                                        selectedValues={state.selectedValue} // Preselected value to persist in dropdown
+                                        onSelect={onSelect} // Function will trigger on select event
+                                        onRemove={onRemove} // Function will trigger on remove event
+                                        displayValue="name" // Property name to display in the dropdown options
+                                    />
+                                    {/* <select class="select" multiple data-mdb-filter="true">
+                                        {
+                                            state.myTopicsList.map(item =>
+                                            (
+                                                <option value={item.topic_name}>{item.topic_name}</option>
+                                            ))
+                                        }
+                                    </select> */}
+                                </InputGroup>
+                            </Form.Group>
+                            <Form.Group className="mb-2 col-sm-12 col-md-12">
                                 <Form.Label className="label_grey">Select Topics</Form.Label>
                                 <InputGroup className="mb-2">
                                     <Multiselect

@@ -33,7 +33,7 @@ function StudentLogin() {
                 password: password,
             }
             console.log(data)
-            axios.post(process.env.REACT_APP_API_URI + "accounts/internalteacherlogin/", data).then(response => {
+            axios.post(process.env.REACT_APP_API_URI + "accounts/studentlogin/", data).then(response => {
 
                 const token = response.data.token;
                 authenticate(token, () => {

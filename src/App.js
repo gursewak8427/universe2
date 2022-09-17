@@ -26,6 +26,8 @@ import axios from "axios";
 import StudentLogin from "./pages/Home/Student/Student_login";
 import StudentSignUp from "./pages/Home/Student/StudentSignUp";
 import StudentDashboard from "./pages/Dashboard/Student/dashboard";
+import GetTest from "./pages/Dashboard/Student/pages/StartTest/getTest";
+import StartTest from "./pages/Dashboard/Student/pages/StartTest/startTest";
 
 function App() {
   const history = useHistory();
@@ -34,25 +36,29 @@ function App() {
   const [wait, setWait] = useState(true);
   const dispatch = useDispatch()
 
-  const verfiyToken = async token => {
-    // axios request to verify token and get token data in response;
-    if (token)
-      var data = {
-        email: "abc@gmail.com",
-        _id: "Qsda23dsdgs",
-        loginType: "INTERNAL_TEACHER"
-      }
-    return data;
-  }
-
   const checkIsLogined = async () => {
     var token = getAuthentication();
     if (token) {
-      let tokenData = await verfiyToken(token);
-      dispatch(loginNow({ token, tokenData }))
-      getAllData(token);
+      const config = {
+        headers: {
+          'Authorization': `Bearer ${token}`
+        }
+      }
+      axios.get(`${process.env.REACT_APP_API_URI}/accounts/fetchprofile/`, config).then(response => {
+        const profileData = response.data;
+        console.log("profileData")
+        console.log(profileData)
+        dispatch(loginNow({ token, tokenData: profileData }))
+        setWait(false)
+        getAllData(token);
+      }).catch(err => {
+        setWait(false)
+        console.log(err)
+      })
+
+    }else{
+      setWait(false)
     }
-    setWait(false)
   }
 
   const getSubjects = (token) => {
@@ -157,13 +163,15 @@ function App() {
               <PrivateRoute exact path="/in/chapter_add" component={CreateChapter} />
               <PrivateRoute exact path="/in/add_test" component={SelectTopic} />
               <PrivateRoute exact path="/in/add_test_que/:topicId" component={QuestionsManager} />
-              
+
               {/* student */}
               <Route exact path="/student_login" component={StudentLogin} />
               <Route exact path="/student_signup" component={StudentSignUp} />
               <PrivateRoute exact path="/student" component={StudentDashboard} />
-
-
+              <PrivateRoute exact path="/student/dashboard" component={StudentDashboard} />
+              <PrivateRoute exact path="/student/start" component={GetTest} />
+              <PrivateRoute exact path="/student/start/:topicId" component={StartTest} />
+              
             </Switch>
           </Router> :
           <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>

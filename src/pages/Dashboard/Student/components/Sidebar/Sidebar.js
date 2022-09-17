@@ -140,7 +140,7 @@ function CustomExpandableMenuItem({ menu, active }) {
 
 }
 
-function Sidebar() {
+function Sidebar({ isSidebarShow }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
@@ -169,14 +169,14 @@ function Sidebar() {
       icons: (<></>
         // <DashboardIcon />
       ),
-      url: "in/add_test"
+      url: "student/start"
     },
     {
       title: "Dashboard",
       icons: (<></>
         // <DashboardIcon />
       ),
-      url: "in/topics"
+      url: "student/dashboard"
     },
     {
       title: "Old Test Results",
@@ -246,87 +246,92 @@ function Sidebar() {
         </Toolbar>
       </AppBar>
 
-      <Drawer
-        variant="permanent"
-        className={clsx(classes.drawer, {
-          [classes.drawerOpen]: open,
-          [classes.drawerClose]: !open,
-        })}
-        classes={{
-          paper: clsx({
-            [classes.drawerOpen]: open,
-            [classes.drawerClose]: !open,
-          }),
-        }}
-      >
-        <div className={classes.toolbar}>
-          {/* <div className="sidebar_logo">
-            <h6>CeletomUniverse</h6>
-          </div> */}
-          {/* <IconButton onClick={handleDrawerClose}>
-            {theme.direction === "rtl" ? (
-              <ChevronRightIcon />
-            ) : (
-              <ChevronLeftIcon />
-            )}
-          </IconButton> */}
-        </div>
+      {
+        !isSidebarShow && isSidebarShow == false ?
+          <>Nothing</> :
+          <Drawer
+            variant="permanent"
+            className={clsx(classes.drawer, {
+              [classes.drawerOpen]: open,
+              [classes.drawerClose]: !open,
+            })}
+            classes={{
+              paper: clsx({
+                [classes.drawerOpen]: open,
+                [classes.drawerClose]: !open,
+              }),
+            }}
+          >
+            <div className={classes.toolbar}>
+              {/* <div className="sidebar_logo">
+              <h6>CeletomUniverse</h6>
+            </div> */}
+              {/* <IconButton onClick={handleDrawerClose}>
+              {theme.direction === "rtl" ? (
+                <ChevronRightIcon />
+              ) : (
+                <ChevronLeftIcon />
+              )}
+            </IconButton> */}
+            </div>
 
-        <List className="sidebar_items_list_student">
-          {sideBarMenus &&
-            sideBarMenus.map((menu, index) => (
-              <>
-                {
-                  menu.items ?
-                    <CustomExpandableMenuItem menu={menu} active={active} /> :
-                    <>
-                      <Link
-                        key={index}
-                        className={menu.url === active ? "active" : menu.title === "Logout" ? "loginBtnSidebar" : ""}
-                        onClick={() => menu.title === "Logout" ? dispatch(logoutAction()) : null}
-                        to={
-                          (menu.to ? menu.to :
-                            menu.title === "Create Test +" ?
-                              "/in/add_test"
-                              : menu.title === "Dashboard"
-                                ? "/in/dashboard"
-                                : menu.title === "Topics"
-                                  ? "/in/topics"
-                                  : "#")
-                        }
-                      >
-                        {
-                          menu.title == "Subjects" ? <>
-                            <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#subjectsModel">
-                              Subjects
-                            </button>
-                          </> :
-                            menu.title == "Classes" ? <>
-                              <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#classesModel">
-                                Classes
-                              </button>
-                            </> :
-                              menu.title == "Total Tests" ? <>
-                                <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#testDetails">
-                                  Total Tests
-                                </button>
-                              </> : menu.title == "Wallet" ? <>
-                                <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#walletModal">
-                                  Wallet
+            <List className="sidebar_items_list_student">
+              {sideBarMenus &&
+                sideBarMenus.map((menu, index) => (
+                  <>
+                    {
+                      menu.items ?
+                        <CustomExpandableMenuItem menu={menu} active={active} /> :
+                        <>
+                          <Link
+                            key={index}
+                            className={menu.url === active ? "active" : menu.title === "Logout" ? "loginBtnSidebar" : ""}
+                            onClick={() => menu.title === "Logout" ? dispatch(logoutAction()) : null}
+                            to={
+                              (menu.to ? menu.to :
+                                menu.title === "Start Test +" ?
+                                  "/student/start"
+                                  : menu.title === "Dashboard"
+                                    ? "/student/dashboard"
+                                    : menu.title === "Topics"
+                                      ? "/in/topics"
+                                      : "#")
+                            }
+                          >
+                            {
+                              menu.title == "Subjects" ? <>
+                                <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#subjectsModel">
+                                  Subjects
                                 </button>
                               </> :
-                                <ListItem button>
-                                  <ListItemText primary={menu.title} className="sidebar_text" />
-                                </ListItem>}
-                      </Link>
-                    </>
-                }
-              </>
-            ))}
-        </List>
-        <img className="student_sidebar_books_image" src={require("./sidebar_books.png")} width="200px"/>
-        <Divider />
-      </Drawer>
+                                menu.title == "Classes" ? <>
+                                  <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#classesModel">
+                                    Classes
+                                  </button>
+                                </> :
+                                  menu.title == "Total Tests" ? <>
+                                    <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#testDetails">
+                                      Total Tests
+                                    </button>
+                                  </> : menu.title == "Wallet" ? <>
+                                    <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#walletModal">
+                                      Wallet
+                                    </button>
+                                  </> :
+                                    <ListItem button>
+                                      <ListItemText primary={menu.title} className="sidebar_text" />
+                                    </ListItem>}
+                          </Link>
+                        </>
+                    }
+                  </>
+                ))}
+            </List>
+            <img className="student_sidebar_books_image" src={require("./sidebar_books.png")} width="200px" />
+            <Divider />
+          </Drawer>
+      }
+
 
       <SubjectsAlert />
       <ClassesAlert />

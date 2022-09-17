@@ -14,11 +14,11 @@ function Home() {
 
   const goToDashboard = () => {
     // check login type
-    if (admin.data.loginType == "INTERNAL_TEACHER") {
-      history.push("/in/")
-    }
-    if (admin.data.loginType == "STUDENT") {
+    if (admin.data.is_student) {
       history.push("/student/")
+    }
+    if (admin.data.is_internalteacher) {
+      history.push("/in/")
     }
   }
 

@@ -1,0 +1,69 @@
+.chooseClassSubject {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.chooseClassSubject .data_grid {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    margin-top: 10px;
+}
+
+.chooseClassSubject .data_grid .data_grid_box {
+    width: 200px;
+    height: 100px;
+    background: rgba(78, 77, 77, 0.233);
+    margin: 10px;
+    padding: 10px;
+    border-radius: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+.chooseClassSubject .data_grid .data_grid_box h5{
+    margin: 0;
+    padding: 0;
+    text-align: center;
+}
+.chooseClassSubject .data_grid .data_grid_box p{
+    margin: 0;
+    padding: 0;
+    padding-top: 10px;
+    text-align: center;
+}
+.selectedTopicDetails{
+    display: flex;
+    padding: 10px 20px;
+}
+.selectedTopicDetails .left{
+    width: 50%;
+}
+.selectedTopicDetails .right{
+    width: 50%;
+    display: flex;
+    justify-content: flex-end;
+}
+.selectedTopicDetails .imgBox{
+    width: 120px;
+    height: 120px;
+    margin-left: 30px;
+}
+.selectedTopicDetails .imgBox img{
+    width: 100%;
+    height: 100%;
+}
+.startBtnTest{
+    padding: 15px 40px;
+    border-radius: 40px;
+    margin: 10px auto;
+    background: #59CCFE;
+    color: black;
+}
+.startBtnTest:hover{
+    background: #277ca0;
+}

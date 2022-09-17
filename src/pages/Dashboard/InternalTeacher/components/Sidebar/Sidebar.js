@@ -106,19 +106,20 @@ function Sidebar() {
   }, [active, location]);
 
   let sideBarMenus = [
-    {
-      title: "Create Test +",
-      icons: (<></>
-        // <DashboardIcon />
-      ),
-      url: "in/add_test"
-    },
+
     {
       title: "Topics",
       icons: (<></>
         // <DashboardIcon />
       ),
       url: "in/topics"
+    },
+    {
+      title: "Create Test +",
+      icons: (<></>
+        // <DashboardIcon />
+      ),
+      url: "in/add_test"
     },
     {
       title: "Main Topics",
@@ -138,7 +139,7 @@ function Sidebar() {
       url: "in/chapters"
     },
 
-    
+
     {
       title: "Dashboard",
       icons: (<></>

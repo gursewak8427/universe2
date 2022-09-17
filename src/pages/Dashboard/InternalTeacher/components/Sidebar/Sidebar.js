@@ -121,15 +121,6 @@ function Sidebar() {
       url: "in/topics"
     },
     {
-      title: "Chapters",
-      icons: (<></>
-        // <DashboardIcon />
-      ),
-      to: "/in/chapters",
-      url: "in/chapters"
-    },
-
-    {
       title: "Main Topics",
       icons: (<></>
         // <DashboardIcon />
@@ -138,6 +129,16 @@ function Sidebar() {
       url: "in/maintopics"
     },
 
+    {
+      title: "Chapters",
+      icons: (<></>
+        // <DashboardIcon />
+      ),
+      to: "/in/chapters",
+      url: "in/chapters"
+    },
+
+    
     {
       title: "Dashboard",
       icons: (<></>

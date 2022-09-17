@@ -2,11 +2,12 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import CreateChapterBtn from "../../pages/chapters/createChapterBtn";
+import CreateMainTopicBtn from "../../pages/mainTopics/createMainTopicBtn";
 import CreateTopicBtn from "../../pages/topics/createTopicBtn";
 import "./Heading.css";
 
 
-function Heading({ auditTab, report, addTopicBtn, addChapterBtn, createEventBtn, createfaqButton, headingTitle }) {
+function Heading({ addMainTopicBtn, auditTab, report, addTopicBtn, addChapterBtn, createEventBtn, createfaqButton, headingTitle }) {
   const [heading, setHeading] = React.useState("");
 
   React.useEffect(() => {
@@ -28,6 +29,10 @@ function Heading({ auditTab, report, addTopicBtn, addChapterBtn, createEventBtn,
         {
           addTopicBtn &&
           <CreateTopicBtn />
+        }
+        {
+          addMainTopicBtn &&
+          <CreateMainTopicBtn />
         }
         {
           addChapterBtn &&

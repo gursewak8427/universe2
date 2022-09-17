@@ -3,7 +3,7 @@ import { EyeIcon, DeleteIcon, EditIcon } from "../../../../../utils/Icons";
 import { useStyles } from "../../../../../utils/useStyles";
 import axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import '../../dashboard.css'
+import './MainTopic.css'
 import MaterialTable from "material-table";
 
 import { Splide, SplideSlide } from '@splidejs/react-splide';
@@ -15,15 +15,15 @@ import Heading from "../../components/Heading/Heading";
 import { useSelector } from "react-redux";
 
 
-function ChapterManage() {
+function MainTopic() {
     const classes = useStyles();
     const history = useHistory();
     const { topicsList, chaptersList, classesList, subjects_list } = useSelector((state) => state.main)
 
     const columns = [
         { title: "#", field: "tableData.id", render: (item) => getIndex(item) },
-        { title: "Chapter", field: "chapter_name" },
-        { title: "Main Topics", field: "topics" },
+        { title: "Main Topic", field: "main_topic   " },
+        { title: "Topics", field: "topics" },
         { title: "Created", field: "created" },
         { title: "Updated", field: "updated" },
     ];
@@ -58,7 +58,7 @@ function ChapterManage() {
 
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Heading headingTitle="Chapter Management" addChapterBtn={true}/>
+                <Heading headingTitle="Main Topics Management" addMainTopicBtn={true}/>
                 <div className="mt-2">
                     <div className="mt-2 card_box">
                         <MaterialTable
@@ -87,4 +87,4 @@ function ChapterManage() {
 }
 
 
-export default ChapterManage;
+export default MainTopic;

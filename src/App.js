@@ -28,6 +28,8 @@ import StudentSignUp from "./pages/Home/Student/StudentSignUp";
 import StudentDashboard from "./pages/Dashboard/Student/dashboard";
 import GetTest from "./pages/Dashboard/Student/pages/StartTest/getTest";
 import StartTest from "./pages/Dashboard/Student/pages/StartTest/startTest";
+import MainTopic from "./pages/Dashboard/InternalTeacher/pages/mainTopics/mainTopic";
+import CreateMainTopic from "./pages/Dashboard/InternalTeacher/pages/mainTopics/createMainTopic";
 
 function App() {
   const history = useHistory();
@@ -161,6 +163,8 @@ function App() {
               <PrivateRoute exact path="/in/update_topic/:id" component={CreateTopic} />
               <PrivateRoute exact path="/in/chapters" component={ChapterManage} />
               <PrivateRoute exact path="/in/chapter_add" component={CreateChapter} />
+              <PrivateRoute exact path="/in/maintopics" component={MainTopic} />
+              <PrivateRoute exact path="/in/maintopics_add" component={CreateMainTopic} />
               <PrivateRoute exact path="/in/add_test" component={SelectTopic} />
               <PrivateRoute exact path="/in/add_test_que/:topicId" component={QuestionsManager} />
 

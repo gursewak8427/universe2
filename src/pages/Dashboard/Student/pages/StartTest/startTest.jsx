@@ -76,11 +76,13 @@ function StartTest() {
                                         <div className="content">
                                             <img src={require("./instructions2.png")} alt="" />
                                             <div className="bottomStartBtn">
-                                                <input type="checkbox" name="" id="accept" />
-                                                <label htmlFor="accept">
-                                                    I have read and understood the instructions. I declare that i am not in possession of/not wearing/not carrying any prohibited gadget like mobile phone, bluetooth devices etc. / any prohibited material. I agree that in case of not adhering to the instructions, I shall be liable to be debarred from this Test and/or to disciplinary action, which may include ban from
-                                                    future Tests/Examinations.
-                                                </label>
+                                                <div className="checkboxData">
+                                                    <input type="checkbox" name="" id="accept" />
+                                                    <label htmlFor="accept">
+                                                        I have read and understood the instructions. I declare that i am not in possession of/not wearing/not carrying any prohibited gadget like mobile phone, bluetooth devices etc. / any prohibited material. I agree that in case of not adhering to the instructions, I shall be liable to be debarred from this Test and/or to disciplinary action, which may include ban from
+                                                        future Tests/Examinations.
+                                                    </label>
+                                                </div>
                                                 <div className="row2">
 
                                                     <button onClick={() => {

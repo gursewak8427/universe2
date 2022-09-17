@@ -49,3 +49,13 @@
     height: 100%;
     border-left: 1px solid grey;
 }
+.checkboxData{
+    display: flex;
+    flex-direction: row;
+    align-items: start;
+    justify-content: start;
+}
+.checkboxData input{
+    margin: 3px;
+}
+   

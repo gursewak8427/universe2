@@ -10,7 +10,7 @@ import Heading from "../../components/Heading/Heading";
 import { TextareaAutosize } from '@mui/material';
 import Multiselect from 'multiselect-react-dropdown';
 
-function CreateChapter() {
+function CreateMainTopic() {
     const { admin } = useSelector((state) => state.auth);
     const { id } = useParams();
     const classes = useStyles();
@@ -173,11 +173,11 @@ function CreateChapter() {
                 <Sidebar />
                 <main className={classes.content}>
                     <div className={classes.toolbar} />
-                    <Heading headingTitle={state.updatedId ? "Update Chapter" : "Add Chapter"} />
+                    <Heading headingTitle={state.updatedId ? "Update Main Topic" : "Add Main Topic"} />
                     <div className='card_box'>
                         <Form className="form_activity form_add_product row row">
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
-                                <Form.Label className="label_grey">Select Main Topics</Form.Label>
+                                <Form.Label className="label_grey">Select Topics</Form.Label>
                                 <InputGroup className="mb-2">
                                     <Multiselect
                                         className='topicSelectMulti'
@@ -198,8 +198,9 @@ function CreateChapter() {
                                 </InputGroup>
                             </Form.Group>
 
+
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
-                                <Form.Label className="label_grey">Chapter Name</Form.Label>
+                                <Form.Label className="label_grey">Main Topic Name</Form.Label>
                                 <InputGroup className="mb-2">
                                     <FormControl
                                         placeholder=""
@@ -218,7 +219,7 @@ function CreateChapter() {
                                 <InputGroup className="mb-2">
                                     <textarea
                                         className='form-control'
-                                        placeholder="Write About Chapter"
+                                        placeholder="Write About Main Topic"
                                         aria-label="name"
                                         aria-describedby="basic-addon1"
                                         type="text"
@@ -240,4 +241,4 @@ function CreateChapter() {
     )
 }
 
-export default CreateChapter;
+export default CreateMainTopic;

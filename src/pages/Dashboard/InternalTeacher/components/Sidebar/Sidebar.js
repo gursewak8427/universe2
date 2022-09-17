@@ -70,10 +70,7 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    width: theme.spacing(7) + 1,
-    [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1,
-    },
+    width: 0,
   },
   toolbar: {
     display: "flex",
@@ -99,12 +96,8 @@ function Sidebar() {
 
   const [active, setActive] = React.useState("/");
 
-  const handleDrawerOpen = () => {
-    setOpen(true);
-  };
-
-  const handleDrawerClose = () => {
-    setOpen(false);
+  const handleDrawer = () => {
+    setOpen(!open);
   };
 
   useEffect(() => {
@@ -134,6 +127,15 @@ function Sidebar() {
       ),
       to: "/in/chapters",
       url: "in/chapters"
+    },
+
+    {
+      title: "Main Topics",
+      icons: (<></>
+        // <DashboardIcon />
+      ),
+      to: "/in/maintopics",
+      url: "in/maintopics"
     },
 
     {
@@ -195,7 +197,7 @@ function Sidebar() {
           <IconButton
             color="inherit"
             aria-label="open drawer"
-            onClick={handleDrawerOpen}
+            onClick={handleDrawer}
             edge="start"
             className={clsx(classes.menuButton,)}
           >

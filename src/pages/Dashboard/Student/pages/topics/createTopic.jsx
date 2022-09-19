@@ -180,7 +180,7 @@ function CreateTopic() {
                             </Form.Group>
 
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
-                                <Form.Label className="label_grey">Discription</Form.Label>
+                                <Form.Label className="label_grey">Description</Form.Label>
                                 <InputGroup className="mb-2">
                                     <textarea
                                         className='form-control'

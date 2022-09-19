@@ -91,7 +91,7 @@ function Sidebar() {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
-
+  const { admin } = useSelector((state) => state.auth);
   let location = useLocation();
 
   const [active, setActive] = React.useState("/");
@@ -207,13 +207,11 @@ function Sidebar() {
           </IconButton>
 
           <div className="appBar_items">
-            <Button color="inherit">Contact Us</Button>
+            <Button color="inherit"><Link to="/">Contact Us</Link></Button>
+            <Button color="inherit"><Link to="/">Home</Link></Button>
+            {/* <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" /> */}
             <Button color="inherit">
-              <Link to="/">Home</Link>
-            </Button>
-            <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" />
-            <Button color="inherit">
-              Kamaldeep
+              {admin.data.first_name}
             </Button>
           </div>
 
@@ -314,6 +312,7 @@ function Sidebar() {
 
 const ClassesAlert = () => {
   const { classesList } = useSelector((state) => state.main);
+  const { admin } = useSelector((state) => state.auth);
 
   return (
     <>
@@ -348,6 +347,7 @@ const ClassesAlert = () => {
 
 const SubjectsAlert = () => {
   const { subjects_list } = useSelector((state) => state.main);
+  const { admin } = useSelector((state) => state.auth);
 
   return (
     <>
@@ -382,6 +382,7 @@ const SubjectsAlert = () => {
 
 const TestDetails = () => {
   const { total_test_list } = useSelector((state) => state.main);
+  const { admin } = useSelector((state) => state.auth);
 
   return (
     <>
@@ -389,7 +390,7 @@ const TestDetails = () => {
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
-              <h1>Hey Kamal!</h1>
+              <h1>Hey {admin.data.first_name}!</h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
@@ -435,6 +436,7 @@ const TestDetails = () => {
 
 const WalletModal = () => {
   const { walletData } = useSelector((state) => state.main);
+  const { admin } = useSelector((state) => state.auth);
 
   return (
     <>
@@ -442,7 +444,7 @@ const WalletModal = () => {
         <div class="modal-dialog modal-xl">
           <div class="modal-content">
             <div class="modal-header">
-              <h1>Kamal's Wallet!
+              <h1>{admin.data.first_name}'s Wallet!
                 <img src={require("./wallet_icon.png")} className="small-image m-2" />
               </h1>
               <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>

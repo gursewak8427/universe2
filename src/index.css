@@ -7,6 +7,9 @@ a{
 .topicSelectMulti input{
     height: 30px !important;
 }
+.input-group > div{
+    width: 100%;
+}
 @media screen and (max-width : 650px) {
     .modal {
         padding-right: 0 !important;

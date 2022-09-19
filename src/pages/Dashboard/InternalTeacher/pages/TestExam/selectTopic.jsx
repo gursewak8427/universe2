@@ -205,6 +205,7 @@ function SelectTopic() {
                                 <InputGroup className="mb-2">
                                     <Select
                                         className='col-6'
+                                        placeholder="Search Topic"
                                         options={state.myTopicsList}
                                         onChange={opt => {
                                             setState({

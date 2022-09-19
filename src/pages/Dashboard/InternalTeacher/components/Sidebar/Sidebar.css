@@ -101,11 +101,13 @@
   margin: 0 15px;
 }
 
-.appBar_items button:hover {
-  background: rgba(255, 255, 255, 0.671);
-  color: black;
+.appBar_items button:hover a{
+  color: black !important;
 }
-
+.appBar_items a{
+  text-decoration: none;
+  color: white !important;
+}
 /* header */
 
 

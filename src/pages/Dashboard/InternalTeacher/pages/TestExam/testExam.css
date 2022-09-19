@@ -7,9 +7,23 @@
     padding: 0;
     position: relative;
 }
-.mainQuestionTable img[alt="eye"]{
+
+.mainQuestionTable img[alt="eye"] {
     transform: scale(0.5) !important;
 }
+
+.levelQuestion {
+    max-width: 130px;
+}
+
+img[alt="eye"] {
+    transform: scale(0.7) !important;
+}
+
+img[alt="delete_icon"] {
+    transform: scale(0.7) !important;
+}
+
 #testExam .left {
     width: 40%;
     height: 75vh;
@@ -17,16 +31,18 @@
     border-radius: none;
 }
 
-#testExam .left::-webkit-scrollbar{
+#testExam .left::-webkit-scrollbar {
     width: 10px;
 }
-#testExam .left::-webkit-scrollbar-thumb{
+
+#testExam .left::-webkit-scrollbar-thumb {
     width: 10px;
     background: skyblue;
     border-radius: 10px;
     cursor: pointer;
 }
-#testExam .left::-webkit-scrollbar-track{
+
+#testExam .left::-webkit-scrollbar-track {
     width: 10px;
     cursor: pointer;
     background: rgba(199, 197, 197, 0.418);
@@ -55,7 +71,15 @@
     padding: 10px;
 }
 
+#testExam .right .showAllQuestion .sub_question_dtl:hover {
+    border: 1px solid black;
+    background: rgba(128, 128, 128, 0.233);
+    transition: .5s;
+}
+
 #testExam .right .showAllQuestion .sub_question_dtl {
+    transition: .5s;
+    border: 1px solid transparent;
     display: flex;
     flex-direction: column;
     width: 100%;
@@ -225,6 +249,7 @@
 .to_row>div {
     width: 45%;
 }
+
 .to_row>div input {
     width: 100%;
 }
@@ -239,14 +264,55 @@
     justify-content: center;
 }
 
-.subQuestionId{
+.subQuestionId {
     font-size: 70% !important;
     font-weight: lighter !important;
 }
-.q_row{
+
+.q_row {
     display: flex;
     flex-direction: column;
 }
-.qq > div img{
+
+.qq>div img {
     cursor: pointer;
 }
+
+#previewPage {
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+#previewPage .question {
+    margin: 10px;
+    font-weight: bolder;
+    background: rgb(3, 170, 156);
+    padding: 20px 50px;
+    color: white;
+}
+
+#previewPage .options {
+}
+
+#previewPage .options li {
+    background: grey;
+    list-style-type: none;
+    margin: 10px;
+    padding: 10px;
+}
+
+#previewPage .options li input {
+}
+
+#previewPage .options li label {
+    margin-bottom: 5px;
+    padding-left: 10px;
+    cursor: pointer;
+    color: white;
+    font-weight: bolder;
+}
+#previewPage .options li img {
+    margin-left: 20px;
+}
+

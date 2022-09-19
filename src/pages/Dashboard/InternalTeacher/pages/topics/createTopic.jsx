@@ -26,43 +26,45 @@ function CreateTopic() {
         status: false,
         time: "",
         calculatorStatus: false,
+        clueStatus: false,
         updatedId: null
     })
 
 
     useEffect(() => {
-      if (id) {
-        // get detail with Id
-        (async () => {
+        if (id) {
+            // get detail with Id
+            (async () => {
 
-            const config = {
-                headers: {
-                    'Authorization': `Bearer ${admin.token}`
+                const config = {
+                    headers: {
+                        'Authorization': `Bearer ${admin.token}`
+                    }
                 }
-            }
-            axios.get(`${process.env.REACT_APP_API_URI}exams/topic/${id}/`, config).then(response => {
-                const responseData = response.data;
-                console.log("responseData topic")
-                console.log(responseData)
-                setState({
-                    ...state,
-                    name: responseData.Topicname,
-                    subject: responseData.subject.id,
-                    description: responseData.description,
-                    n_questions: responseData.numberofquestions,
-                    class: responseData.class_name.id,
-                    status: responseData.status,
-                    time: responseData.timing,
-                    calculatorStatus: responseData.calculatorStatus,
-                    updatedId: responseData,
+                axios.get(`${process.env.REACT_APP_API_URI}exams/topic/${id}/`, config).then(response => {
+                    const responseData = response.data;
+                    console.log("responseData topic")
+                    console.log(responseData)
+                    setState({
+                        ...state,
+                        name: responseData.Topicname,
+                        subject: responseData.subject.id,
+                        description: responseData.description,
+                        n_questions: responseData.numberofquestions,
+                        class: responseData.class_name.id,
+                        status: responseData.status,
+                        time: responseData.timing,
+                        calculatorStatus: responseData.calculatorStatus,
+                        clueStatus: responseData.clueStatus || false,
+                        updatedId: responseData,
+                    })
+                }).catch(err => {
+                    console.log(err)
                 })
-            }).catch(err => {
-                console.log(err)
-            })
 
-        })();
+            })();
 
-      }
+        }
     }, [id])
 
     const onchange = e => {
@@ -76,6 +78,11 @@ function CreateTopic() {
             setState({
                 ...state,
                 status: !state.status
+            })
+        } else if (e.target.name == "clueStatus") {
+            setState({
+                ...state,
+                clueStatus: !state.clueStatus
             })
         } else {
             setState({
@@ -101,6 +108,7 @@ function CreateTopic() {
             class_name: state.class,
             timing: state.time,
             calculatorStatus: state.calculatorStatus,
+            clueStatus: state.clueStatus,
             status: state.status,
         }
 
@@ -115,9 +123,10 @@ function CreateTopic() {
                 class_name: state.class,
                 timing: state.time,
                 calculatorStatus: state.calculatorStatus,
+                clueStatus: state.clueStatus,
                 status: state.status,
             }
-    
+
             // add new 
             const config = {
                 headers: {
@@ -180,7 +189,7 @@ function CreateTopic() {
                             </Form.Group>
 
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
-                                <Form.Label className="label_grey">Discription</Form.Label>
+                                <Form.Label className="label_grey">Description</Form.Label>
                                 <InputGroup className="mb-2">
                                     <textarea
                                         className='form-control'
@@ -202,9 +211,9 @@ function CreateTopic() {
                                         <option selected value="">Select Class</option>
                                         {
                                             classesList.map(item => {
-                                                if(item.id == state.class){
+                                                if (item.id == state.class) {
                                                     return <option selected value={item.id}>{item.class_name}</option>;
-                                                }else{
+                                                } else {
                                                     return <option value={item.id}>{item.class_name}</option>;
                                                 }
                                             })
@@ -220,9 +229,9 @@ function CreateTopic() {
                                         <option selected>Select Subject</option>
                                         {
                                             subjects_list.map(item => {
-                                                if(item.id == state.subject){
+                                                if (item.id == state.subject) {
                                                     return <option selected value={item.id}>{item.subject}</option>
-                                                }else{
+                                                } else {
                                                     return <option value={item.id}>{item.subject}</option>
                                                 }
                                             })
@@ -266,8 +275,8 @@ function CreateTopic() {
                                 <InputGroup className="mb-2">
                                     {
                                         state.status == true ?
-                                        <Switch checked onClick={onchange} name="status" />:
-                                        <Switch onClick={onchange} name="status" />
+                                            <Switch checked onClick={onchange} name="status" /> :
+                                            <Switch onClick={onchange} name="status" />
 
                                     }
                                 </InputGroup>
@@ -277,10 +286,22 @@ function CreateTopic() {
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
                                 <Form.Label className="label_grey">Calculator Status</Form.Label>
                                 <InputGroup className="mb-2">
-                                {
+                                    {
                                         state.status == true ?
-                                        <Switch onClick={onchange} name="calculator" /> :
-                                        <Switch onClick={onchange} name="calculator" />
+                                            <Switch onClick={onchange} name="calculator" /> :
+                                            <Switch onClick={onchange} name="calculator" />
+
+                                    }
+                                </InputGroup>
+                            </Form.Group>
+
+                            <Form.Group className="mb-2 col-sm-12 col-md-12">
+                                <Form.Label className="label_grey">Clue Status</Form.Label>
+                                <InputGroup className="mb-2">
+                                    {
+                                        state.status == true ?
+                                            <Switch onClick={onchange} name="ClueStatus" /> :
+                                            <Switch onClick={onchange} name="ClueStatus" />
 
                                     }
                                 </InputGroup>

@@ -178,9 +178,9 @@ function CreateMainTopic() {
                         <Form className="form_activity form_add_product row row">
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
                                 <Form.Label className="label_grey">Select Classes</Form.Label>
-                                <InputGroup className="mb-2">
+                                <InputGroup className="mb-2 col-12">
                                     <Multiselect
-                                        className='topicSelectMulti'
+                                        className='topicSelectMulti col-12'
                                         options={state.myTopicsList} // Options to display in the dropdown
                                         selectedValues={state.selectedValue} // Preselected value to persist in dropdown
                                         onSelect={onSelect} // Function will trigger on select event
@@ -257,7 +257,7 @@ function CreateMainTopic() {
                             </Form.Group>
 
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
-                                <Form.Label className="label_grey">Discription</Form.Label>
+                                <Form.Label className="label_grey">Description</Form.Label>
                                 <InputGroup className="mb-2">
                                     <textarea
                                         className='form-control'

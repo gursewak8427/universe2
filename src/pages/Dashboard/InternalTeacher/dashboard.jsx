@@ -8,19 +8,12 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 
 // Default theme
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import { useSelector } from "react-redux";
 
 
 function InternalTeacherDashboard() {
     const classes = useStyles();
-    const [isWait, setWait] = useState(false);
-    const [isWait1, setWait1] = useState(false);
-    const [isWait2, setWait2] = useState(false);
-    const [isWait3, setWait3] = useState(false);
-    const [totalCustomers, setTotalCustomers] = useState(0)
-    const [totalReqServices, setTotalReqServices] = useState(0)
-    const [totalBookings, setTotalBookings] = useState(0)
-    const [totalServiceProviders, setTotalServiceProviders] = useState(0)
-
+    const { admin } = useSelector((state) => state.auth);
 
 
     return (
@@ -31,16 +24,18 @@ function InternalTeacherDashboard() {
                 <div className={classes.toolbar} />
 
                 {/* box 1 */}
-                <div className="top-row">
-                    <FirstBox />
-                    <SecondBox />
+                <div className="top-row b">
+                    {/* <FirstBox /> */}
+                    {/* <SecondBox /> */}
                 </div>
                 <div className="bottom-row">
-                    <ThirdBox />
+                    {/* <ThirdBox /> */}
+                    <div />
                     <FourthBox />
                 </div>
 
             </main>
+            
         </div>
     );
 }
@@ -60,10 +55,12 @@ const SS = () => {
 
 
 const FirstBox = () => {
+    const { admin } = useSelector((state) => state.auth);
+
     return (
         <>
             <div className="col-6 col-xl-5 main-box">
-                <h1>Hi Kamaldeep,</h1>
+                <h1>Hi {admin.data.first_name},</h1>
                 <h1>Good Morning!</h1>
                 <div className="m-row jc-sb mb-3 recomended_row">
                     <span>
@@ -165,6 +162,8 @@ const FirstBox = () => {
 
 
 const SecondBox = () => {
+    const { admin } = useSelector((state) => state.auth);
+
     return (
         <>
             <div className="col-4 col-xl-5 main-box reviews">
@@ -309,6 +308,8 @@ const SecondBox = () => {
 
 
 const ThirdBox = () => {
+    const { admin } = useSelector((state) => state.auth);
+
     return (
         <>
             <div className="col-5 col-xl-5 main-box reviews">
@@ -363,7 +364,7 @@ const ThirdBox = () => {
                     <div className="left">
                         <div className="content">
                             <h2>Congratulations !</h2>
-                            <h5>Kamaldeep....</h5>
+                            <h5>Rahul....</h5>
                             <p>You got First Position in this week for making awesome tests for students</p>
                         </div>
                         <div className="box a"></div>
@@ -379,6 +380,8 @@ const ThirdBox = () => {
 }
 
 const FourthBox = () => {
+    const { admin } = useSelector((state) => state.auth);
+
     return (
         <>
             <div className="comment_box col-5">

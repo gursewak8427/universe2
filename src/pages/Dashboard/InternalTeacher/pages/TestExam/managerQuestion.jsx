@@ -31,6 +31,8 @@ function QuestionsManager() {
         QuestionImage: "",
         Solution: "",
         SolutionImage: "",
+        Clue: "",
+        ClueImage: "",
         questionType: "-1",
         Option1: "",
         Option1Image: "",
@@ -43,7 +45,6 @@ function QuestionsManager() {
         singleOptionsList: [{}],
         multipleOptionsList: [{}],
         Answer: [false, false, false, false],
-        Clue: "",
         Level: "",
         Marks: "",
         NegativeMarks: "",
@@ -109,7 +110,7 @@ function QuestionsManager() {
 
     const getLevelOptions = (item) => {
         return <>
-            <select name="" id="" className='form-control' onChange={(e) => {
+            <select name="" id="" className='form-control levelQuestion' onChange={(e) => {
                 // #updateLevel
                 console.log(e.target.value)
                 console.log("item")
@@ -274,9 +275,10 @@ function QuestionsManager() {
         formdata.append('Option4', state.Option4)
         formdata.append('Option4Image', state.Option4Image)
         formdata.append('Answer', state.Answer)
+        formdata.append('Clue', state.Clue)
+        formdata.append('ClueImage', state.Clue)
         formdata.append('Solution', state.Solution)
         formdata.append('SolutionImage', state.SolutionImage)
-        formdata.append('Clue', state.Clue)
         formdata.append('Level', state.selectedQuestion.level)
         formdata.append('Marks', state.Marks)
         formdata.append('QuestionType', state.questionType)
@@ -355,6 +357,8 @@ function QuestionsManager() {
                 QuestionImage: "",
                 Solution: "",
                 SolutionImage: "",
+                Clue: "",
+                ClueImage: "",
                 questionType: "-1",
                 Option1: "",
                 Option1Image: "",
@@ -367,7 +371,6 @@ function QuestionsManager() {
                 singleOptionsList: [{}],
                 multipleOptionsList: [{}],
                 Answer: [false, false, false, false],
-                Clue: "",
                 Level: "",
                 Marks: "",
                 NegativeMarks: "",
@@ -515,7 +518,9 @@ function QuestionsManager() {
 
     }
 
-
+    const openPreview = (subQuestion) => {
+        window.open('/guest/preview/' + subQuestion.id, '_blank');
+    }
 
     if (isWait) {
         return <>
@@ -535,7 +540,7 @@ function QuestionsManager() {
                     <Heading headingTitle={`ID - ${topicId} ${state.topicDetails.Topicname}(Subject - ${state.topicDetails.subject.subject})`} />
                     <div className='card_box questionManager' id='testExam'>
                         <div className="left">
-                            <button className="btn btn-success" onClick={AddNewQuestion}>Add New</button>
+                            <button className="btn btn-success" onClick={AddNewQuestion}>Add New Question</button>
                             <MaterialTable
                                 options={{
                                     paging: false,
@@ -576,7 +581,7 @@ function QuestionsManager() {
 
                                             <div className="top">
                                                 <div className="float-right">
-                                                    <button className="btn btn-success" onClick={() => setIsAddQuestion(true)}>Add Question</button>
+                                                    <button className="btn btn-success" onClick={() => setIsAddQuestion(true)}>Add Subquestion</button>
                                                 </div>
                                             </div>
 
@@ -630,7 +635,7 @@ function QuestionsManager() {
                                                                                             </span>
                                                                                             {/* manage question */}
                                                                                             <div>
-                                                                                                <span onClick={() => alert("pending...")}>
+                                                                                                <span onClick={() => openPreview(subQuestion)}>
                                                                                                     <EyeIcon />
                                                                                                 </span>
                                                                                                 <span onClick={() => updateQuestion(subQuestion)}>
@@ -641,6 +646,15 @@ function QuestionsManager() {
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <div className='qq mt-1 d-flex'>
+                                                                                            <p className='text-danger'>Solution : {subQuestion.Solution}</p>
+                                                                                        </div>
+                                                                                        {
+                                                                                            subQuestion.Clue == null ? <> </> :
+                                                                                                <div className='qq mt-1 d-flex'>
+                                                                                                    <p className='text-danger'>Clue : {subQuestion.Clue}</p>
+                                                                                                </div>
+                                                                                        }
                                                                                         {/* options 4 */}
                                                                                         <div className='opp'>
                                                                                             {
@@ -669,7 +683,7 @@ function QuestionsManager() {
                                                                                                 </span>
                                                                                                 {/* manage question */}
                                                                                                 <div>
-                                                                                                    <span onClick={() => alert("pending...")}>
+                                                                                                    <span onClick={() => openPreview(subQuestion)}>
                                                                                                         <EyeIcon />
                                                                                                     </span>
                                                                                                     <span onClick={() => updateQuestion(subQuestion)}>
@@ -680,6 +694,15 @@ function QuestionsManager() {
                                                                                                     </span>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <div className='qq mt-1 d-flex'>
+                                                                                                <p className='text-danger'>Solution : {subQuestion.Solution}</p>
+                                                                                            </div>
+                                                                                            {
+                                                                                                subQuestion.Clue == null ? <> </> :
+                                                                                                    <div className='qq mt-1 d-flex'>
+                                                                                                        <p className='text-danger'>Clue : {subQuestion.Clue}</p>
+                                                                                                    </div>
+                                                                                            }
                                                                                             {/* options 4 */}
                                                                                             <div className='opp'>
                                                                                                 {
@@ -705,10 +728,11 @@ function QuestionsManager() {
                                                                                                     <span className='q_row'>
                                                                                                         <span className='subQuestionId'>ID: {subQuestion.id} (Numeric Type Answer)</span>
                                                                                                         {subQuestion.Question}
+
                                                                                                     </span>
                                                                                                     {/* manage question */}
                                                                                                     <div>
-                                                                                                        <span onClick={() => alert("pending...")}>
+                                                                                                        <span onClick={() => openPreview(subQuestion)}>
                                                                                                             <EyeIcon />
                                                                                                         </span>
                                                                                                         <span onClick={() => updateQuestion(subQuestion)}>
@@ -719,12 +743,22 @@ function QuestionsManager() {
                                                                                                         </span>
                                                                                                     </div>
                                                                                                 </div>
+                                                                                                <div className='qq mt-1 d-flex'>
+                                                                                                    <p className='text-danger'>Solution : {subQuestion.Solution}</p>
+                                                                                                </div>
+                                                                                                {
+                                                                                                    subQuestion.Clue == null ? <> </> :
+                                                                                                        <div className='qq mt-1 d-flex'>
+                                                                                                            <p className='text-danger'>Clue : {subQuestion.Clue}</p>
+                                                                                                        </div>
+                                                                                                }
                                                                                                 {/* options 4 */}
                                                                                                 <div className='opp'>
                                                                                                     <p className='correct'>Correct Answer : <span>{subQuestion.CorrectAnswer}</span></p>
                                                                                                     <p>Minimum : {subQuestion.Rangemin || "0"}</p>
                                                                                                     <p>Maximum : {subQuestion.Rangemax || "0"}</p>
                                                                                                 </div>
+
                                                                                             </div>
                                                                                         </>
                                                                                         :
@@ -771,6 +805,17 @@ function QuestionsManager() {
                                                 <div className="my-3 imageUploadIcon">
                                                     <label for="SolutionImage" class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
                                                     <input class="form-control" type="file" name='SolutionImage' id='SolutionImage' onChange={handleFile} />
+                                                </div>
+
+                                                <h2 className='mb-3 mt-3'>Clue </h2>
+                                                {/* question field */}
+                                                <div class="form-floating mb-3">
+                                                    <textarea name="Clue" onChange={onchange} class="form-control" placeholder="Type Solution Here..." id="floatingTextarea" style={{ "height": "100px" }}>{state.Clue}</textarea>
+                                                    <label for="floatingTextarea">Type Clue Here...</label>
+                                                </div>
+                                                <div className="my-3 imageUploadIcon">
+                                                    <label for="ClueImage" class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
+                                                    <input class="form-control" type="file" name='ClueImage' id='ClueImage' onChange={handleFile} />
                                                 </div>
 
                                                 <hr />
@@ -997,6 +1042,8 @@ function QuestionsManager() {
                                                                             <input type="number" class="form-control" name="rangeMax" value={state.rangeMax} onChange={onchange} id="floatingInput" placeholder="" />
                                                                         </div>
                                                                     </div>
+
+                                                                    <b><p>* If the correct answer is 29.22, then the range of answer to be shown correct can be 29.00 to 29.49</p></b>
 
                                                                 </> : <div></div>
                                                 }

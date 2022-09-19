@@ -19,12 +19,13 @@
     justify-content: space-between;
 }
 
-.top-row {
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    flex-wrap: wrap;
+.top-row.b {
+    display: flex !important;
+    flex-direction: row !important;
+    justify-content: space-between !important;
+    flex-wrap: wrap !important;
 }
+
 
 .bottom-row {
     margin-top: 50px;
@@ -215,7 +216,6 @@
     margin-top: 20px;
     margin-bottom: 20px;
 }
-
 /* for student's reviews */
 .main-box.reviews .recomended_row span:nth-child(1) big {
     font-size: 250%;

@@ -26,7 +26,7 @@ export const DeleteIcon = () => {
   return (
     <img
       src="/assets/images/trash.svg"
-      alt="eye"
+      alt="delete_icon"
       className="table_action_icons"
     />
   );

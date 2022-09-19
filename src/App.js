@@ -30,6 +30,7 @@ import GetTest from "./pages/Dashboard/Student/pages/StartTest/getTest";
 import StartTest from "./pages/Dashboard/Student/pages/StartTest/startTest";
 import MainTopic from "./pages/Dashboard/InternalTeacher/pages/mainTopics/mainTopic";
 import CreateMainTopic from "./pages/Dashboard/InternalTeacher/pages/mainTopics/createMainTopic";
+import Preview from "./pages/Dashboard/InternalTeacher/pages/TestExam/preview";
 
 function App() {
   const history = useHistory();
@@ -71,6 +72,8 @@ function App() {
     }
     axios.get(`${process.env.REACT_APP_API_URI}exams/subject/`, config).then(response => {
       const subjectsData = response.data;
+      console.log("subjectsData")
+      console.log(subjectsData)
       dispatch(setSubjects(subjectsData))
     }).catch(err => {
       console.log(err)
@@ -167,6 +170,8 @@ function App() {
               <PrivateRoute exact path="/in/maintopics_add" component={CreateMainTopic} />
               <PrivateRoute exact path="/in/add_test" component={SelectTopic} />
               <PrivateRoute exact path="/in/add_test_que/:topicId" component={QuestionsManager} />
+              <Route exact path="/guest/preview/:id" component={Preview} />
+              
 
               {/* student */}
               <Route exact path="/student_login" component={StudentLogin} />

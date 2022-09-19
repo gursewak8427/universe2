@@ -21,7 +21,7 @@ function MainTopic() {
     const { topicsList, chaptersList, classesList, subjects_list } = useSelector((state) => state.main)
 
     const columns = [
-        { title: "#", field: "tableData.id", render: (item) => getIndex(item) },
+        { title: "Main Topic ID", field: "tableData.id", render: (item) => getIndex(item) },
         { title: "Main Topic", field: "main_topic   " },
         { title: "Topics", field: "topics" },
         { title: "Created", field: "created" },

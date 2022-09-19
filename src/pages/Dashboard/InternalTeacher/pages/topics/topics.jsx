@@ -43,7 +43,7 @@ function TopicManage() {
     }, [])
 
     const columns = [
-        { title: "#", field: "tableData.id", render: (item) => getIndex(item) },
+        { title: "Topic ID", field: "tableData.id", render: (item) => getIndex(item) },
         { title: "Name", field: "Topicname", render: (item) => getName(item) },
         { title: "Class-Subject", field: "subject", render: (item) => <>{item.class_name.class_name}({item.subject.subject})</> },
         { title: "Timing", field: "timing", render: (item) => <>{item.timing} min</> },

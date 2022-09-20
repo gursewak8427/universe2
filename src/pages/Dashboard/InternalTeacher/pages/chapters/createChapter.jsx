@@ -19,151 +19,197 @@ function CreateChapter() {
     const dispatch = useDispatch();
     const { topicsList, chaptersList, classesList, subjects_list } = useSelector((state) => state.main)
     const [state, setState] = useState({
-        class: "",
-        subject: "",
+        classes_data: [],
+        subjects: [],
         topics: [],
-        chapter_name: "",
-        chapter_description: "",
+        chaptername: "",
+        description: "",
+
         myTopicsList: [],
-        selectedValue: [],
+        myClassList: [],
+        mySubjectList: [],
+        selectedValueClasses: [],
+        selectedValueSubjects: [],
+        selectedValueTopics: [],
+
+        updatedId: null,
     })
 
+
+
     useEffect(() => {
-        getMyTopics()
+        getClasses()
     }, [])
 
-    // useEffect(() => {
-    //   if (id) {
-    //     // get detail with Id
-    //     var bytes = CryptoJS.AES.decrypt(decodeURIComponent(id), '#fasi23123sabcc;[],.,.,.,,,kkl');
-    //     var phone = JSON.parse(bytes.toString(CryptoJS.enc.Utf8));
+    const getClasses = () => {
+        let myClasses = []
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${admin.token}`
+            }
+        }
+        axios.get(`${process.env.REACT_APP_API_URI}exams/class/`, config).then(response => {
 
-    //     (async () => {
+            const classesData = response.data;
 
-    //       // get detail with phone
-    //       const q = query(collection(FireDB, "ServiceProvider"), where("phone", "==", phone));
-    //       const querySnapshot = await getDocs(q);
-    //       let usersLength = querySnapshot.docs.length
-    //       if (usersLength == 0) {
-    //         alert("No Provider Found")
-    //         return;
-    //       }
-    //       const userData = querySnapshot.docs[0].data()
+            classesData.map((topic, index) => {
+                myClasses.push({
+                    name: topic.class_name,
+                    id: topic.id
+                })
 
-    //       setState({
-    //         ...state,
-    //         name: userData.name,
-    //         service: userData.service || "",
-    //         earning: userData.earning || 0,
-    //         address: userData.location || "",
-    //         phone: userData.phone || "",
-    //         payout: userData.payout || 0,
-    //         updatedId: true,
-    //       })
-    //     })();
+                if (index + 1 == classesData.length) {
+                    // alert(myClasses.length)
+                    setState({
+                        ...state,
+                        myClassList: myClasses
+                    })
 
-    //   }
-    // }, [id])
+                }
 
-    const getMyTopics = () => {
-        // getTopic with classname and subject name
-        let mytopics = []
-        topicsList.map((topic, index) => {
-            mytopics.push({
-                name: topic.topic_name,
-                id: index
             })
-
-            // console.log("topic")
-            // console.log(topic)
-            // console.log("state")
-            // console.log(state)
-            // if (topic.topic_class == state.class) {
-            //     if (topic.subject == subject) {
-            //         console.log('im here 2')
-            //         console.log(topic)
-            //     }
-            // }
-
-            // if (index + 1 == topicsList.length) {
-            //     setState({
-            //         ...state,
-            //         myTopicsList: mytopics
-            //     })
-
-            // }
-
+        }).catch(err => {
+            console.log(err)
         })
 
-        console.log(topicsList)
-        console.log("im here")
     }
+
+    const getSubjects = (classess_data) => {
+
+        let mySbjs = []
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${admin.token}`
+            }
+        }
+        axios.get(`${process.env.REACT_APP_API_URI}exams/subject/`, config).then(response => {
+            const subjectsData = response.data;
+            subjectsData.map((subject, index) => {
+                mySbjs.push({
+                    name: subject.subject,
+                    id: subject.id
+                })
+                if (index + 1 == subjectsData.length) {
+                    setState({
+                        ...state,
+                        mySubjectList: mySbjs,
+                        classes_data: classess_data
+
+                    })
+                }
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+    }
+
 
     const onchange = e => {
-
-        if (e.target.name == "topics") {
-            let selectedOptions = e.target.selectedOptions
-            let newArrayOfSelectedOptionValues = Object.values(selectedOptions).map(
-                opt => opt.value
-            )
-            setState({
-                ...state,
-                [e.target.name]: newArrayOfSelectedOptionValues
-            })
-
-        } else {
-            setState({
-                ...state,
-                [e.target.name]: e.target.value
-            })
-        }
-
-        if (e.target.name == "subject") {
-            // getMyTopics(e.target.value);
-        }
+        setState({
+            ...state,
+            [e.target.name]: e.target.value
+        })
     }
 
-    const onSelect = (selectedList, selectedItem) => {
+
+    const getMyTopics = (dafasdf) => {
+        // getTopic with classname and subject name
+        let mytopics = []
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${admin.token}`
+            }
+        }
+        axios.get(`${process.env.REACT_APP_API_URI}exams/topic/`, config).then(response => {
+            const subjectsData = response.data;
+
+            subjectsData.map((subject, index) => {
+                mytopics.push({
+                    name: subject.Topicname,
+                    id: subject.id
+                })
+                if (index + 1 == subjectsData.length) {
+                    setState({
+                        ...state,
+                        myTopicsList: mytopics,
+                        subjects: dafasdf,
+
+                    })
+                }
+            })
+        }).catch(err => {
+            console.log(err)
+        })
+
+    }
+
+    const onSelectClass = (selectedList, selectedItem) => {
         console.log([selectedList, selectedItem])
+        let finalClasses = []
+        selectedList.map((item, index) => {
+            finalClasses.push(item.id)
+            if (index + 1 == selectedList.length) {
+                getSubjects(finalClasses)
+            }
+        })
     }
 
-    const onRemove = (selectedList, selectedItem) => {
-        return;
+    const onSelectSubject = (selectedList, selectedItem) => {
+        console.log([selectedList, selectedItem])
+        let finalSubjects = []
+        selectedList.map((item, index) => {
+            finalSubjects.push(item.id)
+            if (index + 1 == selectedList.length) {
+                getMyTopics(finalSubjects)
+            }
+        })
     }
 
+    const onSelectTopics = (selectedList, selectedItem) => {
+        console.log([selectedList, selectedItem])
+        let finalSubjects = []
+        selectedList.map((item, index) => {
+            finalSubjects.push(item.id)
+            if (index + 1 == selectedList.length) {
+                setState({
+                    ...state,
+                    topics: finalSubjects
+                })
+            }
+        })
+    }
 
     // add happy hour
     const AddSP = async () => {
-        console.log(state);
 
-        // new chapter
-        var newChapter = {
-            chapter_name: state.chapter_name,
+        // new mainTopic
+        var newMainTopic = {
+            chaptername: state.chaptername,
+            discription: state.description,
             topics: state.topics,
-            subject: state.subject,
-            class: state.class,
-            chapter_description: state.chapter_description,
-            created: "12 July, 2022 11:05 AM",
-            updated: "",
+            classes: state.classes_data,
+            subjects: state.subjects,
         }
 
-        // old
-        var oldChapters = chaptersList
-
-        dispatch(setChapters([newChapter, ...oldChapters]))
-        dispatch(setSuccessMsg("Chapter Added Sucessufully"))
-        history.push("/in/chapters")
         // update
-        // if (state.updatedId) {
-        //   await updateDoc(doc(FireDB, "ServiceProvider", state.phone), data);
-        //   dispatch(setSuccessMsg("Updated Successfully"))
-        //   history.push("/service_provider")
-        // } else {
-        //   // add new 
-        //   await setDoc(doc(FireDB, "ServiceProvider", "+91" + state.phone), data);
-        //   dispatch(setSuccessMsg("Added Successfully"))
-        //   history.push("/service_provider")
-        // }
+        if (state.updatedId) {
+            // await updateDoc(doc(FireDB, "ServiceProvider", state.phone), data);
+            // dispatch(setSuccessMsg("Updated Successfully"))
+            // history.push("/service_provider")
+        } else {
+            // add new 
+            axios({
+                method: 'post',
+                url: `${process.env.REACT_APP_API_URI}exams/chapter/`,
+                data: newMainTopic,
+                headers: {
+                    'Authorization': `Bearer ${admin.token}`
+                }
+            }).then(response => {
+                dispatch(setSuccessMsg("Chapter Added Sucessufully"))
+                history.push("/in/maintopics")
+            });
+        }
     }
 
 
@@ -176,16 +222,15 @@ function CreateChapter() {
                     <Heading headingTitle={state.updatedId ? "Update Chapter" : "Add Chapter"} />
                     <div className='card_box'>
                         <Form className="form_activity form_add_product row row">
-
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
                                 <Form.Label className="label_grey">Select Classes</Form.Label>
-                                <InputGroup className="mb-2">
+                                <InputGroup className="mb-2 col-12">
                                     <Multiselect
-                                        className='topicSelectMulti'
-                                        options={state.myTopicsList} // Options to display in the dropdown
-                                        selectedValues={state.selectedValue} // Preselected value to persist in dropdown
-                                        onSelect={onSelect} // Function will trigger on select event
-                                        onRemove={onRemove} // Function will trigger on remove event
+                                        className='topicSelectMulti col-12'
+                                        options={state.myClassList} // Options to display in the dropdown
+                                        selectedValues={state.selectedValueClasses} // Preselected value to persist in dropdown
+                                        onSelect={onSelectClass} // Function will trigger on select event
+                                        onRemove={onSelectClass} // Function will trigger on remove event
                                         displayValue="name" // Property name to display in the dropdown options
                                     />
                                     {/* <select class="select" multiple data-mdb-filter="true">
@@ -198,16 +243,36 @@ function CreateChapter() {
                                     </select> */}
                                 </InputGroup>
                             </Form.Group>
- 
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
                                 <Form.Label className="label_grey">Select Subjects</Form.Label>
                                 <InputGroup className="mb-2">
                                     <Multiselect
                                         className='topicSelectMulti'
+                                        options={state.mySubjectList} // Options to display in the dropdown
+                                        selectedValues={state.selectedValueSubjects} // Preselected value to persist in dropdown
+                                        onSelect={onSelectSubject} // Function will trigger on select event
+                                        onRemove={onSelectClass} // Function will trigger on remove event
+                                        displayValue="name" // Property name to display in the dropdown options
+                                    />
+                                    {/* <select class="select" multiple data-mdb-filter="true">
+                                        {
+                                            state.myTopicsList.map(item =>
+                                            (
+                                                <option value={item.topic_name}>{item.topic_name}</option>
+                                            ))
+                                        }
+                                    </select> */}
+                                </InputGroup>
+                            </Form.Group>
+                            <Form.Group className="mb-2 col-sm-12 col-md-12">
+                                <Form.Label className="label_grey">Select Topics</Form.Label>
+                                <InputGroup className="mb-2">
+                                    <Multiselect
+                                        className='topicSelectMulti'
                                         options={state.myTopicsList} // Options to display in the dropdown
                                         selectedValues={state.selectedValue} // Preselected value to persist in dropdown
-                                        onSelect={onSelect} // Function will trigger on select event
-                                        onRemove={onRemove} // Function will trigger on remove event
+                                        onSelect={onSelectTopics} // Function will trigger on select event
+                                        onRemove={onSelectClass} // Function will trigger on remove event
                                         displayValue="name" // Property name to display in the dropdown options
                                     />
                                     {/* <select class="select" multiple data-mdb-filter="true">
@@ -221,27 +286,6 @@ function CreateChapter() {
                                 </InputGroup>
                             </Form.Group>
 
-                            <Form.Group className="mb-2 col-sm-12 col-md-12">
-                                <Form.Label className="label_grey">Select Main Topics</Form.Label>
-                                <InputGroup className="mb-2">
-                                    <Multiselect
-                                        className='topicSelectMulti'
-                                        options={state.myTopicsList} // Options to display in the dropdown
-                                        selectedValues={state.selectedValue} // Preselected value to persist in dropdown
-                                        onSelect={onSelect} // Function will trigger on select event
-                                        onRemove={onRemove} // Function will trigger on remove event
-                                        displayValue="name" // Property name to display in the dropdown options
-                                    />
-                                    {/* <select class="select" multiple data-mdb-filter="true">
-                                        {
-                                            state.myTopicsList.map(item =>
-                                            (
-                                                <option value={item.topic_name}>{item.topic_name}</option>
-                                            ))
-                                        }
-                                    </select> */}
-                                </InputGroup>
-                            </Form.Group>
 
                             <Form.Group className="mb-2 col-sm-12 col-md-12">
                                 <Form.Label className="label_grey">Chapter Name</Form.Label>
@@ -251,8 +295,8 @@ function CreateChapter() {
                                         aria-label="name"
                                         aria-describedby="basic-addon1"
                                         type="text"
-                                        name="chapter_name"
-                                        value={state.chapter_name}
+                                        name="chaptername"
+                                        value={state.chaptername}
                                         onChange={onchange}
                                     />
                                 </InputGroup>
@@ -267,8 +311,8 @@ function CreateChapter() {
                                         aria-label="name"
                                         aria-describedby="basic-addon1"
                                         type="text"
-                                        name="chapter_description"
-                                        value={state.chapter_description}
+                                        name="description"
+                                        value={state.description}
                                         onChange={onchange}
                                     />
                                 </InputGroup>

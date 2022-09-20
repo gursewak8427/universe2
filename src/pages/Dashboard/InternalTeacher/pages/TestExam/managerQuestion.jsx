@@ -54,6 +54,30 @@ function QuestionsManager() {
         updatedId: null,
     })
     const [isWait, setWait] = useState(true);
+
+    const [imagesUrl, setImagesUrl] = useState({
+        QuestionImage: "",
+        SolutionImage: "",
+        ClueImage: "",
+        Option1Image: "",
+        Option2Image: "",
+        Option3Image: "",
+        Option4Image: "",
+    })
+
+    useEffect(() => {
+        setImagesUrl({
+            ...imagesUrl,
+            QuestionImage: "",
+            SolutionImage: "",
+            ClueImage: "",
+            Option1Image: "",
+            Option2Image: "",
+            Option3Image: "",
+            Option4Image: "",
+        })
+    }, [isAddQuestion])
+
     useEffect(() => {
         const config = {
             headers: {
@@ -96,7 +120,7 @@ function QuestionsManager() {
             }
         },
         {
-            title: "Que", field: "questions", width: "8%",
+            title: "Ques", field: "questions", width: "8%",
             cellStyle: {
                 cellWidth: '5%'
             }
@@ -239,8 +263,26 @@ function QuestionsManager() {
         })
     }
 
+    const removeImage = ImageName => {
+        setImagesUrl({
+            ...imagesUrl,
+            [ImageName]: "",
+        })
+        setState({
+            ...state,
+            [ImageName]: ""
+        })
+        dispatch(setSuccessMsg("Image Removed"))
+    }
+
     const handleFile = e => {
+        console.log("image target name : ")
         console.log(e.target.name)
+        var myUrl = URL.createObjectURL(e.target.files[0]);
+        setImagesUrl({
+            ...imagesUrl,
+            [e.target.name]: myUrl,
+        })
         setState({
             ...state,
             [e.target.name]: e.target.files[0],
@@ -630,6 +672,7 @@ function QuestionsManager() {
                                                                                     <div className="sub_question_dtl">
                                                                                         <div className='qq'>
                                                                                             <span className='q_row'>
+                                                                                                <span className='text-danger'>Question: </span>
                                                                                                 <span className='subQuestionId'>ID: {subQuestion.id} (Single Correct Answer)</span>
                                                                                                 {subQuestion.Question}
                                                                                             </span>
@@ -678,6 +721,7 @@ function QuestionsManager() {
                                                                                         <div className="sub_question_dtl">
                                                                                             <div className='qq'>
                                                                                                 <span className='q_row'>
+                                                                                                    <span className='text-danger'>Question: </span>
                                                                                                     <span className='subQuestionId'>ID: {subQuestion.id} (Multiple Correct Answer)</span>
                                                                                                     {subQuestion.Question}
                                                                                                 </span>
@@ -726,9 +770,9 @@ function QuestionsManager() {
                                                                                             <div className="sub_question_dtl">
                                                                                                 <div className='qq'>
                                                                                                     <span className='q_row'>
+                                                                                                        <span className='text-danger'>Question: </span>
                                                                                                         <span className='subQuestionId'>ID: {subQuestion.id} (Numeric Type Answer)</span>
                                                                                                         {subQuestion.Question}
-
                                                                                                     </span>
                                                                                                     {/* manage question */}
                                                                                                     <div>
@@ -790,10 +834,26 @@ function QuestionsManager() {
                                                     <textarea name="Question" onChange={onchange} class="form-control" placeholder="Type Question Here..." id="floatingTextarea" style={{ "height": "100px" }}>{state.Question}</textarea>
                                                     <label for="floatingTextarea">Type Question Here..</label>
                                                 </div>
-                                                <div className="my-3 imageUploadIcon">
-                                                    <label for="QuestionImage" class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
+                                                <div className="my-3 imageUploadIcon d-flex align-items-center">
+                                                    <label for="QuestionImage" class="form-label mr-2"><i class="fa fa-upload" aria-hidden="true"></i> <span>
+                                                        {
+                                                            imagesUrl.QuestionImage != "" ?
+                                                                <>Change Image</>
+                                                                :
+                                                                <>Image Upload</>
+                                                        }
+
+                                                    </span> </label>
                                                     <input class="form-control" type="file" name='QuestionImage' id='QuestionImage' onChange={handleFile} />
-                                                    {/* <img src="" alt="" width={"20px"} height={"20px"}/> */}
+                                                    {
+                                                        imagesUrl.QuestionImage != "" ?
+                                                            <>
+                                                                <img src={imagesUrl.QuestionImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} />
+                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("QuestionImage")}>Remove</div>
+                                                            </>
+                                                            :
+                                                            <></>
+                                                    }
                                                 </div>
 
                                                 <h2 className='mb-3 mt-3'>Solution </h2>
@@ -803,8 +863,24 @@ function QuestionsManager() {
                                                     <label for="floatingTextarea">Type Solution Here...</label>
                                                 </div>
                                                 <div className="my-3 imageUploadIcon">
-                                                    <label for="SolutionImage" class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
+                                                    <label for="SolutionImage" class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>
+                                                        {
+                                                            imagesUrl.SolutionImage != "" ?
+                                                                <>Change Image</>
+                                                                :
+                                                                <>Image Upload</>
+                                                        }
+                                                    </span> </label>
                                                     <input class="form-control" type="file" name='SolutionImage' id='SolutionImage' onChange={handleFile} />
+                                                    {
+                                                        imagesUrl.SolutionImage != "" ?
+                                                            <>
+                                                                <img src={imagesUrl.SolutionImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} />
+                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("SolutionImage")}>Remove</div>
+                                                            </>
+                                                            :
+                                                            <></>
+                                                    }
                                                 </div>
 
                                                 <h2 className='mb-3 mt-3'>Clue </h2>
@@ -814,8 +890,24 @@ function QuestionsManager() {
                                                     <label for="floatingTextarea">Type Clue Here...</label>
                                                 </div>
                                                 <div className="my-3 imageUploadIcon">
-                                                    <label for="ClueImage" class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
+                                                    <label for="ClueImage" class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>
+                                                        {
+                                                            imagesUrl.ClueImage != "" ?
+                                                                <>Change Image</>
+                                                                :
+                                                                <>Image Upload</>
+                                                        }
+                                                    </span> </label>
                                                     <input class="form-control" type="file" name='ClueImage' id='ClueImage' onChange={handleFile} />
+                                                    {
+                                                        imagesUrl.ClueImage != "" ?
+                                                            <>
+                                                                <img src={imagesUrl.ClueImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} />
+                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("ClueImage")}>Remove</div>
+                                                            </>
+                                                            :
+                                                            <></>
+                                                    }
                                                 </div>
 
                                                 <hr />
@@ -866,6 +958,18 @@ function QuestionsManager() {
                                                                         if (index == 2) return state.Option3;
                                                                         if (index == 3) return state.Option4;
                                                                     }
+                                                                    const getImageUrl = () => {
+                                                                        if (index == 0) return imagesUrl.Option1Image;
+                                                                        if (index == 1) return imagesUrl.Option2Image;
+                                                                        if (index == 2) return imagesUrl.Option3Image;
+                                                                        if (index == 3) return imagesUrl.Option4Image;
+                                                                    }
+                                                                    const getOptionName = () => {
+                                                                        if (index == 0) return "Option1Image";
+                                                                        if (index == 1) return "Option2Image";
+                                                                        if (index == 2) return "Option3Image";
+                                                                        if (index == 3) return "Option4Image";
+                                                                    }
                                                                     return (
                                                                         <>
                                                                             <div class="form mb-3">
@@ -908,8 +1012,24 @@ function QuestionsManager() {
                                                                                     </div>
                                                                                 </div>
                                                                                 <div className="my-3 imageUploadIcon">
-                                                                                    <label htmlFor={`Option` + (index + 1) + `Image`} class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
+                                                                                    <label htmlFor={`Option` + (index + 1) + `Image`} class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>
+                                                                                        {
+                                                                                            getImageUrl() != "" ?
+                                                                                                <>Change Image</>
+                                                                                                :
+                                                                                                <>Image Upload</>
+                                                                                        }
+                                                                                    </span> </label>
                                                                                     <input class="form-control" type="file" name={`Option` + (index + 1) + `Image`} id={`Option` + (index + 1) + `Image`} onChange={handleFile} />
+                                                                                    {
+                                                                                        getImageUrl() != "" ?
+                                                                                            <>
+                                                                                                <img src={getImageUrl()} alt="" height={"35px"} style={{ marginLeft: "5px" }} />
+                                                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage(getOptionName())}>Remove</div>
+                                                                                            </>
+                                                                                            :
+                                                                                            <></>
+                                                                                    }
                                                                                 </div>
 
                                                                             </div>

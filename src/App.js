@@ -102,26 +102,26 @@ function App() {
       {
         _id: "1",
         subject: "maths",
-        totalTest: 4,
-        totalAccessed: 3,
+        totalTest: 0,
+        totalAccessed: 0,
       },
       {
         _id: "2",
         subject: "science",
-        totalTest: 6,
-        totalAccessed: 2,
+        totalTest: 0,
+        totalAccessed: 0,
       },
       {
         _id: "3",
         subject: "hindi",
-        totalTest: 10,
-        totalAccessed: 7,
+        totalTest: 0,
+        totalAccessed: 0,
       },
       {
         _id: "4",
         subject: "c++",
-        totalTest: 15,
-        totalAccessed: 4,
+        totalTest: 0,
+        totalAccessed: 0,
       },
     ]
     dispatch(setTotalTest(totalTestData))
@@ -129,8 +129,8 @@ function App() {
 
   const getWallet = () => {
     const walletData = {
-      score: 550,
-      points: 305,
+      score: 0,
+      points: 0,
     }
     dispatch(setWalletData(walletData))
   }

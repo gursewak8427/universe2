@@ -21,6 +21,11 @@ function Preview() {
     const [state, setState] = useState({
         questionDetail: null,
         singleAnswer: null,
+        Op1: false,
+        Op2: false,
+        Op3: false,
+        Op4: false,
+        numericAnswer: null
     })
 
     useEffect(() => {
@@ -50,6 +55,33 @@ function Preview() {
         })
     }
 
+    const handleMultiAnswer = (e) => {
+        if (e.target.name == "Op1") {
+            setState({
+                ...state,
+                [e.target.name]: !state.Op1
+            })
+        }
+        if (e.target.name == "Op2") {
+            setState({
+                ...state,
+                [e.target.name]: !state.Op2
+            })
+        }
+        if (e.target.name == "Op3") {
+            setState({
+                ...state,
+                [e.target.name]: !state.Op3
+            })
+        }
+        if (e.target.name == "Op4") {
+            setState({
+                ...state,
+                [e.target.name]: !state.Op4
+            })
+        }
+    }
+
     const submitAnswer = () => {
         var AnswerArr = state.questionDetail.Answer.split(",")
         if (state.questionDetail.QuestionType == "0") {
@@ -57,6 +89,43 @@ function Preview() {
                 alert("Your answer is Right")
             } else {
                 alert("Your answer is Wrong")
+            }
+        }
+        if (state.questionDetail.QuestionType == "1") {
+            console.log(state)
+            console.log(AnswerArr)
+            var overallResult = false;
+            if (AnswerArr[0] == state.Op1.toString()) {
+                if (AnswerArr[1] == state.Op2.toString()) {
+                    if (AnswerArr[2] == state.Op3.toString()) {
+                        if (AnswerArr[3] == state.Op4.toString()) {
+                            overallResult = true;
+                        }
+                    }
+                }
+            }
+            if (overallResult == true) {
+                alert("Your answer is Right")
+            } else {
+                alert("Your answer is Wrong")
+            }
+        }
+        if (state.questionDetail.QuestionType == "2") {
+            console.log(state)
+            if (state.numericAnswer == null) {
+                alert("Please enter the answer")
+                return;
+            }
+            var rangeMax = parseFloat(state.questionDetail.Rangemax);
+            var rangeMin = parseFloat(state.questionDetail.Rangemin);
+            var correctAnswer = parseFloat(state.questionDetail.CorrectAnswer);
+
+            if (state.numericAnswer == correctAnswer) {
+                alert("Your answer is absolute correct")
+            } else if (state.numericAnswer <= rangeMax && state.numericAnswer >= rangeMin) {
+                alert("Your answer is correct")
+            } else {
+                alert("Your answer is wrong")
             }
         }
     }
@@ -71,13 +140,13 @@ function Preview() {
                             !state.questionDetail ? <>Loading...</> :
                                 state.questionDetail.QuestionType == 0 ?
                                     <div>
-                                        <div className="question">{state.questionDetail.Question}</div>
+                                        <div className="question">Question: {state.questionDetail.Question}</div>
                                         <div className="m-2">
-                                            <img src={state.questionDetail.QuestionImage} alt="" width={"100px"} />
+                                            <a href={state.questionDetail.QuestionImage} target="blank"><img src={state.questionDetail.QuestionImage} alt="" width={"100px"} /></a>
                                         </div>
                                         <div className="m-2">
                                             <hr />
-                                            <h2>Please Select One Option</h2>
+                                            <i><h5>Please Select One Option</h5></i>
                                         </div>
                                         <div className="options">
                                             <li>
@@ -86,7 +155,7 @@ function Preview() {
                                                 {
                                                     state.questionDetail.Option1Image ?
                                                         <>
-                                                            <img src={state.questionDetail.Option1Image} alt="" width={"50px"} />
+                                                            <a href={state.questionDetail.Option1Image} target="blank"><img src={state.questionDetail.Option1Image} alt="" width={"50px"} /></a>
                                                         </> : <></>
                                                 }
                                             </li>
@@ -98,7 +167,7 @@ function Preview() {
                                                         {
                                                             state.questionDetail.Option2Image ?
                                                                 <>
-                                                                    <img src={state.questionDetail.Option2Image} alt="" width={"50px"} />
+                                                                    <a href={state.questionDetail.Option2Image} target="blank"><img src={state.questionDetail.Option2Image} alt="" width={"50px"} /></a>
                                                                 </> : <></>
                                                         }
                                                     </li> : <></>
@@ -111,7 +180,7 @@ function Preview() {
                                                         {
                                                             state.questionDetail.Option3Image ?
                                                                 <>
-                                                                    <img src={state.questionDetail.Option3Image} alt="" width={"50px"} />
+                                                                    <a href={state.questionDetail.Option3Image} target="blank"><img src={state.questionDetail.Option3Image} alt="" width={"50px"} /></a>
                                                                 </> : <></>
                                                         }
                                                     </li> : <></>
@@ -124,7 +193,7 @@ function Preview() {
                                                         {
                                                             state.questionDetail.Option4Image ?
                                                                 <>
-                                                                    <img src={state.questionDetail.Option4Image} alt="" width={"50px"} />
+                                                                    <a href={state.questionDetail.Option4Image} target="blank"><img src={state.questionDetail.Option4Image} alt="" width={"50px"} /></a>
                                                                 </> : <></>
                                                         }
                                                     </li> : <></>
@@ -136,31 +205,93 @@ function Preview() {
                                     </div> :
                                     state.questionDetail.QuestionType == 1 ?
                                         <div>
-                                            <div className="question">This is the question</div>
+                                            <div className="question">Question: {state.questionDetail.Question}</div>
+                                            <div className="m-2">
+                                                {
+                                                    state.questionDetail.QuestionImage == null ? <></> :
+                                                        <a href={state.questionDetail.QuestionImage} target="blank"><img src={state.questionDetail.QuestionImage} alt="" width={"100px"} /></a>
+                                                }
+                                            </div>
+                                            <div className="m-2">
+                                                <hr />
+                                                <i><h5>Please Select One Option</h5></i>
+                                            </div>
                                             <div className="options">
                                                 <li>
-                                                    <input type="checkbox" name='multiCheckAnswer' />
-                                                    <label htmlFor="">op1</label>
+                                                    <input type="checkbox" name='Op1' id='op1' onChange={handleMultiAnswer} value="0" />
+                                                    <label htmlFor="op1">{state.questionDetail.Option1}</label>
+                                                    {
+                                                        state.questionDetail.Option1Image ?
+                                                            <>
+                                                                <a href={state.questionDetail.Option1Image} target="blank"><img src={state.questionDetail.Option1Image} alt="" width={"50px"} /></a>
+                                                            </> : <></>
+                                                    }
                                                 </li>
-                                                <li>
-                                                    <input type="checkbox" name='multiCheckAnswer' />
-                                                    <label htmlFor="">op1</label>
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" name='multiCheckAnswer' />
-                                                    <label htmlFor="">op1</label>
-                                                </li>
-                                                <li>
-                                                    <input type="checkbox" name='multiCheckAnswer' />
-                                                    <label htmlFor="">op1</label>
-                                                </li>
+                                                {
+                                                    state.questionDetail.Option2 != "" ?
+                                                        <li>
+                                                            <input type="checkbox" name='Op2' id='op2' onChange={handleMultiAnswer} value="1" />
+                                                            <label htmlFor="op2">{state.questionDetail.Option2}</label>
+                                                            {
+                                                                state.questionDetail.Option2Image ?
+                                                                    <>
+                                                                        <a href={state.questionDetail.Option2Image} target="blank"><img src={state.questionDetail.Option2Image} alt="" width={"50px"} /></a>
+                                                                    </> : <></>
+                                                            }
+                                                        </li> : <></>
+                                                }
+                                                {
+                                                    state.questionDetail.Option3 != "" ?
+                                                        <li>
+                                                            <input type="checkbox" name='Op3' id='op3' onChange={handleMultiAnswer} value="2" />
+                                                            <label htmlFor="op3">{state.questionDetail.Option3}</label>
+                                                            {
+                                                                state.questionDetail.Option3Image ?
+                                                                    <>
+                                                                        <a href={state.questionDetail.Option3Image} target="blank"><img src={state.questionDetail.Option3Image} alt="" width={"50px"} /></a>
+                                                                    </> : <></>
+                                                            }
+                                                        </li> : <></>
+                                                }
+                                                {
+                                                    state.questionDetail.Option4 != "" ?
+                                                        <li>
+                                                            <input type="checkbox" name='Op4' id='op4' onChange={handleMultiAnswer} value="3" />
+                                                            <label htmlFor="op4">{state.questionDetail.Option4}</label>
+                                                            {
+                                                                state.questionDetail.Option4Image ?
+                                                                    <>
+                                                                        <a href={state.questionDetail.Option4Image} target="blank"><img src={state.questionDetail.Option4Image} alt="" width={"50px"} /></a>
+                                                                    </> : <></>
+                                                            }
+                                                        </li> : <></>
+                                                }
+
+
                                             </div>
                                             <button className='btn btn-success m-2' onClick={submitAnswer}>Submit Answer</button>
                                         </div> :
                                         <div>
-                                            <div className="question">This is the question</div>
+                                            <div className="question">Question: {state.questionDetail.Question}</div>
+                                            <div className="m-2">
+                                                {
+                                                    state.questionDetail.QuestionImage == null ? <></> :
+                                                        <a href={state.questionDetail.QuestionImage} target="blank"><img src={state.questionDetail.QuestionImage} alt="" width={"100px"} /></a>
+                                                }
+                                            </div>
+                                            <div className="m-2">
+                                                <hr />
+                                                <i><h5>Please Enter the correct Answer below</h5></i>
+                                            </div>
                                             <div className="answer m-2">
-                                                <input type="text" placeholder='Type Answer Here...' className='form-control' />
+                                                <input type="number" placeholder='Type Answer Here...' className='form-control' name='numericAnswer' onChange={
+                                                    (e) => {
+                                                        setState({
+                                                            ...state,
+                                                            numericAnswer: e.target.value
+                                                        })
+                                                    }
+                                                } />
                                             </div>
                                             <button className='btn btn-success m-2' onClick={submitAnswer}>Submit Answer</button>
                                         </div>

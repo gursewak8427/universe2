@@ -102,7 +102,7 @@ function Sidebar() {
 
   useEffect(() => {
     setActive(location.pathname.substring(1));
-    console.log(location.pathname.substring(1))
+    // console.log(location.pathname.substring(1))
   }, [active, location]);
 
   let sideBarMenus = [
@@ -249,9 +249,6 @@ function Sidebar() {
           {sideBarMenus &&
             sideBarMenus.map((menu, index) => (
               <>
-                {
-                  console.log([menu.url, active])
-                }
                 <Link
                   key={index}
                   className={menu.url === active ? "active" : menu.title === "Logout" ? "loginBtnSidebar" : ""}

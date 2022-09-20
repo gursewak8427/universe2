@@ -48,7 +48,9 @@ img[alt="delete_icon"] {
     background: rgba(199, 197, 197, 0.418);
 }
 
-
+.removeImage{
+    cursor: pointer;
+}
 #testExam .right {
     width: 60%;
     height: 100%;
@@ -285,18 +287,15 @@ img[alt="delete_icon"] {
 }
 
 #previewPage .question {
-    margin: 10px;
     font-weight: bolder;
-    background: rgb(3, 170, 156);
-    padding: 20px 50px;
-    color: white;
+    padding: 10px;
 }
 
 #previewPage .options {
 }
 
 #previewPage .options li {
-    background: grey;
+    /* background: grey; */
     list-style-type: none;
     margin: 10px;
     padding: 10px;
@@ -309,7 +308,6 @@ img[alt="delete_icon"] {
     margin-bottom: 5px;
     padding-left: 10px;
     cursor: pointer;
-    color: white;
     font-weight: bolder;
 }
 #previewPage .options li img {

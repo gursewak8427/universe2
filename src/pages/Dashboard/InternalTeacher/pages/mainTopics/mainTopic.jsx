@@ -18,32 +18,75 @@ import { useSelector } from "react-redux";
 function MainTopic() {
     const classes = useStyles();
     const history = useHistory();
-    const { topicsList, chaptersList, classesList, subjects_list } = useSelector((state) => state.main)
+    const { admin } = useSelector((state) => state.auth)
+    const [data, setData] = useState([]);
+
+    useEffect(() => {
+        // STEP-1: get topics data from the API here and store to data variable..
+        const config = {
+            headers: {
+                'Authorization': `Bearer ${admin.token}`
+            }
+        }
+        axios.get(`${process.env.REACT_APP_API_URI}exams/maintopic/`, config).then(response => {
+            const responseData = response.data;
+            console.log("responseData");
+            console.log(responseData);
+            setData(responseData)
+        }).catch(err => console.log(err))
+    }, [])
 
     const columns = [
         { title: "Main Topic ID", field: "tableData.id", render: (item) => getIndex(item) },
-        { title: "Main Topic", field: "main_topic   " },
-        { title: "Topics", field: "topics" },
-        { title: "Created", field: "created" },
-        { title: "Updated", field: "updated" },
+        { title: "Main Topic", field: "topicname" },
+        { title: "Description", field: "discription" },
+        { title: "Classes", field: "topics", render: (item) => getClassList(item) },
+        { title: "Subjects", field: "topics", render: (item) => getSubjectList(item) },
+        { title: "Topics", field: "topics", render: (item) => getTopicList(item) },
+        { title: "Created/Updated", field: "created_at", render: (item) => getCreatedUpdated(item) },
     ];
 
+    const getCreatedUpdated = (item) => {
+        const createdAt = new Date(item.created_at);
+        const udpatedAt = new Date(item.updated_at);
+
+        return (
+            <>
+                <span className="text-secondary">{`(${createdAt.toLocaleString()})`}</span>
+                <span className="text-primary">{`(${udpatedAt.toLocaleString()})`}</span>
+            </>
+        )
+    }
+
+
+    const getClassList = (item) => {
+        return <ul>
+            {item.classes.map((classData) => <li>{classData.class.class_name}</li>)}
+        </ul>
+    }
+    const getSubjectList = (item) => {
+        return <ul>
+            {item.subjects.map((classData) => <li>{classData.subject.subject}</li>)}
+        </ul>
+    }
+    const getTopicList = (item) => {
+        return <ul>
+            {item.topics.map((classData) => <li>{classData.topic.Topicname}</li>)}
+        </ul>
+    }
+
     const getIndex = data => {
-        var index = data.tableData.id + 1;
-        if (index < 10) {
-            return "#0" + index;
-        } else {
-            return "#" + index;
-        }
+        var index = data.id
+        return index;
     }
 
 
     const actions = [
-        {
-            icon: EditIcon,
-            tooltip: "Update",
-            onClick: (event, rowData) => null,
-        },
+        // {
+        //     icon: EditIcon,
+        //     tooltip: "Update",
+        //     onClick: (event, rowData) => null,
+        // },
         {
             icon: DeleteIcon,
             tooltip: "Delete Driver",
@@ -58,7 +101,7 @@ function MainTopic() {
 
             <main className={classes.content}>
                 <div className={classes.toolbar} />
-                <Heading headingTitle="Main Topics Management" addMainTopicBtn={true}/>
+                <Heading headingTitle="Main Topics Management" addMainTopicBtn={true} />
                 <div className="mt-2">
                     <div className="mt-2 card_box">
                         <MaterialTable
@@ -72,7 +115,7 @@ function MainTopic() {
                                     actions: 'ACTION'
                                 },
                             }}
-                            data={chaptersList}
+                            data={data}
                             columns={columns && columns}
                             title=""
                             onRowClick={(event, rowData) => console.log(rowData)}

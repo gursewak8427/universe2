@@ -47,7 +47,9 @@ function TopicManage() {
         { title: "Name", field: "Topicname", render: (item) => getName(item) },
         { title: "Class-Subject", field: "subject", render: (item) => <>{item.class_name.class_name}({item.subject.subject})</> },
         { title: "Timing", field: "timing", render: (item) => <>{item.timing} min</> },
+        { title: "Clue", field: "status", render: (item) => getClueStatus(item) },
         { title: "Status", field: "status", render: (item) => getStatus(item) },
+        { title: "Calculator", field: "status", render: (item) => getCalculatorStatus(item) },
         { title: "Created/Updated", field: "updated", render: (item) => getCreatedUpdated(item) },
     ];
 
@@ -75,6 +77,93 @@ function TopicManage() {
             </div> */}
         </>
     }
+
+    const getClueStatus = (item) => {
+        var index = item.tableData.id;
+        function onchange() {
+            // set status for topics
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${admin.token}`
+                }
+            }
+            const updatedData = {
+                "Topicname": item.Topicname,
+                "description": item.description,
+                "numberofquestions": item.numberofquestions,
+                "timing": item.timing,
+                "calculatorStatus": item.calculatorStatus,
+                "clueStatus": !item.clueStatus,
+                "Teacher": item.Teacher,
+                "status": item.status,
+                "subject": item.subject.id,
+                "class_name": item.class_name.id,
+            }
+            axios.put(`${process.env.REACT_APP_API_URI}exams/topic/${item.id}/`, updatedData, config).then(response => {
+                let oldData = topicsList
+                console.log(response.data)
+                oldData[index] = response.data;
+                dispatch(setTopics(oldData))
+                dispatch(setSuccessMsg("Clue Status Changed"))
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        return (
+            <>
+                {
+                    item.clueStatus ?
+                        <Switch onClick={onchange} name="calculator" checked /> :
+                        <Switch onClick={onchange} name="calculator" />
+
+                }
+            </>
+        )
+    }
+
+
+    const getCalculatorStatus = (item) => {
+        var index = item.tableData.id;
+        function onchange() {
+            // set status for topics
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${admin.token}`
+                }
+            }
+            const updatedData = {
+                "Topicname": item.Topicname,
+                "description": item.description,
+                "numberofquestions": item.numberofquestions,
+                "timing": item.timing,
+                "calculatorStatus": !item.calculatorStatus,
+                "Teacher": item.Teacher,
+                "status": item.status,
+                "subject": item.subject.id,
+                "class_name": item.class_name.id,
+            }
+            axios.put(`${process.env.REACT_APP_API_URI}exams/topic/${item.id}/`, updatedData, config).then(response => {
+                let oldData = topicsList
+                console.log(response.data)
+                oldData[index] = response.data;
+                dispatch(setTopics(oldData))
+                dispatch(setSuccessMsg("Calculator Status Changed"))
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        return (
+            <>
+                {
+                    item.calculatorStatus ?
+                        <Switch onClick={onchange} name="calculator" checked /> :
+                        <Switch onClick={onchange} name="calculator" />
+
+                }
+            </>
+        )
+    }
+
 
     const getStatus = (item) => {
         var index = item.tableData.id;
@@ -169,7 +258,7 @@ function TopicManage() {
     }
 
     const updadteTopicNow = (rowData) => {
-        history.push('/in/update_topic/'+rowData.id);
+        history.push('/in/update_topic/' + rowData.id);
     }
 
     return (

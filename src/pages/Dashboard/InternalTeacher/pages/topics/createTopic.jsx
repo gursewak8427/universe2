@@ -287,8 +287,8 @@ function CreateTopic() {
                                 <Form.Label className="label_grey">Calculator Status</Form.Label>
                                 <InputGroup className="mb-2">
                                     {
-                                        state.status == true ?
-                                            <Switch onClick={onchange} name="calculator" /> :
+                                        state.calculatorStatus == true ?
+                                            <Switch onClick={onchange} name="calculator" checked /> :
                                             <Switch onClick={onchange} name="calculator" />
 
                                     }
@@ -299,8 +299,8 @@ function CreateTopic() {
                                 <Form.Label className="label_grey">Clue Status</Form.Label>
                                 <InputGroup className="mb-2">
                                     {
-                                        state.status == true ?
-                                            <Switch onClick={onchange} name="ClueStatus" /> :
+                                        state.clueStatus == true ?
+                                            <Switch onClick={onchange} name="ClueStatus" checked /> :
                                             <Switch onClick={onchange} name="ClueStatus" />
 
                                     }

@@ -9,8 +9,10 @@ import { useStyles } from "../../../../../utils/useStyles";
 import Heading from "../../components/Heading/Heading";
 import Multiselect from 'multiselect-react-dropdown';
 import Select from 'react-select';
+import { NumericKeyboard } from 'react-numeric-keyboard';
 
 function Preview() {
+    const [isOpenKeyboard, setIsOpenKeyboard] = useState(true);
     const { admin } = useSelector((state) => state.auth);
     const { id } = useParams();
     const classes = useStyles();
@@ -54,7 +56,12 @@ function Preview() {
             singleAnswer: e.target.value
         })
     }
-
+    const onChangeKeypad = ({ value, name }) => {
+        setState({
+            ...state,
+            numericAnswer: value
+        })
+    };
     const handleMultiAnswer = (e) => {
         if (e.target.name == "Op1") {
             setState({
@@ -140,13 +147,16 @@ function Preview() {
                             !state.questionDetail ? <>Loading...</> :
                                 state.questionDetail.QuestionType == 0 ?
                                     <div>
-                                        <div className="question">Question: {state.questionDetail.Question}</div>
+                                        <div className="question"><span className="text-primary">Question:</span> <br /> {state.questionDetail.Question}</div>
                                         <div className="m-2">
-                                            <a href={state.questionDetail.QuestionImage} target="blank"><img src={state.questionDetail.QuestionImage} alt="" width={"100px"} /></a>
+                                            {
+                                                state.questionDetail.QuestionImage == null ? <></> :
+                                                    <a href={state.questionDetail.QuestionImage} target="blank"><img src={state.questionDetail.QuestionImage} alt="" width={"100px"} /></a>
+                                            }
                                         </div>
                                         <div className="m-2">
                                             <hr />
-                                            <i><h5>Please Select One Option</h5></i>
+                                            <b className='text-primary'>Single Correct Answer</b>
                                         </div>
                                         <div className="options">
                                             <li>
@@ -205,7 +215,7 @@ function Preview() {
                                     </div> :
                                     state.questionDetail.QuestionType == 1 ?
                                         <div>
-                                            <div className="question">Question: {state.questionDetail.Question}</div>
+                                            <div className="question"> <span className="text-primary">Question:</span> <br /> {state.questionDetail.Question}</div>
                                             <div className="m-2">
                                                 {
                                                     state.questionDetail.QuestionImage == null ? <></> :
@@ -214,7 +224,7 @@ function Preview() {
                                             </div>
                                             <div className="m-2">
                                                 <hr />
-                                                <i><h5>Please Select One Option</h5></i>
+                                                <b className='text-primary'>Multicorrect Answer</b>
                                             </div>
                                             <div className="options">
                                                 <li>
@@ -272,7 +282,7 @@ function Preview() {
                                             <button className='btn btn-success m-2' onClick={submitAnswer}>Submit Answer</button>
                                         </div> :
                                         <div>
-                                            <div className="question">Question: {state.questionDetail.Question}</div>
+                                            <div className="question"> <span className="text-primary">Question:</span> <br /> {state.questionDetail.Question}</div>
                                             <div className="m-2">
                                                 {
                                                     state.questionDetail.QuestionImage == null ? <></> :
@@ -281,7 +291,7 @@ function Preview() {
                                             </div>
                                             <div className="m-2">
                                                 <hr />
-                                                <i><h5>Please Enter the correct Answer below</h5></i>
+                                                <b className='text-primary'>Numeric Answer Type</b>
                                             </div>
                                             <div className="answer m-2">
                                                 <input type="number" placeholder='Type Answer Here...' className='form-control' name='numericAnswer' onChange={
@@ -291,8 +301,12 @@ function Preview() {
                                                             numericAnswer: e.target.value
                                                         })
                                                     }
-                                                } />
+                                                }
+                                                value={state.numericAnswer}
+                                                readOnly
+                                                />
                                             </div>
+                                            <NumericKeyboard isOpen={isOpenKeyboard} onChange={onChangeKeypad} />
                                             <button className='btn btn-success m-2' onClick={submitAnswer}>Submit Answer</button>
                                         </div>
                         }

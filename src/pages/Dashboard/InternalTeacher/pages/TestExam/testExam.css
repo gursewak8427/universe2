@@ -225,19 +225,19 @@ img[alt="delete_icon"] {
     color: white;
     width: 40px;
     height: 40px;
-    border-radius: 50%;
+    border-radius: 50% 0 0 50%;
     display: flex;
     flex-direction: row;
     align-items: center;
     justify-content: center;
     background: black;
-    margin-right: 5px;
+    /* margin-right: 5px; */
 }
 
 .imageUploadIcon label span {
     background: grey;
     color: white;
-    border-radius: 20px;
+    border-radius: 0 20px 20px 0;
     padding: 10px;
     cursor: pointer;
 }

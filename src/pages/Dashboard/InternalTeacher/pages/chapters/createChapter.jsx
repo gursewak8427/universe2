@@ -120,12 +120,12 @@ function CreateChapter() {
                 'Authorization': `Bearer ${admin.token}`
             }
         }
-        axios.get(`${process.env.REACT_APP_API_URI}exams/topic/`, config).then(response => {
+        axios.get(`${process.env.REACT_APP_API_URI}exams/maintopic/`, config).then(response => {
             const subjectsData = response.data;
 
             subjectsData.map((subject, index) => {
                 mytopics.push({
-                    name: subject.Topicname,
+                    name: subject.topicname,
                     id: subject.id
                 })
                 if (index + 1 == subjectsData.length) {
@@ -133,7 +133,6 @@ function CreateChapter() {
                         ...state,
                         myTopicsList: mytopics,
                         subjects: dafasdf,
-
                     })
                 }
             })

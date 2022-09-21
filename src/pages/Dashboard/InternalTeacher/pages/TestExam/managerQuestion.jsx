@@ -19,6 +19,7 @@ function QuestionsManager() {
     const dispatch = useDispatch();
 
     const [isAddQuestion, setIsAddQuestion] = useState(false);
+    const [waitingQuestionDispay, setWaitingQuestionDispay] = useState(false);
 
     const [state, setState] = useState({
         topicDetails: {},
@@ -112,6 +113,7 @@ function QuestionsManager() {
 
 
     const columns = [
+        { title: "Chapter ID", field: "tableData.id", render: (item) => <>{item.tableData.id + 1}</> },
         {
             title: "Id",
             field: "id",
@@ -256,6 +258,7 @@ function QuestionsManager() {
 
     }
 
+
     const onchange = e => {
         setState({
             ...state,
@@ -373,10 +376,7 @@ function QuestionsManager() {
 
     const getAgainQuestion = () => {
         // get all subQuestions
-        setState({
-            ...state,
-            fetchingSubQuestionsProgress: true
-        })
+        setWaitingQuestionDispay(true)
 
         const config = {
             headers: {
@@ -387,14 +387,15 @@ function QuestionsManager() {
         // get sub questions
         axios.get(`${process.env.REACT_APP_API_URI}exams/subquestion/?question=${state.selectedQuestion.id}`, config).then(response => {
             const subQuestionsData = response.data;
-            console.log("subquestions")
+            console.log("subquestions get again data")
             console.log(subQuestionsData)
             var oldMainQuestions = state.topicMainQuestions;
 
             setState({
                 ...state,
                 subQuestionsList: subQuestionsData,
-                fetchingSubQuestionsProgress: false,
+                selectedQuestion: state.selectedQuestion,
+                // fetchingSubQuestionsProgress: false,
                 Question: "",
                 QuestionImage: "",
                 Solution: "",
@@ -423,6 +424,9 @@ function QuestionsManager() {
 
             })
             setIsAddQuestion(false)
+            setTimeout(() => {
+                setWaitingQuestionDispay(false)
+            }, 500);
         }).catch(err => {
             console.log(err)
         })
@@ -628,7 +632,7 @@ function QuestionsManager() {
                                             </div>
 
                                             {
-                                                state.fetchingSubQuestionsProgress ?
+                                                state.fetchingSubQuestionsProgress || waitingQuestionDispay ?
                                                     <>
                                                         <center style={{ "paddingTop": "50px" }}>
                                                             <div class="spinner-border"></div>
@@ -646,6 +650,8 @@ function QuestionsManager() {
                                                         }
                                                         {
                                                             state.subQuestionsList.map((subQuestion, index) => {
+                                                                console.log("#subQuestion")
+                                                                console.log(subQuestion)
                                                                 if (typeof subQuestion.Answer === "string") {
                                                                     subQuestion.Answer = subQuestion.Answer.split(",")
                                                                 }
@@ -672,7 +678,7 @@ function QuestionsManager() {
                                                                                     <div className="sub_question_dtl">
                                                                                         <div className='qq'>
                                                                                             <span className='q_row'>
-                                                                                                <span className='text-danger'>Question: </span>
+                                                                                                <small><span className='text-danger'>Question: </span></small>
                                                                                                 <span className='subQuestionId'>ID: {subQuestion.id} (Single Correct Answer)</span>
                                                                                                 {subQuestion.Question}
                                                                                             </span>
@@ -690,12 +696,17 @@ function QuestionsManager() {
                                                                                             </div>
                                                                                         </div>
                                                                                         <div className='qq mt-1 d-flex'>
-                                                                                            <p className='text-danger'>Solution : {subQuestion.Solution}</p>
+                                                                                            <div className="q_row">
+                                                                                                <span className='text-danger'>Solution : </span> <p> {subQuestion.Solution}</p>
+                                                                                            </div>
                                                                                         </div>
                                                                                         {
                                                                                             subQuestion.Clue == null ? <> </> :
                                                                                                 <div className='qq mt-1 d-flex'>
-                                                                                                    <p className='text-danger'>Clue : {subQuestion.Clue}</p>
+                                                                                                    <div className="q_row">
+                                                                                                        <span className='text-danger'>Clue : </span> <p> {subQuestion.Clue}</p>
+                                                                                                    </div>
+
                                                                                                 </div>
                                                                                         }
                                                                                         {/* options 4 */}
@@ -721,7 +732,7 @@ function QuestionsManager() {
                                                                                         <div className="sub_question_dtl">
                                                                                             <div className='qq'>
                                                                                                 <span className='q_row'>
-                                                                                                    <span className='text-danger'>Question: </span>
+                                                                                                    <small><span className='text-danger'>Question: </span></small>
                                                                                                     <span className='subQuestionId'>ID: {subQuestion.id} (Multiple Correct Answer)</span>
                                                                                                     {subQuestion.Question}
                                                                                                 </span>
@@ -739,12 +750,17 @@ function QuestionsManager() {
                                                                                                 </div>
                                                                                             </div>
                                                                                             <div className='qq mt-1 d-flex'>
-                                                                                                <p className='text-danger'>Solution : {subQuestion.Solution}</p>
+                                                                                                <div className="q_row">
+                                                                                                    <span className='text-danger'>Solution : </span> <p> {subQuestion.Solution}</p>
+                                                                                                </div>
                                                                                             </div>
                                                                                             {
                                                                                                 subQuestion.Clue == null ? <> </> :
                                                                                                     <div className='qq mt-1 d-flex'>
-                                                                                                        <p className='text-danger'>Clue : {subQuestion.Clue}</p>
+                                                                                                        <div className="q_row">
+                                                                                                            <span className='text-danger'>Clue : </span> <p> {subQuestion.Clue}</p>
+                                                                                                        </div>
+
                                                                                                     </div>
                                                                                             }
                                                                                             {/* options 4 */}
@@ -770,7 +786,7 @@ function QuestionsManager() {
                                                                                             <div className="sub_question_dtl">
                                                                                                 <div className='qq'>
                                                                                                     <span className='q_row'>
-                                                                                                        <span className='text-danger'>Question: </span>
+                                                                                                        <small><span className='text-danger'>Question: </span></small>
                                                                                                         <span className='subQuestionId'>ID: {subQuestion.id} (Numeric Type Answer)</span>
                                                                                                         {subQuestion.Question}
                                                                                                     </span>
@@ -788,12 +804,16 @@ function QuestionsManager() {
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 <div className='qq mt-1 d-flex'>
-                                                                                                    <p className='text-danger'>Solution : {subQuestion.Solution}</p>
+                                                                                                    <div className="q_row">
+                                                                                                        <span className='text-danger'>Solution : </span> <p> {subQuestion.Solution}</p>
+                                                                                                    </div>
                                                                                                 </div>
                                                                                                 {
                                                                                                     subQuestion.Clue == null ? <> </> :
                                                                                                         <div className='qq mt-1 d-flex'>
-                                                                                                            <p className='text-danger'>Clue : {subQuestion.Clue}</p>
+                                                                                                            <div className="q_row">
+                                                                                                                <span className='text-danger'>Clue : </span> <p> {subQuestion.Clue}</p>
+                                                                                                            </div>
                                                                                                         </div>
                                                                                                 }
                                                                                                 {/* options 4 */}

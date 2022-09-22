@@ -27,7 +27,7 @@ function Preview() {
         Op2: false,
         Op3: false,
         Op4: false,
-        numericAnswer: null
+        numericAnswer: ""
     })
 
     useEffect(() => {
@@ -59,7 +59,7 @@ function Preview() {
     const onChangeKeypad = ({ value, name }) => {
         setState({
             ...state,
-            numericAnswer: value
+            numericAnswer: state.numericAnswer + name
         })
     };
     const handleMultiAnswer = (e) => {
@@ -119,17 +119,13 @@ function Preview() {
         }
         if (state.questionDetail.QuestionType == "2") {
             console.log(state)
-            if (state.numericAnswer == null) {
-                alert("Please enter the answer")
-                return;
-            }
             var rangeMax = parseFloat(state.questionDetail.Rangemax);
             var rangeMin = parseFloat(state.questionDetail.Rangemin);
             var correctAnswer = parseFloat(state.questionDetail.CorrectAnswer);
 
-            if (state.numericAnswer == correctAnswer) {
+            if (parseFloat(state.numericAnswer) == correctAnswer) {
                 alert("Your answer is absolute correct")
-            } else if (state.numericAnswer <= rangeMax && state.numericAnswer >= rangeMin) {
+            } else if (parseFloat(state.numericAnswer) <= rangeMax && parseFloat(state.numericAnswer) >= rangeMin) {
                 alert("Your answer is correct")
             } else {
                 alert("Your answer is wrong")
@@ -302,11 +298,16 @@ function Preview() {
                                                         })
                                                     }
                                                 }
-                                                value={state.numericAnswer}
-                                                readOnly
+                                                    value={parseFloat(state.numericAnswer)}
+                                                    readOnly
                                                 />
                                             </div>
-                                            <NumericKeyboard isOpen={isOpenKeyboard} onChange={onChangeKeypad} />
+                                            <NumericKeyboard isOpen={isOpenKeyboard} onChange={onChangeKeypad} leftIcon={<div className='dotStyle' onClick={() => {
+                                                setState({
+                                                    ...state,
+                                                    numericAnswer: state.numericAnswer + "."
+                                                })
+                                            }}>.</div>} />
                                             <button className='btn btn-success m-2' onClick={submitAnswer}>Submit Answer</button>
                                         </div>
                         }

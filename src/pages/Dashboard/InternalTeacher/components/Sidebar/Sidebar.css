@@ -27,8 +27,8 @@
 }
 
 .sidebar_items_list_internal_teacher>a:last-child {
-  position: absolute;
-  bottom: 10px;
+  /* position: absolute;
+  bottom: 10px; */
   border: 1px solid black;
   background: none;
   border-radius: 10px;

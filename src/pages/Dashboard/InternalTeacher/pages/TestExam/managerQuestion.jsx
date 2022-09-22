@@ -66,9 +66,32 @@ function QuestionsManager() {
         Option4Image: "",
     })
 
+    const [imagesName, setImagesName] = useState({
+        QuestionImage: "",
+        SolutionImage: "",
+        ClueImage: "",
+        Option1Image: "",
+        Option2Image: "",
+        Option3Image: "",
+        Option4Image: "",
+    })
+
     useEffect(() => {
         setImagesUrl({
             ...imagesUrl,
+            QuestionImage: "",
+            SolutionImage: "",
+            ClueImage: "",
+            Option1Image: "",
+            Option2Image: "",
+            Option3Image: "",
+            Option4Image: "",
+        })
+    }, [isAddQuestion])
+
+    useEffect(() => {
+        setImagesName({
+            ...imagesName,
             QuestionImage: "",
             SolutionImage: "",
             ClueImage: "",
@@ -113,23 +136,22 @@ function QuestionsManager() {
 
 
     const columns = [
-        { title: "Chapter ID", field: "tableData.id", render: (item) => <>{item.tableData.id + 1}</> },
+        { title: "No. & ID", field: "tableData.id", render: (item) => <center>{item.tableData.id + 1} <br /> <div className="text-primary">{item.id}</div> </center> },
+        // {
+        //     title: "Id",
+        //     field: "id",
+        //     cellStyle: {
+        //         cellWidth: '5%'
+        //     }
+        // },
+        // {
+        //     title: "Ques", field: "questions", width: "8%",
+        //     cellStyle: {
+        //         cellWidth: '5%'
+        //     }
+        // },
         {
-            title: "Id",
-            field: "id",
-            cellStyle: {
-                cellWidth: '5%'
-            }
-        },
-        {
-            title: "Ques", field: "questions", width: "8%",
-            cellStyle: {
-                cellWidth: '5%'
-            }
-        },
-        {
-            title: "Level", field: "level", render: (item) => getLevelOptions(item),
-
+            title: "Level (questions)", field: "level", render: (item) => getLevelOptions(item),
         },
     ];
 
@@ -163,18 +185,18 @@ function QuestionsManager() {
             }}>
                 {
                     item.level == "easy" ?
-                        <option value="easy" selected>Easy</option> :
-                        <option value="easy">Easy</option>
+                        <option value="easy" selected>Easy ({item.questions}) </option> :
+                        <option value="easy">Easy ({item.questions}) </option>
                 }
                 {
                     item.level == "medium" ?
-                        <option value="medium" selected>Medium</option> :
-                        <option value="medium">Medium</option>
+                        <option value="medium" selected>Medium ({item.questions}) </option> :
+                        <option value="medium">Medium ({item.questions}) </option>
                 }
                 {
                     item.level == "hard" ?
-                        <option value="hard" selected>Hard</option> :
-                        <option value="hard">Hard</option>
+                        <option value="hard" selected>Hard ({item.questions}) </option> :
+                        <option value="hard">Hard ({item.questions}) </option>
                 }
             </select>
         </>
@@ -275,16 +297,24 @@ function QuestionsManager() {
             ...state,
             [ImageName]: ""
         })
+        setImagesName({
+            ...imagesName,
+            [ImageName]: "",
+        })
         dispatch(setSuccessMsg("Image Removed"))
     }
 
     const handleFile = e => {
         console.log("image target name : ")
-        console.log(e.target.name)
+        console.log(e.target.files[0])
         var myUrl = URL.createObjectURL(e.target.files[0]);
         setImagesUrl({
             ...imagesUrl,
             [e.target.name]: myUrl,
+        })
+        setImagesName({
+            ...imagesName,
+            [e.target.name]: e.target.files[0].name,
         })
         setState({
             ...state,
@@ -676,14 +706,11 @@ function QuestionsManager() {
                                                                                 <>
                                                                                     {/* question 1 single choice question */}
                                                                                     <div className="sub_question_dtl">
-                                                                                        <div className='qq'>
-                                                                                            <span className='q_row'>
-                                                                                                <small><span className='text-danger'>Question: </span></small>
-                                                                                                <span className='subQuestionId'>ID: {subQuestion.id} (Single Correct Answer)</span>
-                                                                                                {subQuestion.Question}
-                                                                                            </span>
-                                                                                            {/* manage question */}
+                                                                                        <div className='d-flex justify-content-between col-12 p-2'>
                                                                                             <div>
+                                                                                                <span className='subQuestionId'>ID: {subQuestion.id} (Single Correct Answer)</span>
+                                                                                            </div>
+                                                                                            <div className='iconsHover'>
                                                                                                 <span onClick={() => openPreview(subQuestion)}>
                                                                                                     <EyeIcon />
                                                                                                 </span>
@@ -695,22 +722,37 @@ function QuestionsManager() {
                                                                                                 </span>
                                                                                             </div>
                                                                                         </div>
+                                                                                        <div className='qq'>
+                                                                                            <span className='q_row'>
+                                                                                                <span>Question: </span>
+                                                                                                <p>{subQuestion.Question}</p>
+                                                                                            </span>
+                                                                                            {/* manage question */}
+
+                                                                                        </div>
                                                                                         <div className='qq mt-1 d-flex'>
                                                                                             <div className="q_row">
-                                                                                                <span className='text-danger'>Solution : </span> <p> {subQuestion.Solution}</p>
+                                                                                                <span>Solution : </span>
+                                                                                                <p>{subQuestion.Solution}</p>
                                                                                             </div>
                                                                                         </div>
                                                                                         {
                                                                                             subQuestion.Clue == null ? <> </> :
                                                                                                 <div className='qq mt-1 d-flex'>
                                                                                                     <div className="q_row">
-                                                                                                        <span className='text-danger'>Clue : </span> <p> {subQuestion.Clue}</p>
+                                                                                                        <span>Clue : </span>
+                                                                                                        <p>{subQuestion.Clue}</p>
                                                                                                     </div>
 
                                                                                                 </div>
                                                                                         }
                                                                                         {/* options 4 */}
                                                                                         <div className='opp'>
+                                                                                            <div className="qq">
+                                                                                                <div className="q_row">
+                                                                                                    Options:
+                                                                                                </div>
+                                                                                            </div>
                                                                                             {
                                                                                                 subQuestion.Option1 != "" ? <p className={subQuestion.Answer[0] == true ? "correct" : ""}> <span>(1)</span> {subQuestion.Option1}</p> : <></>
                                                                                             }
@@ -730,14 +772,11 @@ function QuestionsManager() {
                                                                                     <>
                                                                                         {/* question 2 multiple choice*/}
                                                                                         <div className="sub_question_dtl">
-                                                                                            <div className='qq'>
-                                                                                                <span className='q_row'>
-                                                                                                    <small><span className='text-danger'>Question: </span></small>
-                                                                                                    <span className='subQuestionId'>ID: {subQuestion.id} (Multiple Correct Answer)</span>
-                                                                                                    {subQuestion.Question}
-                                                                                                </span>
-                                                                                                {/* manage question */}
+                                                                                            <div className='d-flex justify-content-between col-12 p-2'>
                                                                                                 <div>
+                                                                                                    <span className='subQuestionId'>ID: {subQuestion.id} (Multiple Correct Answer)</span>
+                                                                                                </div>
+                                                                                                <div className='iconsHover'>
                                                                                                     <span onClick={() => openPreview(subQuestion)}>
                                                                                                         <EyeIcon />
                                                                                                     </span>
@@ -749,22 +788,37 @@ function QuestionsManager() {
                                                                                                     </span>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <div className='qq'>
+                                                                                                <span className='q_row'>
+                                                                                                    <span>Question: </span>
+                                                                                                    <p>{subQuestion.Question}</p>
+                                                                                                </span>
+                                                                                                {/* manage question */}
+
+                                                                                            </div>
                                                                                             <div className='qq mt-1 d-flex'>
                                                                                                 <div className="q_row">
-                                                                                                    <span className='text-danger'>Solution : </span> <p> {subQuestion.Solution}</p>
+                                                                                                    <span>Solution : </span>
+                                                                                                    <p>{subQuestion.Solution}</p>
                                                                                                 </div>
                                                                                             </div>
                                                                                             {
                                                                                                 subQuestion.Clue == null ? <> </> :
                                                                                                     <div className='qq mt-1 d-flex'>
                                                                                                         <div className="q_row">
-                                                                                                            <span className='text-danger'>Clue : </span> <p> {subQuestion.Clue}</p>
+                                                                                                            <span>Clue : </span>
+                                                                                                            <p>{subQuestion.Clue}</p>
                                                                                                         </div>
 
                                                                                                     </div>
                                                                                             }
                                                                                             {/* options 4 */}
                                                                                             <div className='opp'>
+                                                                                                <div className="qq">
+                                                                                                    <div className="q_row">
+                                                                                                        Options:
+                                                                                                    </div>
+                                                                                                </div>
                                                                                                 {
                                                                                                     subQuestion.Option1 != "" ? <p className={subQuestion.Answer[0] == true ? "correct" : ""}> <span>(1)</span> {subQuestion.Option1}</p> : <></>
                                                                                                 }
@@ -784,14 +838,11 @@ function QuestionsManager() {
                                                                                         <>
                                                                                             {/* question 3 numeric type */}
                                                                                             <div className="sub_question_dtl">
-                                                                                                <div className='qq'>
-                                                                                                    <span className='q_row'>
-                                                                                                        <small><span className='text-danger'>Question: </span></small>
-                                                                                                        <span className='subQuestionId'>ID: {subQuestion.id} (Numeric Type Answer)</span>
-                                                                                                        {subQuestion.Question}
-                                                                                                    </span>
-                                                                                                    {/* manage question */}
+                                                                                                <div className='d-flex justify-content-between col-12 p-2'>
                                                                                                     <div>
+                                                                                                        <span className='subQuestionId'>ID: {subQuestion.id} (Numeric Answer Type)</span>
+                                                                                                    </div>
+                                                                                                    <div className='iconsHover'>
                                                                                                         <span onClick={() => openPreview(subQuestion)}>
                                                                                                             <EyeIcon />
                                                                                                         </span>
@@ -803,17 +854,28 @@ function QuestionsManager() {
                                                                                                         </span>
                                                                                                     </div>
                                                                                                 </div>
+                                                                                                <div className='qq'>
+                                                                                                    <span className='q_row'>
+                                                                                                        <span>Question: </span>
+                                                                                                        <p>{subQuestion.Question}</p>
+                                                                                                    </span>
+                                                                                                    {/* manage question */}
+
+                                                                                                </div>
                                                                                                 <div className='qq mt-1 d-flex'>
                                                                                                     <div className="q_row">
-                                                                                                        <span className='text-danger'>Solution : </span> <p> {subQuestion.Solution}</p>
+                                                                                                        <span>Solution : </span>
+                                                                                                        <p>{subQuestion.Solution}</p>
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 {
                                                                                                     subQuestion.Clue == null ? <> </> :
                                                                                                         <div className='qq mt-1 d-flex'>
                                                                                                             <div className="q_row">
-                                                                                                                <span className='text-danger'>Clue : </span> <p> {subQuestion.Clue}</p>
+                                                                                                                <span>Clue : </span>
+                                                                                                                <p>{subQuestion.Clue}</p>
                                                                                                             </div>
+
                                                                                                         </div>
                                                                                                 }
                                                                                                 {/* options 4 */}
@@ -836,13 +898,6 @@ function QuestionsManager() {
                                                         }
                                                     </>
                                             }
-
-
-
-
-
-
-
                                         </div>
                                         : <div className='insertNewQuestion'>
                                             <div className='form-add-question'>
@@ -865,11 +920,16 @@ function QuestionsManager() {
 
                                                     </span> </label>
                                                     <input class="form-control" type="file" name='QuestionImage' id='QuestionImage' onChange={handleFile} />
+                                                </div>
+                                                <div className="d-flex align-items-center">
                                                     {
                                                         imagesUrl.QuestionImage != "" ?
                                                             <>
-                                                                <img src={imagesUrl.QuestionImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} />
-                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("QuestionImage")}>Remove</div>
+                                                                {/* <img src={imagesUrl.QuestionImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} /> */}
+                                                                <p className='uploadedImageName m-2'>{imagesName.QuestionImage}</p>
+                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("QuestionImage")}>
+                                                                    <i className='fa fa-times'></i>
+                                                                </div>
                                                             </>
                                                             :
                                                             <></>
@@ -892,11 +952,16 @@ function QuestionsManager() {
                                                         }
                                                     </span> </label>
                                                     <input class="form-control" type="file" name='SolutionImage' id='SolutionImage' onChange={handleFile} />
+                                                </div>
+                                                <div className="d-flex align-items-center">
                                                     {
                                                         imagesUrl.SolutionImage != "" ?
                                                             <>
-                                                                <img src={imagesUrl.SolutionImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} />
-                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("SolutionImage")}>Remove</div>
+                                                                {/* <img src={imagesUrl.SolutionImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} /> */}
+                                                                <p className='uploadedImageName m-2'>{imagesName.SolutionImage}</p>
+                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("SolutionImage")}>
+                                                                    <i className='fa fa-times'></i>
+                                                                </div>
                                                             </>
                                                             :
                                                             <></>
@@ -919,17 +984,21 @@ function QuestionsManager() {
                                                         }
                                                     </span> </label>
                                                     <input class="form-control" type="file" name='ClueImage' id='ClueImage' onChange={handleFile} />
+                                                </div>
+                                                <div className="d-flex align-items-center">
                                                     {
                                                         imagesUrl.ClueImage != "" ?
                                                             <>
-                                                                <img src={imagesUrl.ClueImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} />
-                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("ClueImage")}>Remove</div>
+                                                                {/* <img src={imagesUrl.ClueImage} alt="" height={"35px"} style={{ marginLeft: "5px" }} /> */}
+                                                                <p className='uploadedImageName m-2'>{imagesName.ClueImage}</p>
+                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage("ClueImage")}>
+                                                                    <i className='fa fa-times'></i>
+                                                                </div>
                                                             </>
                                                             :
                                                             <></>
                                                     }
                                                 </div>
-
                                                 <hr />
                                                 <h4 className='mb-3 mt-3'>Answer Type </h4>
                                                 <div class="form-check">
@@ -983,6 +1052,12 @@ function QuestionsManager() {
                                                                         if (index == 1) return imagesUrl.Option2Image;
                                                                         if (index == 2) return imagesUrl.Option3Image;
                                                                         if (index == 3) return imagesUrl.Option4Image;
+                                                                    }
+                                                                    const getImageName = () => {
+                                                                        if (index == 0) return imagesName.Option1Image;
+                                                                        if (index == 1) return imagesName.Option2Image;
+                                                                        if (index == 2) return imagesName.Option3Image;
+                                                                        if (index == 3) return imagesName.Option4Image;
                                                                     }
                                                                     const getOptionName = () => {
                                                                         if (index == 0) return "Option1Image";
@@ -1041,19 +1116,23 @@ function QuestionsManager() {
                                                                                         }
                                                                                     </span> </label>
                                                                                     <input class="form-control" type="file" name={`Option` + (index + 1) + `Image`} id={`Option` + (index + 1) + `Image`} onChange={handleFile} />
+                                                                                </div>
+                                                                                <div className="d-flex align-items-center">
                                                                                     {
-                                                                                        getImageUrl() != "" ?
+                                                                                        getImageName() != "" ?
                                                                                             <>
-                                                                                                <img src={getImageUrl()} alt="" height={"35px"} style={{ marginLeft: "5px" }} />
-                                                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage(getOptionName())}>Remove</div>
+                                                                                                {/* <img src={getImageUrl()} alt="" height={"35px"} style={{ marginLeft: "5px" }} /> */}
+                                                                                                <p className='uploadedImageName m-2'>{getImageName()}</p>
+                                                                                                <div className="removeImage text-danger m-2" onClick={() => removeImage(getOptionName())}>
+                                                                                                    <i className='fa fa-times'></i>
+                                                                                                </div>
+                                                                                                {/* <div className="removeImage text-danger m-2" onClick={() => removeImage(getOptionName())}>Remove</div> */}
                                                                                             </>
                                                                                             :
                                                                                             <></>
                                                                                     }
                                                                                 </div>
-
                                                                             </div>
-
                                                                         </>
                                                                     )
                                                                 })
@@ -1089,6 +1168,19 @@ function QuestionsManager() {
                                                                             if (index == 2) return state.Option3;
                                                                             if (index == 3) return state.Option4;
                                                                         }
+                                                                        const getImageName = () => {
+                                                                            if (index == 0) return imagesName.Option1Image;
+                                                                            if (index == 1) return imagesName.Option2Image;
+                                                                            if (index == 2) return imagesName.Option3Image;
+                                                                            if (index == 3) return imagesName.Option4Image;
+                                                                        }
+                                                                        const getOptionName = () => {
+                                                                            if (index == 0) return "Option1Image";
+                                                                            if (index == 1) return "Option2Image";
+                                                                            if (index == 2) return "Option3Image";
+                                                                            if (index == 3) return "Option4Image";
+                                                                        }
+
                                                                         return (
                                                                             <>
                                                                                 <div class="form mb-3">
@@ -1136,7 +1228,21 @@ function QuestionsManager() {
                                                                                         <label htmlFor={`Option` + (index + 1) + `Image`} class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
                                                                                         <input class="form-control" type="file" name={`Option` + (index + 1) + `Image`} id={`Option` + (index + 1) + `Image`} onChange={handleFile} />
                                                                                     </div>
-
+                                                                                    <div className="d-flex align-items-center">
+                                                                                        {
+                                                                                            getImageName() != "" ?
+                                                                                                <>
+                                                                                                    {/* <img src={getImageUrl()} alt="" height={"35px"} style={{ marginLeft: "5px" }} /> */}
+                                                                                                    <p className='uploadedImageName m-2'>{getImageName()}</p>
+                                                                                                    <div className="removeImage text-danger m-2" onClick={() => removeImage(getOptionName())}>
+                                                                                                        <i className='fa fa-times'></i>
+                                                                                                    </div>
+                                                                                                    {/* <div className="removeImage text-danger m-2" onClick={() => removeImage(getOptionName())}>Remove</div> */}
+                                                                                                </>
+                                                                                                :
+                                                                                                <></>
+                                                                                        }
+                                                                                    </div>
                                                                                 </div>
 
                                                                             </>

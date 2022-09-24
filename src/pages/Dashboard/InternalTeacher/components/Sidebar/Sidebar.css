@@ -4,7 +4,8 @@
   align-items: center;
   justify-content: center;
 }
-.sidebar_logo img{
+
+.sidebar_logo img {
   margin: 0 !important;
   padding: 0 !important;
   margin-bottom: 2px !important;
@@ -101,13 +102,15 @@
   margin: 0 15px;
 }
 
-.appBar_items button:hover a{
+.appBar_items button:hover a {
   color: black !important;
 }
-.appBar_items a{
+
+.appBar_items a {
   text-decoration: none;
   color: white !important;
 }
+
 /* header */
 
 
@@ -128,32 +131,51 @@
 }
 
 #subjectsModel .modal-body {
+  height: 50vh;
   background: #FFF9CA;
   display: flex;
   flex-direction: row;
 }
 
 #subjectsModel .modal-dialog .left {
-  width: 70%;
+  width: 50%;
   height: 100%;
   display: flex;
   flex-direction: row;
   flex-wrap: wrap;
+  overflow: auto;
 }
 
-#subjectsModel .modal-dialog .left button {
-  width: 40%;
+#subjectsModel .modal-dialog .left ol {
+  width: 100%;
   margin: 5%;
   border-radius: 10px;
   padding: 10px;
   text-transform: capitalize;
 }
 
+#subjectsModel .modal-dialog .left ol li{
+  margin: 5px;
+  padding: 5px 10px;
+  border-radius: 30px;
+  text-align: center;
+  border: 1px solid black;
+}
+
+#subjectsModel .modal-dialog .right img:nth-child(1){
+  position: absolute;
+  right: 0;
+  bottom: 100px;
+  z-index: 1;
+  opacity: .8;
+  width: 200px;
+}
 #subjectsModel .modal-dialog .right .circleImg {
   position: absolute;
   bottom: 0;
   right: 0;
   width: 150px;
+  z-index: 2;
 }
 
 

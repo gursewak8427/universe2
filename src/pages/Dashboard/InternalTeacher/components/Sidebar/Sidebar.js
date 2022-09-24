@@ -349,7 +349,7 @@ const SubjectsAlert = () => {
   return (
     <>
       <div class="modal fade hide " id="subjectsModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-xl">
+        <div class="modal-dialog modal-x">
           <div class="modal-content">
             <div class="modal-header">
               <div className="logo_row">
@@ -360,9 +360,11 @@ const SubjectsAlert = () => {
             </div>
             <div class="modal-body">
               <div className="left">
-                {
-                  subjects_list.map(item => <button>{item.subject}</button>)
-                }
+                <ol>
+                  {
+                    subjects_list.map(item => <li>{item.subject} / {item.class.class_name}</li>)
+                  }
+                </ol>
               </div>
               <div className="right">
                 <img src={require("./boy_on_books.png")} />

@@ -206,7 +206,7 @@ function CreateChapter() {
                 }
             }).then(response => {
                 dispatch(setSuccessMsg("Chapter Added Sucessufully"))
-                history.push("/in/maintopics")
+                history.push("/in/chapters")
             });
         }
     }

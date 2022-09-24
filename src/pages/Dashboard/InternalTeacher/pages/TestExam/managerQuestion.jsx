@@ -11,12 +11,22 @@ import MaterialTable from "material-table";
 import { EyeIcon, DeleteIcon, EditIcon } from "../../../../../utils/Icons";
 import './testExam.css'
 
+import { CKEditor } from "@ckeditor/ckeditor5-react";
+import ClassicEditor from "ckeditor5-build-classic-mathtype";
+import ReactHtmlParser from "react-html-parser";
+import { MathComponent } from "mathjax-react";
+
+const PrintMathData = ({ children }) => {
+    return <MathComponent mathml={`${children}`} />
+}
+
 function QuestionsManager() {
     const { admin } = useSelector((state) => state.auth);
     const { topicId } = useParams();
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
+    const [ckData, setCkData] = useState("");
 
     const [isAddQuestion, setIsAddQuestion] = useState(false);
     const [waitingQuestionDispay, setWaitingQuestionDispay] = useState(false);
@@ -75,6 +85,20 @@ function QuestionsManager() {
         Option3Image: "",
         Option4Image: "",
     })
+
+
+    useEffect(() => {
+        // let mathElementsData = document.getElementsByTagName(`math`)[0];
+        // console.log("mathElementsData")
+        // console.log(mathElementsData)
+        // if (mathElementsData != undefined) {
+        //     let newMathData = "<math>" + mathElementsData.innerHTML + "</math>"
+        //     let newData = "<MathComponent mathml='" + newMathData + "'/>";
+        //     console.log("newData")
+        //     console.log(newData)
+        //     mathElementsData.replaceWith(newData)
+        // }
+    }, [ckData])
 
     useEffect(() => {
         setImagesUrl({
@@ -136,7 +160,7 @@ function QuestionsManager() {
 
 
     const columns = [
-        { title: "No. & ID", field: "tableData.id", render: (item) => <center>{item.tableData.id + 1} <br /> <div className="text-primary">{item.id}</div> </center> },
+        { title: "No.", field: "tableData.id", render: (item) => <center>{item.tableData.id + 1}</center> },
         // {
         //     title: "Id",
         //     field: "id",
@@ -144,14 +168,15 @@ function QuestionsManager() {
         //         cellWidth: '5%'
         //     }
         // },
-        // {
-        //     title: "Ques", field: "questions", width: "8%",
-        //     cellStyle: {
-        //         cellWidth: '5%'
-        //     }
-        // },
         {
-            title: "Level (questions)", field: "level", render: (item) => getLevelOptions(item),
+            title: "ID & Ques", field: "questions", width: "8%",
+            cellStyle: {
+                cellWidth: '5%'
+            },
+            render: (item) => <center>Id : {item.id} <br /> <div className="text-primary">Ques: {item.questions}</div> </center>
+        },
+        {
+            title: "Level", field: "level", render: (item) => getLevelOptions(item),
         },
     ];
 
@@ -185,18 +210,18 @@ function QuestionsManager() {
             }}>
                 {
                     item.level == "easy" ?
-                        <option value="easy" selected>Easy ({item.questions}) </option> :
-                        <option value="easy">Easy ({item.questions}) </option>
+                        <option value="easy" selected>Easy</option> :
+                        <option value="easy">Easy</option>
                 }
                 {
                     item.level == "medium" ?
-                        <option value="medium" selected>Medium ({item.questions}) </option> :
-                        <option value="medium">Medium ({item.questions}) </option>
+                        <option value="medium" selected>Medium</option> :
+                        <option value="medium">Medium</option>
                 }
                 {
                     item.level == "hard" ?
-                        <option value="hard" selected>Hard ({item.questions}) </option> :
-                        <option value="hard">Hard ({item.questions}) </option>
+                        <option value="hard" selected>Hard</option> :
+                        <option value="hard">Hard</option>
                 }
             </select>
         </>
@@ -903,6 +928,69 @@ function QuestionsManager() {
                                             <div className='form-add-question'>
 
                                                 <h2 className='mb-3'>Question </h2>
+                                                {/* question field ck editor */}
+                                                <div className="bgRed">
+                                                    <CKEditor
+                                                        editor={ClassicEditor}
+                                                        config={{
+                                                            toolbar: {
+                                                                shouldNotGroupWhenFull: true,
+                                                                items: [
+                                                                    // 'heading', '|',
+                                                                    // 'fontfamily', 'fontsize', '|',
+                                                                    // 'alignment', '|',
+                                                                    // 'fontColor', 'fontBackgroundColor', '|',
+                                                                    // 'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
+                                                                    // 'link', '|',
+                                                                    // 'outdent', 'indent', '|',
+                                                                    // 'bulletedList', 'numberedList', 'todoList', '|',
+                                                                    // 'code', 'codeBlock', '|',
+                                                                    // 'insertTable', '|',
+                                                                    // 'uploadImage', 'blockQuote', '|',
+                                                                    "heading",
+                                                                    "fontsize",
+                                                                    "alignment",
+                                                                    "fontColor",
+                                                                    "fontBackgroundColor",
+                                                                    "outdent",
+                                                                    "indent",
+                                                                    "|",
+                                                                    "bold",
+                                                                    "italic",
+                                                                    "link",
+                                                                    "bulletedList",
+                                                                    "numberedList",
+                                                                    "imageUpload",
+                                                                    "mediaEmbed",
+                                                                    "insertTable",
+                                                                    "blockQuote",
+                                                                    "undo",
+                                                                    "redo",
+                                                                    "|",
+                                                                    "MathType",
+                                                                    "ChemType",
+                                                                    "maximize",
+                                                                ]
+                                                            }
+                                                        }}
+                                                        data={ckData}
+                                                        onReady={(editor) => {
+                                                            // You can store the "editor" and use when it is needed.
+                                                            // console.log( 'Editor is ready to use!', editor );
+                                                        }}
+                                                        onChange={(event, editor) => {
+                                                            const data = editor.getData();
+                                                            // console.log({ event, editor, data });
+                                                            setCkData(data);
+                                                            // let htmlData = ReactHtmlParser(data);
+                                                            // console.log(htmlData)  
+                                                            // let mathElementsData = htmlData.getElementsByTagName(`math`)
+                                                            // console.log(mathElementsData)  
+                                                        }}
+                                                    />
+                                                    <div>{ReactHtmlParser(ckData)}</div>
+                                                    <div>{ckData}</div>
+                                                </div>
 
                                                 {/* question field */}
                                                 <div class="form-floating mb-3">

@@ -20,8 +20,17 @@ function ChapterManage() {
     const history = useHistory();
     const { admin } = useSelector((state) => state.auth)
     const [data, setData] = useState([]);
+    const [modelData, setModelData] = useState({
+        chapter: {},
+        dataType: "",
+        data: [],
+    })
 
     useEffect(() => {
+        getData()
+    }, [])
+
+    const getData = () => {
         // STEP-1: get topics data from the API here and store to data variable..
         const config = {
             headers: {
@@ -32,12 +41,14 @@ function ChapterManage() {
             const responseData = response.data;
             console.log("responseData chapters");
             console.log(responseData);
-            // setData(responseData)
-        }).catch(err => console.log(err))
-    }, [])
+            setData(responseData)
+        }).catch(err => {
+            console.log(err)
+        })
+    }
 
     const columns = [
-        { title: "Chapter ID", field: "tableData.id", render: (item) => getIndex(item) },
+        { title: "ID", field: "tableData.id", render: (item) => getIndex(item) },
         { title: "Chapter", field: "chaptername" },
         { title: "Description", field: "discription" },
         { title: "Classes", field: "topics", render: (item) => getClassList(item) },
@@ -60,18 +71,49 @@ function ChapterManage() {
 
 
     const getClassList = (item) => {
-        return <ul>
-            {item.classes.map((classData) => <li>{classData.class.class_name}</li>)}
-        </ul>
+        return <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#seeAllListModel" onClick={() => {
+            setModelData({
+                ...modelData,
+                chapter: item,
+                dataType: "CLASS",
+                data: item.classes
+            })
+        }}>
+            <span className="text-primary">Classes</span>
+        </button>
+        // return <ul>
+        //     {item.classes.map((classData) => <li>{classData.class.class_name}</li>)}
+        // </ul>
     }
     const getSubjectList = (item) => {
+        return <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#seeAllListModel" onClick={() => {
+            setModelData({
+                ...modelData,
+                chapter: item,
+                dataType: "SUBJECT",
+                data: item.subjects
+            })
+        }}>
+            <span className="text-primary">Subjects</span>
+        </button>
         return <ul>
             {item.subjects.map((classData) => <li>{classData.subject.subject}</li>)}
         </ul>
     }
     const getTopicList = (item) => {
+        return <button type="button" class="modelBtn" data-bs-toggle="modal" data-bs-target="#seeAllListModel" onClick={() => {
+            setModelData({
+                ...modelData,
+                chapter: item,
+                dataType: "TOPIC",
+                data: item.maintopics
+            })
+        }}>
+            <span className="text-primary">Topics</span>
+
+        </button>
         return <ul>
-            {item.topics.map((classData) => <li>{classData.topic.Topicname}</li>)}
+            {item.maintopics.map((classData) => <li>{classData.topic.topicname}</li>)}
         </ul>
     }
 
@@ -122,9 +164,46 @@ function ChapterManage() {
                             actions={actions && actions}
                         />
                     </div>
+
                 </div>
 
+                <div class="modal fade hide " id="seeAllListModel" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog modal-x">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                Chapter Id : {modelData.chapter.id} <br />
+                                Chapter Name : {modelData.chapter.chaptername}
+                            </div>
+                            <div class="modal-body">
+                                <u><h6>
+                                    {
+                                        modelData.dataType == "CLASS" ? "Classes List" :
+                                            modelData.dataType == "SUBJECT" ? "Subjects List" :
+                                                modelData.dataType == "TOPIC" ? "Main Topics List" : ""
+                                    }
+                                </h6></u>
+                                <ol>
+                                    {
+                                        modelData.data.map(listItem => {
+                                            if (modelData.dataType == "CLASS") {
+                                                return <li>{listItem.class.class_name} (Id : {listItem.class.id})</li>
+                                            }
+                                            if (modelData.dataType == "SUBJECT") {
+                                                return <li>{listItem.subject.subject} (Id : {listItem.subject.id})</li>
+                                            }
+                                            if (modelData.dataType == "TOPIC") {
+                                                return <li>{listItem.topic.topicname} (Id : {listItem.topic.id})</li>
+                                            }
+                                            return <li>{listItem}</li>
+                                        })
+                                    }
+                                </ol>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
+
         </div>
     );
 }

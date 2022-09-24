@@ -7,7 +7,9 @@
     padding: 0;
     position: relative;
 }
-
+.bgRed{
+    background: red;
+}
 .mainQuestionTable img[alt="eye"] {
     transform: scale(0.5) !important;
 }

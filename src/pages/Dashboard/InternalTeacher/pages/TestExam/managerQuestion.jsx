@@ -10,15 +10,33 @@ import Heading from "../../components/Heading/Heading";
 import MaterialTable from "material-table";
 import { EyeIcon, DeleteIcon, EditIcon } from "../../../../../utils/Icons";
 import './testExam.css'
+import $ from "jquery";
 
 import { CKEditor } from "@ckeditor/ckeditor5-react";
 import ClassicEditor from "ckeditor5-build-classic-mathtype";
 import ReactHtmlParser from "react-html-parser";
 import { MathComponent } from "mathjax-react";
 
-const PrintMathData = ({ children }) => {
+const Printmathdata = ({ children }) => {
     return <MathComponent mathml={`${children}`} />
 }
+
+function Latex(props) {
+    const node = React.createRef();
+    const renderMath = () => {
+        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, node.current]);
+    };
+    useEffect(() => {
+        renderMath();
+    });
+
+    return (
+        <div ref={node} {...props}>
+            {props.children}
+        </div>
+    );
+}
+
 
 function QuestionsManager() {
     const { admin } = useSelector((state) => state.auth);
@@ -88,16 +106,17 @@ function QuestionsManager() {
 
 
     useEffect(() => {
-        // let mathElementsData = document.getElementsByTagName(`math`)[0];
-        // console.log("mathElementsData")
-        // console.log(mathElementsData)
-        // if (mathElementsData != undefined) {
-        //     let newMathData = "<math>" + mathElementsData.innerHTML + "</math>"
-        //     let newData = "<MathComponent mathml='" + newMathData + "'/>";
-        //     console.log("newData")
-        //     console.log(newData)
-        //     mathElementsData.replaceWith(newData)
-        // }
+        $(document).ready(() => {
+            // $("math").wrap("<Printmathdata></Printmathdata>");
+            // let mathElementsData = $(`math`)[0];
+            // if (mathElementsData != undefined) {
+            //     var mathDiv = document.createElement('math');
+            //     mathDiv.innerHTML = mathElementsData.innerHTML
+            //     var MathComponentDiv = document.createElement('MathComponent', { mathml: mathDiv });
+            //     console.log(MathComponentDiv)
+            //     mathElementsData.replaceWith(MathComponentDiv)
+            // }
+        })
     }, [ckData])
 
     useEffect(() => {
@@ -930,7 +949,7 @@ function QuestionsManager() {
                                                 <h2 className='mb-3'>Question </h2>
                                                 {/* question field ck editor */}
                                                 <div className="bgRed">
-                                                    <CKEditor
+                                                    {/* <CKEditor
                                                         editor={ClassicEditor}
                                                         config={{
                                                             toolbar: {
@@ -987,9 +1006,12 @@ function QuestionsManager() {
                                                             // let mathElementsData = htmlData.getElementsByTagName(`math`)
                                                             // console.log(mathElementsData)  
                                                         }}
-                                                    />
-                                                    <div>{ReactHtmlParser(ckData)}</div>
+                                                    /> */}
+                                                    {/* <div>{ReactHtmlParser(ckData)}</div>
                                                     <div>{ckData}</div>
+                                                    <Latex>{ckData}</Latex>
+                                                    <div dangerouslySetInnerHTML={{ __html: ckData }}></div>
+                                                    <MathComponent mathml='<math xmlns="http://www.w3.org/1998/Math/MathML"><mroot><mn>4</mn><mrow>&nbsp; </mrow></mroot></math>' /> */}
                                                 </div>
 
                                                 {/* question field */}

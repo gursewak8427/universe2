@@ -145,6 +145,7 @@ function Sidebar({ isSidebarShow }) {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(true);
+  const { admin } = useSelector((state) => state.auth);
 
   let location = useLocation();
 
@@ -206,7 +207,14 @@ function Sidebar({ isSidebarShow }) {
         // <DashboardIcon />
       ),
       url: "in/subjects"
-    }
+    },
+    {
+      title: "Logout",
+      icons: (<></>
+        // <DashboardIcon />
+      ),
+      url: "in/logout"
+    },
   ];
 
   return (
@@ -239,7 +247,7 @@ function Sidebar({ isSidebarShow }) {
             </Button>
             <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" />
             <Button color="inherit">
-              Kamaldeep
+              {admin.data.first_name}
             </Button>
           </div>
 

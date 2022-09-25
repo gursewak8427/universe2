@@ -8,21 +8,19 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 
 // Default theme
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
+import { useSelector } from "react-redux";
 
 
 function StudentDashboard() {
     const classes = useStyles();
     const [isWait, setWait] = useState(false);
-    const [isWait1, setWait1] = useState(false);
-    const [isWait2, setWait2] = useState(false);
-    const [isWait3, setWait3] = useState(false);
-    const [totalCustomers, setTotalCustomers] = useState(0)
-    const [totalReqServices, setTotalReqServices] = useState(0)
-    const [totalBookings, setTotalBookings] = useState(0)
-    const [totalServiceProviders, setTotalServiceProviders] = useState(0)
+    const { admin } = useSelector((state) => state.auth);
 
-
-
+    useEffect(() => {
+        console.log("admin")
+        console.log(admin)
+    },[])
+    
     return (
         <div className={classes.root}>
             <Sidebar />
@@ -40,12 +38,12 @@ function StudentDashboard() {
                                 <p>Add/Edit your photo</p>
                             </div>
                             <div className="b">
-                                <p>Shubham Sharma</p>
-                                <p>(ID : 76450)</p>
+                                <p>{admin.data.first_name} {admin.data.last_name}</p>
+                                <p>(ID : {admin.data.id})</p>
                             </div>
                         </div>
                         <div className="right">
-                            <p>Email ID : &nbsp; gurp@gmail.com</p>
+                            <p>Email ID : &nbsp; {admin.data.email}</p>
                             <p>Grade : &nbsp; 9th Standard</p>
                             <p>Subscription : &nbsp; Paid Subscription</p>
                         </div>

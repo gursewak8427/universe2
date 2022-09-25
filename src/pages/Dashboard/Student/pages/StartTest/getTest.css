@@ -5,6 +5,86 @@
     justify-content: center;
 }
 
+.topicChapter {
+    display: flex;
+    flex-direction: row;
+}
+
+.topicChapter>div {
+    border: 1px solid grey;
+    border-radius: 10px;
+    margin: 5px;
+    height: 80vh;
+    padding: 20px;
+    display: flex;
+    justify-content: start;
+    align-items: center;
+    flex-direction: column;
+}
+
+.topicChapter>div>h1 {
+    text-decoration: underline;
+}
+.chooseClassSubject .col-12{
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.topicChapter .data_grid {
+    display: flex;
+    flex-direction: column;
+}
+.outerTextBox{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+}
+.outerTextBox button{
+    background: #D9ABFB;
+    color: black;
+    padding: 5px 15px;
+    border: none;
+    border-radius: 20px;
+    margin: 10px 0;
+    font-size: 150%;
+}
+.outerTextBox button:hover{
+    background: #D9ABFB;
+}
+
+
+.testBOx{
+    background: rgba(139, 138, 138, 0.329);
+    width: 200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 10px;
+    border-radius: 10px;
+}
+.testBOx p{
+    color: black;
+}
+
+.topicChapter .data_grid li {
+    width: 100%;
+    padding: 10px 20px;
+    list-style: none;
+    margin: 10px;
+    color: black;
+    background: rgb(184, 182, 182, 0.5);
+    border-radius: 10px;
+    border: 1px solid 10px !important;
+    cursor: pointer;
+}
+.topicChapter .data_grid li:hover {
+    background: rgb(184, 182, 182, 1);
+}
+
 .chooseClassSubject .data_grid {
     display: flex;
     flex-direction: row;
@@ -25,45 +105,591 @@
     justify-content: center;
     cursor: pointer;
 }
-.chooseClassSubject .data_grid .data_grid_box h5{
+
+.chooseClassSubject .data_grid .data_grid_box h5 {
     margin: 0;
     padding: 0;
     text-align: center;
 }
-.chooseClassSubject .data_grid .data_grid_box p{
+
+.chooseClassSubject .data_grid .data_grid_box p {
     margin: 0;
     padding: 0;
     padding-top: 10px;
     text-align: center;
 }
-.selectedTopicDetails{
+
+.selectedTopicDetails {
     display: flex;
     padding: 10px 20px;
 }
-.selectedTopicDetails .left{
+
+.selectedTopicDetails .left {
     width: 50%;
 }
-.selectedTopicDetails .right{
+
+.selectedTopicDetails .right {
     width: 50%;
     display: flex;
     justify-content: flex-end;
 }
-.selectedTopicDetails .imgBox{
+
+.selectedTopicDetails .imgBox {
     width: 120px;
     height: 120px;
     margin-left: 30px;
 }
-.selectedTopicDetails .imgBox img{
+
+.selectedTopicDetails .imgBox img {
     width: 100%;
     height: 100%;
 }
-.startBtnTest{
+
+.startBtnTest {
     padding: 15px 40px;
     border-radius: 40px;
     margin: 10px auto;
     background: #59CCFE;
     color: black;
 }
-.startBtnTest:hover{
+
+.startBtnTest:hover {
     background: #277ca0;
+}
+
+
+/* questions page */
+#QuestionsPageId {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.QuestionsPageNav {
+    width: 100%;
+    height: 70px;
+    background: #59CCFE;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 10px 20px;
+}
+
+.QuestionsPageNav span {
+    display: flex;
+}
+
+.QuestionsPageNav i {
+    display: none;
+}
+
+
+.QuestionsPageNav img {
+    margin-right: 10px;
+}
+
+.QuestionsPageNav h6 {
+    color: white;
+    font-size: 200%;
+    font-weight: bolder;
+    font-family: 'Times New Roman', Times, serif;
+    margin-top: 10px;
+}
+
+#QuestionsPageId .topicDtl {
+    width: 100%;
+    background: #3E3E3E;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 20px;
+    margin-top: 15px;
+}
+
+#QuestionsPageId .topicDtl .left {
+    color: #FFD336;
+    font-size: 20px;
+}
+
+#QuestionsPageId .topicDtl .right {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+}
+
+#QuestionsPageId .topicDtl .right>span {
+    padding: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#QuestionsPageId .topicDtl .right>span:hover {
+    background: rgba(0, 0, 0, 0.322);
+}
+
+#QuestionsPageId .topicDtl .right>span>span {
+    color: white;
+    margin: 0 10px;
+}
+
+#QuestionsPageId #mainDiv {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+}
+
+#QuestionsPageId #mainDiv .left {
+    width: 80%;
+    height: 100%;
+    border: 1px solid black;
+    overflow: auto;
+}
+
+#QuestionsPageId #mainDiv .left .stickey_postition {
+    position: sticky;
+    top: 0;
+}
+
+
+#QuestionsPageId #mainDiv .left .level_row {
+    width: 100%;
+    background: whitesmoke;
+    border: 1px solid rgb(196, 193, 193);
+    display: flex;
+    justify-content: space-between;
+    padding: 0 10px;
+}
+
+#QuestionsPageId #mainDiv .left .level_row .a {
+    display: flex;
+    align-items: stretch;
+    justify-content: stretch;
+}
+
+#QuestionsPageId #mainDiv .left .level_row .a span {
+    width: 150px;
+    padding: 5px 10px;
+    text-align: center;
+    font-weight: bolder;
+    font-size: 120%;
+}
+
+#QuestionsPageId #mainDiv .left .level_row .a span.active {
+    background: #699BF7;
+    border: 1px solid #396ed1;
+}
+
+#QuestionsPageId #mainDiv .left .level_row .b {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bolder;
+}
+
+#QuestionsPageId #mainDiv .left .sub_row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    padding: 5px 10px;
+    background: whitesmoke;
+}
+
+#QuestionsPageId #mainDiv .left .sub_row.border {
+    border: 1px solid rgb(82, 81, 81) !important;
+}
+
+/* main question detail box */
+#QuestionsPageId #mainDiv .left #questionDetailBox {
+    height: 100%;
+    padding: 30px;
+}
+
+#QuestionsPageId #mainDiv .left #questionDetailBox .question {
+    width: 100%;
+    font-size: 180%;
+    margin-bottom: 20px;
+}
+
+#QuestionsPageId #mainDiv .left #questionDetailBox .options_div {
+    display: flex;
+    flex-direction: column;
+}
+
+#QuestionsPageId #mainDiv .left #questionDetailBox .options_div .option_box {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin: 10px;
+    font-size: 150%;
+}
+
+#QuestionsPageId #mainDiv .left #questionDetailBox .options_div .option_box input {
+    margin-right: 10px;
+    cursor: pointer;
+}
+
+#QuestionsPageId #mainDiv .left #questionDetailBox .options_div .option_box label {
+    cursor: pointer;
+}
+
+.optionCircle.a{
+    background: rgba(0, 41, 128, 0.315);
+    border: 2px solid rgb(0, 68, 255);
+}
+.optionCircle{
+    width: 25px;
+    height: 25px;
+    background: whitesmoke;
+    border: 2px solid grey;
+    border-radius: 50%;
+    margin-right: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 30px;
+    color: rgb(0, 68, 255);
+    padding-bottom: 10px;
+    padding-left: 10px;
+}
+
+
+/* main div right side */
+#QuestionsPageId #mainDiv .right {
+    width: 20%;
+    height: 100%;
+}
+
+#QuestionsPageId #mainDiv .right .notations {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+}
+
+#QuestionsPageId #mainDiv .right .notations > span {
+    max-width: 45%;
+    height: auto;
+    margin: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+#QuestionsPageId #mainDiv .right .notations .notationDiv {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+}
+
+#QuestionsPageId #mainDiv .right .notations .notationDiv img {
+    width: 40px;
+    margin: 10px;
+}
+
+#QuestionsPageId #mainDiv .right .notations .notationDiv p {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    color: black;
+    font-size: 90%;
+    font-weight: bolder;
+}
+
+
+#QuestionsPageId #mainDiv .right .notations>span>span {
+    /* font-weight: bolder; */
+}
+
+#QuestionsPageId #mainDiv .right .heading_question {
+    width: 100%;
+    padding: 10px;
+    background: #699BF7;
+    color: white;
+    margin-top: 20px;
+}
+
+
+#QuestionsPageId #mainDiv .right .questionNumberArr {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    padding: 20px 10px;
+}
+
+#QuestionsPageId #mainDiv .right .questionNumberArr span {
+    width: 50px;
+    height: 50px;
+    margin: 2%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 100%;
+    font-weight: bolder;
+    cursor: pointer;
+    border-radius: 10px;
+    border: 1px solid grey;
+    background: whitesmoke;
+}
+
+#QuestionsPageId #mainDiv .right {
+    position: relative;
+}
+
+.submitBtn.am {
+    position: absolute;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    padding: 20px;
+}
+
+.submitBtn.am button {
+    width: 70%;
+}
+
+
+
+
+/* main question detail end */
+
+#QuestionsPageId #mainDiv .left .sub_row button {
+    text-transform: capitalize;
+    border: 1px solid grey !important;
+    padding: 10px;
+    margin: 10px;
+}
+
+#QuestionsPageId #mainDiv .left {
+    position: relative;
+}
+
+.bottom_save_and_next {
+    height: 70px;
+    position: sticky;
+    bottom: 0;
+    border-top: 1px solid grey !important;
+    background: whitesmoke;
+}
+
+.floatingBtn {
+    display: none;
+}
+
+@media screen and (max-width: 650px) {
+    #QuestionsPageId {
+        overflow: hidden;
+    }
+
+    #QuestionsPageId .QuestionsPageNav {
+        /* flex-direction: column; */
+        height: auto;
+        font-size: 80%;
+        justify-content: space-between;
+    }
+
+    #QuestionsPageId .QuestionsPageNav>span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    #QuestionsPageId .QuestionsPageNav i {
+        font-size: 200%;
+        color: white;
+    }
+
+    #QuestionsPageId .QuestionsPageNav img {
+        height: 50px !important;
+    }
+
+    #QuestionsPageId .topicDtl {
+        flex-direction: column;
+        left: 0;
+        transition: .5s;
+        margin-top: 0;
+        justify-content: start;
+        align-items: start;
+        transform: translateY(-200%);
+        position: absolute;
+        z-index: 9999;
+    }
+
+    #QuestionsPageId .topicDtl .right {
+        align-items: start;
+        text-align: left;
+        margin-top: 10px;
+    }
+
+    #QuestionsPageId .topicDtl .right span {
+        margin: 10px 0;
+        padding: 0;
+    }
+
+    #QuestionsPageId .topicDtl.activeMobile {
+        transform: translateY(70px);
+    }
+
+
+    #QuestionsPageId .topicDtl .right {
+        flex-direction: column;
+    }
+
+    #QuestionsPageId #mainDiv {
+        flex-direction: column;
+    }
+
+    #QuestionsPageId #mainDiv .left {
+        width: 100%;
+        font-size: 70%;
+        overflow: hidden;
+    }
+
+    #QuestionsPageId #mainDiv .left .level_row .a span {
+        width: auto;
+    }
+
+    #QuestionsPageId #mainDiv .left .sub_row {
+        flex-direction: column;
+        justify-content: start;
+        align-items: start;
+        font-weight: bolder;
+    }
+
+    #QuestionsPageId #mainDiv .left .sub_row .a {
+        margin-bottom: 5px;
+    }
+
+    #QuestionsPageId #mainDiv .left #questionDetailBox {
+        padding: 10px;
+    }
+
+    .bottom_save_and_next {
+        height: 90px !important;
+        margin: 0;
+        padding: 0;
+        display: flex !important;
+        flex-direction: row !important;
+        align-items: center !important;
+        justify-content: center !important;
+        transform: translateY(70px);
+        padding-top: 40px !important;
+        transition: .5s;
+    }
+
+    .bottom_save_and_next.active {
+        transform: translateY(0);
+        padding-top: 10px !important;
+    }
+
+
+    .bottom_save_and_next::before {
+        content: "";
+        width: 100px;
+        height: 10px;
+        background: rgb(119, 116, 116);
+        position: absolute;
+        top: 0;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        border-radius: 10px;
+    }
+
+    .bottom_save_and_next .a {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        width: 50%;
+    }
+
+    .bottom_save_and_next .a button {
+        font-size: 120% !important;
+    }
+
+    .bottom_save_and_next .a button,
+    .bottom_save_and_next .b button {
+        padding: 4px !important;
+        margin: 2px !important;
+    }
+
+    .bottom_save_and_next .b {
+        width: 50%;
+        height: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .bottom_save_and_next .b button {
+        height: 80%;
+        padding: 20px !important;
+    }
+
+    #allQUestionListIDDtl {
+        transition: .5s;
+    }
+
+    #QuestionsPageId #mainDiv .right {
+        width: 100%;
+        position: absolute;
+        transform: translateY(-200%);
+        transition: .5s !important;
+    }
+
+    #QuestionsPageId #mainDiv .right.active {
+        height: 100vh !important;
+        position: absolute;
+        overflow: auto !important;
+        top: 0 !important;
+        left: 0 !important;
+        bottom: auto !important;
+        display: flex !important;
+        flex-direction: column;
+        z-index: 999;
+        transform: translateY(0);
+        transition: .5s !important;
+        background: white !important;
+    }
+
+    .submitBtn.am {
+        position: relative !important;
+    }
+
+    .floatingBtn {
+        position: fixed;
+        bottom: 100px;
+        right: 20px;
+        width: 50px !important;
+        height: 50px !important;
+        border-radius: 50%;
+        background: black;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 140%;
+        z-index: 9991;
+    }
+
+
 }

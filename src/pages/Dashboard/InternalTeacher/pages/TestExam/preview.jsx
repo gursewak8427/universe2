@@ -27,7 +27,8 @@ function Preview() {
         Op2: false,
         Op3: false,
         Op4: false,
-        numericAnswer: ""
+        numericAnswer: "",
+        isSubmit: false,
     })
 
     useEffect(() => {
@@ -89,13 +90,47 @@ function Preview() {
         }
     }
 
-    const submitAnswer = () => {
+    const getRightOrWrong = (optionNumber) => {
+        if(state.isSubmit == false) return ""
+        var AnswerArr = state.questionDetail.Answer.split(",")
+        if (AnswerArr[optionNumber] == "true") { 
+            return <span className='m-2 text-success'>Right</span>
+        }else{
+            if(state.singleAnswer == optionNumber){
+                return <span className='m-2 text-danger'>Wrong</span>
+            }else{
+                return ""
+            }
+        }
+        if (optionNumber == 0) {
+        }
+        if (optionNumber == 1) {
+        }
+        if (optionNumber == 2) {
+        }
+        if (optionNumber == 3) {
+        }
         var AnswerArr = state.questionDetail.Answer.split(",")
         if (state.questionDetail.QuestionType == "0") {
             if (AnswerArr[parseInt(state.singleAnswer)] == "true") {
                 alert("Your answer is Right")
             } else {
                 alert("Your answer is Wrong")
+            }
+        }
+    }
+
+    const submitAnswer = () => {
+        setState({
+            ...state,
+            isSubmit: true,
+        })
+        var AnswerArr = state.questionDetail.Answer.split(",")
+        if (state.questionDetail.QuestionType == "0") {
+            if (AnswerArr[parseInt(state.singleAnswer)] == "true") {
+                // alert("Your answer is Right")
+            } else {
+                // alert("Your answer is Wrong")
             }
         }
         if (state.questionDetail.QuestionType == "1") {
@@ -112,9 +147,9 @@ function Preview() {
                 }
             }
             if (overallResult == true) {
-                alert("Your answer is Right")
+                // alert("Your answer is Right")
             } else {
-                alert("Your answer is Wrong")
+                // alert("Your answer is Wrong")
             }
         }
         if (state.questionDetail.QuestionType == "2") {
@@ -158,6 +193,7 @@ function Preview() {
                                             <li>
                                                 <input type="radio" name='singleCheckAnswer' id='op1' onChange={handleSingleAnswer} value="0" />
                                                 <label htmlFor="op1">{state.questionDetail.Option1}</label>
+                                                {getRightOrWrong(0)}
                                                 {
                                                     state.questionDetail.Option1Image ?
                                                         <>
@@ -170,6 +206,7 @@ function Preview() {
                                                     <li>
                                                         <input type="radio" name='singleCheckAnswer' id='op2' onChange={handleSingleAnswer} value="1" />
                                                         <label htmlFor="op2">{state.questionDetail.Option2}</label>
+                                                        {getRightOrWrong(1)}
                                                         {
                                                             state.questionDetail.Option2Image ?
                                                                 <>
@@ -183,6 +220,7 @@ function Preview() {
                                                     <li>
                                                         <input type="radio" name='singleCheckAnswer' id='op3' onChange={handleSingleAnswer} value="2" />
                                                         <label htmlFor="op3">{state.questionDetail.Option3}</label>
+                                                        {getRightOrWrong(2)}
                                                         {
                                                             state.questionDetail.Option3Image ?
                                                                 <>
@@ -196,6 +234,7 @@ function Preview() {
                                                     <li>
                                                         <input type="radio" name='singleCheckAnswer' id='op4' onChange={handleSingleAnswer} value="3" />
                                                         <label htmlFor="op4">{state.questionDetail.Option4}</label>
+                                                        {getRightOrWrong(3)}
                                                         {
                                                             state.questionDetail.Option4Image ?
                                                                 <>

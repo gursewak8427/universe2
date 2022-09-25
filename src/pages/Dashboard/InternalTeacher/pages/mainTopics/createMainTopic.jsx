@@ -86,7 +86,7 @@ function CreateMainTopic() {
             const subjectsData = response.data;
             subjectsData.map((subject, index) => {
                 mySbjs.push({
-                    name: subject.subject,
+                    name: `${subject.subject} / ${subject.class.class_name}`,
                     id: subject.id
                 })
                 if (index + 1 == subjectsData.length) {

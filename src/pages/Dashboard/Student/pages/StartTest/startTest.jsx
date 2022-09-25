@@ -46,7 +46,7 @@ function StartTest() {
     }, [])
 
     const ImReady = () => {
-
+        history.push(`/student/questions/${topicId}`)
     }
     return (
         <div className={classes.root}>

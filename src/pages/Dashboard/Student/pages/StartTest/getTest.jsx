@@ -28,8 +28,13 @@ function GetTest() {
         pageNo: 1,
         classList: [],
         subjectList: [],
+        mainTopicList: [],
+        chaptersList: [],
+        selectedTopic: {},
+
+        chooseChapterId: [],
+        ChtopicsList: [],
         topicList: [],
-        selectedTopic: {}
     })
     const config = {
         headers: {
@@ -62,21 +67,72 @@ function GetTest() {
         }).catch(err => console.log(err))
 
     }
+
     const selectSubject = (subjectData) => {
-        axios.get(`${process.env.REACT_APP_API_URI}students/topic/?class_name=${subjectData.class_name}&subject=${subjectData.id}`, config).then(response => {
-            const topicData = response.data;
-            console.log(topicData)
-            setState({
-                ...state,
-                topicList: topicData,
-                pageNo: 3,
-            })
+        // get chapters
+        https://celatomuniverse.com/students/chapter/?class_name=1&subject=1 
+        axios.get(`${process.env.REACT_APP_API_URI}students/chapter/?class_name=${subjectData.class_name}&subject=${subjectData.id}`, config).then(response => {
+            const chapterdata = response.data;
+            console.log(chapterdata)
+
+            // get main topics same
+            axios.get(`${process.env.REACT_APP_API_URI}students/maintopic/?class_name=${subjectData.class_name}&subject=${subjectData.id}`, config).then(response => {
+                const mainTopicData = response.data;
+                console.log(mainTopicData)
+                setState({
+                    ...state,
+                    mainTopicList: mainTopicData,
+                    chaptersList: chapterdata,
+                    pageNo: 3,
+                })
+            }).catch(err => console.log(err))
 
         }).catch(err => console.log(err))
+    }
+
+    const selectCHchapter = (chapterdata, index) => {
+        // get chapters
+        // https://celatomuniverse.com/students/maintopic/?id=2
+        // https://celatomuniverse.com/students/chapter/?class_name=1&subject=1 
+
+        setState({
+            ...state,
+            chooseChapterId: index,
+            pageNo: 31,
+        })
 
     }
+
+
+    const selectCHmaintopic = (maintopicdata, index) => {
+        // get chapters
+        // https://celatomuniverse.com/students/maintopic/?id=2
+        // https://celatomuniverse.com/students/chapter/?class_name=1&subject=1 
+        setState({
+            ...state,
+            chooseMainTopicId: index,
+            pageNo: 32,
+        })
+    }
+
+
+    const selectMainTopicToGetTopics = (maintopicdata, index) => {
+        // get main topics same
+        axios.get(`${process.env.REACT_APP_API_URI}students/maintopic/?id=${maintopicdata.id}`, config).then(response => {
+            const mainTopicData = response.data;
+            console.log("mainTopicData to get topics")
+            console.log(mainTopicData)
+            setState({
+                ...state,
+                topicList: mainTopicData,
+                pageNo: 33,
+            })
+        }).catch(err => console.log(err))
+    }
+
     const selectTopic = (topicData) => {
-        console.log(state)
+        console.log("topicData that selected")
+        console.log(topicData)
         setState(({
             ...state,
             pageNo: 4,
@@ -136,60 +192,166 @@ function GetTest() {
                                     </> :
                                     state.pageNo == 3 ?
                                         <>
-                                            <div className="chooseClassSubject">
-                                                <h1>Choose Your Topic</h1>
-                                                <div className="data_grid">
-
-
-                                                    {
-                                                        state.topicList.map(topicData => {
-                                                            return (
-                                                                <div className="data_grid_box" onClick={() => selectTopic(topicData)}>
-                                                                    <h5>Topic</h5>
-                                                                    <p>{topicData.Topicname}</p>
-                                                                </div>
-                                                            )
-                                                        })
-                                                    }
-
+                                            <div className="chooseClassSubject topicChapter col-12">
+                                                <div className="col-6">
+                                                    <h1>Choose Chapter</h1>
+                                                    <div className="data_grid">
+                                                        {
+                                                            state.chaptersList.map((chapterdata, index) => {
+                                                                return (
+                                                                    <li onClick={() => selectCHchapter(chapterdata, index)}>
+                                                                        {chapterdata.chaptername}
+                                                                    </li>
+                                                                )
+                                                            })
+                                                        }
+                                                    </div>
                                                 </div>
+                                                <div className="col-6">
+                                                    <h1>Choose Main Topic</h1>
+                                                    <div className="data_grid">
+                                                        {
+                                                            state.mainTopicList.map((maintopicdata, index) => {
+                                                                return (
+                                                                    <li onClick={() => selectCHmaintopic(maintopicdata, index)}>
+                                                                        {maintopicdata.topicname}
+                                                                    </li>
+                                                                    // <div className="data_grid_box" onClick={() => selectTopic(topicData)}>
+                                                                    // </div>
+                                                                )
+                                                            })
+                                                        }
+
+                                                    </div>
+                                                </div>
+
                                             </div>
-                                        </> : state.pageNo == 4 ?
+                                        </> : state.pageNo == 31 ?
                                             <>
-                                                <div className="selectedTopicDetails">
-                                                    <div className="left">
-                                                        <div className="dtl_box">
-                                                            <h6>Topic Name:</h6>
-                                                            <p>{state.selectedTopic.Topicname}</p>
-                                                        </div>
-                                                        <div className="dtl_box">
-                                                            <h6>Subject:</h6>
-                                                            <p>{state.selectedTopic.subject.subject}</p>
-                                                        </div>
-                                                    </div>
-                                                    <div className="right">
-                                                        <div>
-                                                            <div className="dtl_box">
-                                                                <h6>Candidate Name/ID:</h6>
-                                                                <p>{`${admin.data.first_name} ${admin.data.last_name}/${admin.data.id}`}</p>
-                                                            </div>
-                                                            <div className="dtl_box">
-                                                                <h6>Time:</h6>
-                                                                <p>{state.selectedTopic.timing} min</p>
-                                                            </div>
-                                                        </div>
-                                                        <div className="imgBox">
-                                                            <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" alt="" />
-                                                        </div>
+                                                <div className="chooseClassSubject">
+                                                    <h1>Main Topics List</h1>
+                                                    <div className="data_grid">
+
+                                                        {
+                                                            state.chaptersList[state.chooseChapterId].maintopics.map((maintopicdata, index) => {
+                                                                return (
+                                                                    <div className="data_grid_box" onClick={() => selectMainTopicToGetTopics(maintopicdata)}>
+                                                                        <h5>Main Topic</h5>
+                                                                        <p>{maintopicdata.topicname || "MT=" + maintopicdata.id}</p>
+                                                                    </div>
+                                                                )
+                                                            })
+                                                        }
+
                                                     </div>
                                                 </div>
-                                                <center>
-                                                    <button className="startBtnTest" onClick={() => {
-                                                        history.push(`/student/start/${state.selectedTopic.id}`)
-                                                    }}>Start</button>
-                                                </center>
-                                            </>
-                                            : <></>
+                                            </> : state.pageNo == 32 ?
+                                                <>
+                                                    <div className="chooseClassSubject">
+                                                        <h1>Topics List</h1>
+                                                        <div className="data_grid">
+                                                            {
+                                                                state.mainTopicList[state.chooseMainTopicId].topic.map(topicdata => {
+                                                                    return (
+                                                                        <div className="outerTextBox">
+                                                                            <div className="testBOx" onClick={() => selectSubject(topicdata)}>
+                                                                                <div>
+                                                                                    <h5>Grade</h5>
+                                                                                    <p>{topicdata.topic.class_name.class_name}</p>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <h5>Subject</h5>
+                                                                                    <p>{topicdata.topic.subject.subject}</p>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <h5>Topic</h5>
+                                                                                    <p>{topicdata.topic.Topicname}</p>
+                                                                                </div>
+                                                                                <div>
+                                                                                    <h5>Time</h5>
+                                                                                    <p>{topicdata.topic.timing} min</p>
+                                                                                </div>
+                                                                            </div>
+                                                                            <center><button className="btn" onClick={() => selectTopic(topicdata)}>Start Test</button></center>
+                                                                        </div>
+                                                                    )
+                                                                })
+                                                            }
+
+                                                        </div>
+                                                    </div>
+                                                </> : state.pageNo == 33 ?
+                                                    <>
+                                                        <div className="chooseClassSubject">
+                                                            <h3 className="col-12">Just Click And Start Your Test Journey Now <br /> With CelatomUniverse</h3>
+                                                            <div className="data_grid">
+                                                                {
+                                                                    state.topicList[0].topic.map(topicdata => {
+                                                                        return (
+                                                                            <div className="outerTextBox">
+                                                                                <div className="testBOx" onClick={() => selectSubject(topicdata)}>
+                                                                                    <div>
+                                                                                        <h5>Grade</h5>
+                                                                                        <p>{topicdata.topic.class_name.class_name}</p>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>Subject</h5>
+                                                                                        <p>{topicdata.topic.subject.subject}</p>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>Topic</h5>
+                                                                                        <p>{topicdata.topic.Topicname}</p>
+                                                                                    </div>
+                                                                                    <div>
+                                                                                        <h5>Time</h5>
+                                                                                        <p>{topicdata.topic.timing} min</p>
+                                                                                    </div>
+                                                                                </div>
+                                                                                <center><button className="btn" onClick={() => selectTopic(topicdata)}>Start Test</button></center>
+                                                                            </div>
+                                                                        )
+                                                                    })
+                                                                }
+
+                                                            </div>
+                                                        </div>
+                                                    </> :
+                                                    state.pageNo == 4 ?
+                                                        <>
+                                                            <div className="selectedTopicDetails">
+                                                                <div className="left">
+                                                                    <div className="dtl_box">
+                                                                        <h6>Topic Name:</h6>
+                                                                        <p>{state.selectedTopic.topic.Topicname}</p>
+                                                                    </div>
+                                                                    <div className="dtl_box">
+                                                                        <h6>Subject:</h6>
+                                                                        <p>{state.selectedTopic.topic.subject.subject}</p>
+                                                                    </div>
+                                                                </div>
+                                                                <div className="right">
+                                                                    <div>
+                                                                        <div className="dtl_box">
+                                                                            <h6>Candidate Name/ID:</h6>
+                                                                            <p>{`${admin.data.first_name} ${admin.data.last_name}/${admin.data.id}`}</p>
+                                                                        </div>
+                                                                        <div className="dtl_box">
+                                                                            <h6>Time:</h6>
+                                                                            <p>{state.selectedTopic.topic.timing} min</p>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="imgBox">
+                                                                        <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" alt="" />
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <center>
+                                                                <button className="startBtnTest" onClick={() => {
+                                                                    history.push(`/student/start/${state.selectedTopic.topic.id}`)
+                                                                }}>Start</button>
+                                                            </center>
+                                                        </>
+                                                        : <></>
                         }
                     </div>
                 </div>

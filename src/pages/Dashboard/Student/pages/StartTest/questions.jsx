@@ -6,7 +6,7 @@ import axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
 import './startTest.css'
 import MaterialTable from "material-table";
-
+import { NumericKeyboard } from 'react-numeric-keyboard';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 
 // Default theme
@@ -19,6 +19,7 @@ import { Switch } from "@mui/material";
 
 
 function Questions() {
+    const [isOpenKeyboard, setIsOpenKeyboard] = useState(false);
     const { admin } = useSelector((state) => state.auth);
     const classes = useStyles();
     const history = useHistory();
@@ -92,10 +93,30 @@ function Questions() {
                     selectedSubQuestion: ssQuestion, // self subquestion
                     questionAssigned: assignedQuestionsArray
                 })
-                setWait(false)
+                setTimeout(() => {
+                    setWait(false)
+                }, 1000);
             }
         });
     }
+
+    const onChangeKeypad = ({ value, name }) => {
+        console.log([value, name])
+        if (currentAnswer.CorrectAnswer == null) {
+            currentAnswer.CorrectAnswer = "";
+        }
+        if (name == "Backspace") {
+            SetCurrentAnswer({
+                ...currentAnswer,
+                CorrectAnswer: currentAnswer.CorrectAnswer.slice(0, -1)
+            })
+            return;
+        }
+        SetCurrentAnswer({
+            ...currentAnswer,
+            CorrectAnswer: currentAnswer.CorrectAnswer + name
+        })
+    };
 
     const markForReviewAndNext = () => {
         // savedata
@@ -177,7 +198,11 @@ function Questions() {
             oldQuestionResult[state.selectedQuestion].submittedAnswerForSingle = currentAnswer.CorrectAnswer
         }
         if (oldQuestionResult[state.selectedQuestion].questionType == "1") {
-            oldQuestionResult[state.selectedQuestion].submittedAnswerForMulti = currentAnswer.AnswerArr
+            if (currentAnswer.AnswerArr[0] == false && currentAnswer.AnswerArr[1] == false && currentAnswer.AnswerArr[2] == false && currentAnswer.AnswerArr[3] == false) {
+                oldQuestionResult[state.selectedQuestion].submittedAnswerForMulti = null
+            } else {
+                oldQuestionResult[state.selectedQuestion].submittedAnswerForMulti = currentAnswer.AnswerArr
+            }
         }
         if (oldQuestionResult[state.selectedQuestion].questionType == "2") {
             oldQuestionResult[state.selectedQuestion].submittedAnswerForNumeric = currentAnswer.CorrectAnswer
@@ -210,7 +235,26 @@ function Questions() {
             CorrectAnswer: null, // for single and numeric is integer
         })
     }
-    const SelectQuestion = (QuestionIndex) => { }
+
+    const SelectQuestion = (QuestionIndex) => {
+        let oldQuestionResult = state.questionAssigned;
+        let mainQuestionData = state.questionAssigned[QuestionIndex].mainQuestionData
+        let subQuestionData = state.questionAssigned[QuestionIndex].subQuestionData
+        oldQuestionResult[QuestionIndex].submittedStatus = 1
+
+        setState({
+            ...state,
+            selectedQuestion: QuestionIndex,
+            selectedQuestionData: mainQuestionData,
+            selectedSubQuestion: subQuestionData,
+            questionAssigned: oldQuestionResult
+        })
+
+        SetCurrentAnswer({
+            AnswerArr: [false, false, false, false], // for multi
+            CorrectAnswer: null, // for single and numeric is integer
+        })
+    }
 
     const fullResult = () => {
         console.log("Results : ")
@@ -238,7 +282,7 @@ function Questions() {
                 {/* topic details */}
                 <div className="topicDtl" id="topicDtlId">
                     <div className="left">
-                        Topic - {state.topicDetail.Topicname} (ID - {state.topicDetail.id})
+                        Topic - {state.topicDetail.Topicname}
                     </div>
                     <div className="right">
                         {
@@ -300,9 +344,9 @@ function Questions() {
                                 <div className="a">
                                     Question No. {state.selectedQuestion + 1}
                                 </div>
-                                <div className="b">
+                                {/* <div className="b">
                                     Subquestion Id. {state.selectedSubQuestion.id}
-                                </div>
+                                </div> */}
                             </div>
                             {/* sub row for question type row END*/}
 
@@ -566,9 +610,24 @@ function Questions() {
                                         </div>
 
                                         <div className="options_div col-4">
-                                            <input type="text" onChange={(e) => {
-                                                SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: e.target.value })
-                                            }} />
+                                            <input type="text" onChange={
+                                                (e) => {
+                                                    return;
+                                                    SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: e.target.value })
+                                                }
+                                            } readOnly value={currentAnswer.CorrectAnswer} />
+                                            <button className="btn btn-success m-2" onClick={() => {
+                                                setIsOpenKeyboard(!isOpenKeyboard)
+                                            }}>Keypad</button>
+                                        </div>
+
+                                        <div id="studentKeyboard1">
+                                            <NumericKeyboard isOpen={isOpenKeyboard} onChange={onChangeKeypad} leftIcon={<div className='dotStyle' onClick={() => {
+                                                SetCurrentAnswer({
+                                                    ...currentAnswer,
+                                                    CorrectAnswer: currentAnswer.CorrectAnswer + "."
+                                                })
+                                            }}>.</div>} />
                                         </div>
                                     </div>
                             //  questionDetailBox END 
@@ -634,7 +693,7 @@ function Questions() {
                                 </div>
                                 <span>Marked For Review</span>
                             </span>
-                            <span>
+                            <span className="col-12 notmaxwidth">
                                 <div className="notationDiv">
                                     <img src={require("./n5.png")} alt="" />
                                     <p>5</p>
@@ -658,13 +717,13 @@ function Questions() {
                                             // with answer
                                             if (myQuestionResults.submittedAnswerForSingle == null) {
                                                 // not answer
-                                                return <div className="notationDiv">
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n4.png")} alt="" />
                                                     <p>{index + 1}</p>
                                                 </div>
                                             } else {
                                                 // yes answer
-                                                return <div className="notationDiv">
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n5.png")} alt="" />
                                                     <p>{index + 1}</p>
                                                 </div>
@@ -676,13 +735,13 @@ function Questions() {
                                         if (myQuestionResults.submittedStatus == 1) {
                                             if (myQuestionResults.submittedAnswerForSingle == null) {
                                                 // not answer
-                                                return <div className="notationDiv">
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n2.png")} alt="" />
                                                     <p>{index + 1}</p>
                                                 </div>
                                             } else {
                                                 // yes answer
-                                                return <div className="notationDiv">
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n1.png")} alt="" />
                                                     <p>{index + 1}</p>
                                                 </div>
@@ -690,7 +749,7 @@ function Questions() {
                                         }
 
                                         if (myQuestionResults.submittedStatus == 0) {
-                                            return <div className="notationDiv">
+                                            return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                 <img src={require("./n3.png")} alt="" />
                                                 <p>{index + 1}</p>
                                             </div>
@@ -704,13 +763,13 @@ function Questions() {
                                             // with answer
                                             if (myQuestionResults.submittedAnswerForMulti == null) {
                                                 // not answer
-                                                return <div className="notationDiv">
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n4.png")} alt="" />
                                                     <p>{index + 1}</p>
                                                 </div>
                                             } else {
                                                 // yes answer
-                                                return <div className="notationDiv">
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n5.png")} alt="" />
                                                     <p>{index + 1}</p>
                                                 </div>
@@ -722,13 +781,13 @@ function Questions() {
                                         if (myQuestionResults.submittedStatus == 1) {
                                             if (myQuestionResults.submittedAnswerForMulti == null) {
                                                 // not answer
-                                                return <div className="notationDiv">
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n2.png")} alt="" />
                                                     <p>{index + 1}</p>
                                                 </div>
                                             } else {
                                                 // yes answer
-                                                return <div className="notationDiv">
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n1.png")} alt="" />
                                                     <p>{index + 1}</p>
                                                 </div>
@@ -736,7 +795,7 @@ function Questions() {
                                         }
 
                                         if (myQuestionResults.submittedStatus == 0) {
-                                            return <div className="notationDiv">
+                                            return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                 <img src={require("./n3.png")} alt="" />
                                                 <p>{index + 1}</p>
                                             </div>

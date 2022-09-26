@@ -12,7 +12,8 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Heading from "../../components/Heading/Heading";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSuccessMsg } from "../../../../../services/actions/mainAction";
 
 
 function MainTopic() {
@@ -20,6 +21,7 @@ function MainTopic() {
     const history = useHistory();
     const { admin } = useSelector((state) => state.auth)
     const [data, setData] = useState([]);
+    const dispatch = useDispatch();
 
     useEffect(() => {
         // STEP-1: get topics data from the API here and store to data variable..
@@ -30,7 +32,7 @@ function MainTopic() {
         }
         axios.get(`${process.env.REACT_APP_API_URI}exams/maintopic/`, config).then(response => {
             const responseData = response.data;
-            console.log("responseData");
+            console.log("responseData main topics");
             console.log(responseData);
             setData(responseData)
         }).catch(err => console.log(err))
@@ -90,9 +92,30 @@ function MainTopic() {
         {
             icon: DeleteIcon,
             tooltip: "Delete Driver",
-            onClick: (event, rowData) => null,
+            onClick: (event, rowData) => deleteMainTopic(rowData),
         },
     ];
+
+    const deleteMainTopic = rowData => {
+        var index = rowData.tableData.id
+        if (window.confirm("Are you sure to delete this main topic ?")) {
+            let oldData = data
+            oldData.splice(index, 1)
+            setData(oldData)
+            dispatch(setSuccessMsg("Main Topic Deleted Successfully"))
+            axios({
+                method: 'delete',
+                url: `${process.env.REACT_APP_API_URI}exams/maintopic/`,
+                data: {
+                    id: rowData.id
+                },
+                headers: {
+                    'Authorization': `Bearer ${admin.token}`
+                }
+            }).then(response => {
+            });
+        }
+    }
 
 
     return (

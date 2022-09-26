@@ -8,6 +8,7 @@ import { setCurrentUpdatedHappyHour, setErrorMsg, setSuccessMsg, setTopics } fro
 import { useStyles } from "../../../../../utils/useStyles";
 import Heading from "../../components/Heading/Heading";
 import { Switch, TextareaAutosize } from '@mui/material';
+import './topic.css'
 
 function CreateTopic() {
     const { admin } = useSelector((state) => state.auth);
@@ -300,8 +301,8 @@ function CreateTopic() {
                                 <InputGroup className="mb-2">
                                     {
                                         state.clueStatus == true ?
-                                            <Switch onClick={onchange} name="ClueStatus" checked /> :
-                                            <Switch onClick={onchange} name="ClueStatus" />
+                                            <Switch onClick={onchange} name="clueStatus" checked /> :
+                                            <Switch onClick={onchange} name="clueStatus" />
 
                                     }
                                 </InputGroup>

@@ -91,14 +91,14 @@ function Preview() {
     }
 
     const getRightOrWrong = (optionNumber) => {
-        if(state.isSubmit == false) return ""
+        if (state.isSubmit == false) return ""
         var AnswerArr = state.questionDetail.Answer.split(",")
-        if (AnswerArr[optionNumber] == "true") { 
+        if (AnswerArr[optionNumber] == "true") {
             return <span className='m-2 text-success'>Right</span>
-        }else{
-            if(state.singleAnswer == optionNumber){
+        } else {
+            if (state.singleAnswer == optionNumber) {
                 return <span className='m-2 text-danger'>Wrong</span>
-            }else{
+            } else {
                 return ""
             }
         }

@@ -16,7 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSuccessMsg, setTopics } from "../../../../../services/actions/mainAction";
 import { useSelect } from "@mui/base";
 import { Switch } from "@mui/material";
-
+import './topic.css'
 
 function TopicManage() {
     const { admin } = useSelector((state) => state.auth);
@@ -34,6 +34,8 @@ function TopicManage() {
         }
         axios.get(`${process.env.REACT_APP_API_URI}exams/topic/`, config).then(response => {
             const responseData = response.data;
+            console.log("toicss list")
+            console.log(responseData)
             dispatch(setTopics(responseData))
         }).catch(err => {
             console.log(err)
@@ -113,8 +115,8 @@ function TopicManage() {
             <>
                 {
                     item.clueStatus ?
-                        <Switch onClick={onchange} name="calculator" checked /> :
-                        <Switch onClick={onchange} name="calculator" />
+                        <Switch onClick={onchange} name="clueStatus" checked/> :
+                        <Switch onClick={onchange} name="clueStatus"/>
 
                 }
             </>
@@ -269,7 +271,7 @@ function TopicManage() {
                 <div className={classes.toolbar} />
                 <Heading headingTitle="Topic Managent" addTopicBtn={true} />
                 <div className="mt-2">
-                    <div className="mt-2 card_box">
+                    <div className="mt-2 card_box modifiedSwitch">
                         <MaterialTable
                             options={{
                                 actionsColumnIndex: -1,

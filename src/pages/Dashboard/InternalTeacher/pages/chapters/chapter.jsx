@@ -12,7 +12,8 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import Heading from "../../components/Heading/Heading";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { setSuccessMsg } from "../../../../../services/actions/mainAction";
 
 
 function ChapterManage() {
@@ -20,6 +21,7 @@ function ChapterManage() {
     const history = useHistory();
     const { admin } = useSelector((state) => state.auth)
     const [data, setData] = useState([]);
+    const dispatch = useDispatch()
     const [modelData, setModelData] = useState({
         chapter: {},
         dataType: "",
@@ -132,9 +134,37 @@ function ChapterManage() {
         {
             icon: DeleteIcon,
             tooltip: "Delete Driver",
-            onClick: (event, rowData) => null,
+            onClick: (event, rowData) => deleteChapter(rowData),
         },
     ];
+
+
+    const deleteChapter = rowData => {
+        var index = rowData.tableData.id
+        if (window.confirm("Are you sure to delete this main topic ?")) {
+            const config = {
+                headers: {
+                    'Authorization': `Bearer ${admin.token}`
+                }
+            }
+            let oldData = data
+            oldData.splice(index, 1)
+            setData(oldData)
+            dispatch(setSuccessMsg("Main Topic Deleted Successfully"))
+            axios({
+                method: 'delete',
+                url: `${process.env.REACT_APP_API_URI}exams/chapter/`,
+                data: {
+                    id: rowData.id
+                },
+                headers: {
+                    'Authorization': `Bearer ${admin.token}`
+                }
+            }).then(response => {
+            });
+        }
+    }
+
 
 
     return (

@@ -15,7 +15,6 @@ import Heading from "../../components/Heading/Heading";
 import { useDispatch, useSelector } from "react-redux";
 import { setSuccessMsg } from "../../../../../services/actions/mainAction";
 
-
 function MainTopic() {
     const classes = useStyles();
     const history = useHistory();

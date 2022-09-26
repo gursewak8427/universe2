@@ -33,12 +33,7 @@ function Preview() {
 
     useEffect(() => {
         // STEP-1: get topics data from the API here and store to data variable..
-        const config = {
-            headers: {
-                'Authorization': `Bearer ${admin.token}`
-            }
-        }
-        axios.get(`${process.env.REACT_APP_API_URI}guest/previewsubquestion/?subquestion=${id}`, config).then(response => {
+        axios.get(`${process.env.REACT_APP_API_URI}guest/previewsubquestion/?subquestion=${id}`).then(response => {
             setState({
                 ...state,
                 questionDetail: response.data[0]

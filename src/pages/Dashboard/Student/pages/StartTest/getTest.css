@@ -162,7 +162,8 @@
 .startBtnTest:hover {
     background: #277ca0;
 }
-#studentNumKeyboard1{
+
+#studentNumKeyboard1 {
     background: red;
 }
 
@@ -403,6 +404,27 @@
     margin: 1%;
     display: flex;
     align-items: center;
+}
+
+#calculator.active {
+    display: block;
+}
+
+#calculator {
+    display: none;
+}
+
+#calculator * {
+    font-size: 10px !important;
+}
+
+#calculator>div {
+    position: fixed;
+    right: 20px;
+    bottom: 20px;
+    width: 250px;
+    height: 350px;
+    z-index: 99999999999;
 }
 
 @media screen and (max-width: 1280px) {

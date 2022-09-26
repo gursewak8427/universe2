@@ -8,6 +8,8 @@ import './startTest.css'
 import MaterialTable from "material-table";
 import { NumericKeyboard } from 'react-numeric-keyboard';
 import { Splide, SplideSlide } from '@splidejs/react-splide';
+import { ReactCalculator } from "simple-react-calculator";
+import swal from 'sweetalert';
 
 // Default theme
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
@@ -26,6 +28,8 @@ function Questions() {
     const dispatch = useDispatch();
     const { topicId } = useParams()
     const [isWait, setWait] = useState(true)
+    const [timingData, setTimingData] = useState(0)
+    const [timeDue, setTimeDue] = useState(false)
     const [state, setState] = useState({
         topicDetail: {},
         questionsList: [],
@@ -44,6 +48,37 @@ function Questions() {
             'Authorization': `Bearer ${admin.token}`
         }
     }
+
+    useEffect(() => {
+        const handleTabClose = event => {
+            event.preventDefault();
+
+            console.log('beforeunload event triggered');
+
+            return (event.returnValue = 'Are you sure you want to exit?');
+        };
+
+        window.addEventListener('beforeunload', handleTabClose);
+
+        return () => {
+            window.removeEventListener('beforeunload', handleTabClose);
+        };
+    }, []);
+
+    useEffect(() => {
+        if (isWait) return;
+        const interval = setInterval(() => {
+            if (timingData == 0) {
+                fullResult()
+                clearInterval(interval);
+                return;
+            }
+            setTimingData(timingData - 1)
+        }, 1000);
+
+        return () => clearInterval(interval);
+    }, [isWait, timingData, timeDue])
+
     useEffect(() => {
         // get questionsList
         axios.get(`${process.env.REACT_APP_API_URI}students/topic/?id=${topicId}`, config).then(response => {
@@ -54,10 +89,12 @@ function Questions() {
                 var questiondata = response.data;
                 // remove empty questions 
                 const result = questiondata.filter((question) => question.subquestion.length > 0)
+                setTimingData(topicData[0].timing)
                 assignQuestions(result, topicData)
             }).catch(err => console.log(err))
         }).catch(err => console.log(err))
     }, [])
+
 
     const assignQuestions = (QuestionsData, topicData) => {
         let assignedQuestionsArray = []
@@ -93,9 +130,7 @@ function Questions() {
                     selectedSubQuestion: ssQuestion, // self subquestion
                     questionAssigned: assignedQuestionsArray
                 })
-                setTimeout(() => {
-                    setWait(false)
-                }, 1000);
+                setWait(false)
             }
         });
     }
@@ -259,6 +294,186 @@ function Questions() {
     const fullResult = () => {
         console.log("Results : ")
         console.log(state.questionAssigned)
+        var totalMarks = 0;
+        var achieveMarks = 0;
+        var singleQuestinResultList = []
+        state.questionAssigned.map((singleQuestion, index) => {
+            let questionType = singleQuestion.questionType;
+
+
+
+            if (questionType == "0") {
+                totalMarks += singleQuestion.subQuestionData.Marks
+
+                if (singleQuestion.submittedAnswerForSingle != null) {
+
+                    let answerArr = singleQuestion.subQuestionData.Answer.split(",")
+                    if (answerArr[singleQuestion.submittedAnswerForSingle] == 'true') {
+                        console.log("Right Answer")
+                        achieveMarks += singleQuestion.subQuestionData.Marks
+                        singleQuestinResultList.push({
+                            "mainQuestion": singleQuestion.mainQuestionData.id,
+                            "subQuestion": singleQuestion.subQuestionData.id,
+                            "submittedAnswerForSingle": singleQuestion.submittedAnswerForSingle,
+                            "submittedStatus": singleQuestion.submittedStatus,
+                            "marks": singleQuestion.subQuestionData.Marks
+                        })
+                    } else {
+                        achieveMarks -= singleQuestion.subQuestionData.NegativeMarks
+                        console.log("Wrong Answer")
+                        singleQuestinResultList.push({
+                            "mainQuestion": singleQuestion.mainQuestionData.id,
+                            "subQuestion": singleQuestion.subQuestionData.id,
+                            "submittedAnswerForSingle": singleQuestion.submittedAnswerForSingle,
+                            "submittedStatus": singleQuestion.submittedStatus,
+                            "marks": singleQuestion.subQuestionData.NegativeMarks
+                        })
+                    }
+
+                } else {
+                    singleQuestinResultList.push({
+                        "mainQuestion": singleQuestion.mainQuestionData.id,
+                        "subQuestion": singleQuestion.subQuestionData.id,
+                        "submittedAnswerForSingle": singleQuestion.submittedAnswerForSingle,
+                        "submittedStatus": singleQuestion.submittedStatus,
+                        "marks": 0
+                    })
+                }
+            }
+
+            if (questionType == "1") {
+                totalMarks += singleQuestion.subQuestionData.Marks
+                let answerArr = singleQuestion.subQuestionData.Answer.split(",")
+                let submittedAnswerArr = singleQuestion.submittedAnswerForMulti
+                if (submittedAnswerArr != null) {
+                    let answerStatus = false;
+                    if (submittedAnswerArr[0].toString() == answerArr[0]) {
+                        if (submittedAnswerArr[1].toString() == answerArr[1]) {
+                            if (submittedAnswerArr[2].toString() == answerArr[2]) {
+                                if (submittedAnswerArr[3].toString() == answerArr[3]) {
+                                    answerStatus = true;
+                                }
+                            }
+                        }
+                    }
+
+                    if (answerStatus == true) {
+                        achieveMarks += singleQuestion.subQuestionData.Marks
+                        console.log("multi true")
+                        singleQuestinResultList.push({
+                            "mainQuestion": singleQuestion.mainQuestionData.id,
+                            "subQuestion": singleQuestion.subQuestionData.id,
+                            "submittedAnswerForMulti": singleQuestion.submittedAnswerForMulti,
+                            "submittedStatus": singleQuestion.submittedStatus,
+                            "marks": singleQuestion.subQuestionData.Marks
+                        })
+                    } else {
+                        achieveMarks -= singleQuestion.subQuestionData.NegativeMarks
+                        console.log("multi false")
+                        singleQuestinResultList.push({
+                            "mainQuestion": singleQuestion.mainQuestionData.id,
+                            "subQuestion": singleQuestion.subQuestionData.id,
+                            "submittedAnswerForMulti": singleQuestion.submittedAnswerForMulti,
+                            "submittedStatus": singleQuestion.submittedStatus,
+                            "marks": singleQuestion.subQuestionData.NegativeMarks
+                        })
+                    }
+                } else {
+                    singleQuestinResultList.push({
+                        "mainQuestion": singleQuestion.mainQuestionData.id,
+                        "subQuestion": singleQuestion.subQuestionData.id,
+                        "submittedAnswerForMulti": singleQuestion.submittedAnswerForMulti,
+                        "submittedStatus": singleQuestion.submittedStatus,
+                        "marks": 0
+                    })
+                }
+
+            }
+
+            if (questionType == "2") {
+                totalMarks += singleQuestion.subQuestionData.Marks
+                if (singleQuestion.submittedAnswerForNumeric != null) {
+                    let correctAnswer = parseFloat(singleQuestion.subQuestionData.CorrectAnswer)
+                    let Rangemax = parseFloat(singleQuestion.subQuestionData.Rangemax)
+                    let Rangemin = parseFloat(singleQuestion.subQuestionData.Rangemin)
+                    let submittedAnswer = parseFloat(singleQuestion.submittedAnswerForNumeric)
+                    let answerStatus = false;
+                    if (correctAnswer == submittedAnswer) {
+                        if (correctAnswer <= Rangemax && correctAnswer >= Rangemin) {
+                            answerStatus = true;
+                        }
+                    }
+
+                    if (answerStatus == true) {
+                        achieveMarks += singleQuestion.subQuestionData.Marks
+                        console.log("multi true")
+                        singleQuestinResultList.push({
+                            "mainQuestion": singleQuestion.mainQuestionData.id,
+                            "subQuestion": singleQuestion.subQuestionData.id,
+                            "submittedAnswerForNumeric": singleQuestion.submittedAnswerForNumeric,
+                            "submittedStatus": singleQuestion.submittedStatus,
+                            "marks": singleQuestion.subQuestionData.Marks
+                        })
+                    } else {
+                        achieveMarks -= singleQuestion.subQuestionData.NegativeMarks
+                        console.log("multi false")
+                        singleQuestinResultList.push({
+                            "mainQuestion": singleQuestion.mainQuestionData.id,
+                            "subQuestion": singleQuestion.subQuestionData.id,
+                            "submittedAnswerForNumeric": singleQuestion.submittedAnswerForNumeric,
+                            "submittedStatus": singleQuestion.submittedStatus,
+                            "marks": singleQuestion.subQuestionData.NegativeMarks
+                        })
+                    }
+                } else {
+                    singleQuestinResultList.push({
+                        "mainQuestion": singleQuestion.mainQuestionData.id,
+                        "subQuestion": singleQuestion.subQuestionData.id,
+                        "submittedAnswerForNumeric": singleQuestion.submittedAnswerForNumeric,
+                        "submittedStatus": singleQuestion.submittedStatus,
+                        "marks": 0
+                    })
+                }
+
+            }
+
+            if (state.questionAssigned.length == index + 1) {
+                console.log("totalMarks")
+                console.log("achieveMarks")
+                console.log(totalMarks)
+                console.log(achieveMarks)
+
+                const finalResultData = {
+                    "Topic": state.topicDetail.id,
+                    "totalMarks": totalMarks,
+                    "resultMarks": achieveMarks,
+                    "totalTime": state.topicDetail.timing,
+                    "usedTime": state.topicDetail.timing - timingData,
+                    "examQuestions": singleQuestinResultList
+                }
+
+                console.log("finalResultData")
+                console.log(finalResultData)
+
+                const config = {
+                    headers: {
+                        'Authorization': `Bearer ${admin.token}`
+                    }
+                }
+
+                axios.post(`${process.env.REACT_APP_API_URI}students/examsubmit/`, finalResultData, config).then(response => {
+                    const responseData = response.data;
+                    console.log("Final Result Response")
+                    console.log(responseData)
+                    swal("Good job!", "You successfully saved the result!", "success");
+                    history.push("/student/")
+                }).catch(err => {
+                    console.log(err)
+                    swal("Good job!", "You successfully saved the result!", "success");
+                    alert(err.response.data.message)
+                })
+            }
+        })
     }
 
     if (isWait) {
@@ -267,10 +482,17 @@ function Questions() {
 
     return (
         <div className={classes.root}>
+            <div id="calculator">
+                <ReactCalculator />
+            </div>
             <div id="QuestionsPageId">
 
                 <nav className="QuestionsPageNav">
-                    <span>
+                    <span onClick={() => {
+                        if(window.confirm("Are you sure to exit ?")){
+                            history.push("/student/")
+                        }
+                    }}>
                         <img src={"/assets/images/logo.png"} alt="" height={"60px"} />
                         <h6>CelatomUniverse</h6>
                     </span>
@@ -287,7 +509,9 @@ function Questions() {
                     <div className="right">
                         {
                             state.topicDetail.calculatorStatus ?
-                                <span>
+                                <span onClick={() => {
+                                    document.getElementById("calculator").classList.toggle("active")
+                                }}>
                                     <img src={require("./calculator.png")} alt="" />
                                     <span>Calculator</span>
                                 </span> : <></>
@@ -317,7 +541,7 @@ function Questions() {
                                     <span className={state.questionsList[state.selectedQuestion].level == "hard" ? "active" : ""}>Hard</span>
                                 </div>
                                 <div className="b">
-                                    Time Left : 180 min
+                                    Time Left : {timingData} min
                                 </div>
                             </div>
                             {/* level row end */}

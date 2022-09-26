@@ -32,6 +32,7 @@ import MainTopic from "./pages/Dashboard/InternalTeacher/pages/mainTopics/mainTo
 import CreateMainTopic from "./pages/Dashboard/InternalTeacher/pages/mainTopics/createMainTopic";
 import Preview from "./pages/Dashboard/InternalTeacher/pages/TestExam/preview";
 import Questions from "./pages/Dashboard/Student/pages/StartTest/questions";
+import OldTestResults from "./pages/Dashboard/Student/pages/oldTest/oldTestResults";
 
 function App() {
   const history = useHistory();
@@ -60,7 +61,7 @@ function App() {
         console.log(err)
       })
 
-    }else{
+    } else {
       setWait(false)
     }
   }
@@ -172,7 +173,7 @@ function App() {
               <PrivateRoute exact path="/in/add_test" component={SelectTopic} />
               <PrivateRoute exact path="/in/add_test_que/:topicId" component={QuestionsManager} />
               <Route exact path="/guest/preview/:id" component={Preview} />
-              
+
 
               {/* student */}
               <Route exact path="/student_login" component={StudentLogin} />
@@ -182,7 +183,8 @@ function App() {
               <PrivateRoute exact path="/student/start" component={GetTest} />
               <PrivateRoute exact path="/student/start/:topicId" component={StartTest} />
               <PrivateRoute exact path="/student/questions/:topicId" component={Questions} />
-              
+              <PrivateRoute exact path="/student/old_test_results" component={OldTestResults} />
+
             </Switch>
           </Router> :
           <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>

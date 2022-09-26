@@ -465,8 +465,8 @@ function Questions() {
                     const responseData = response.data;
                     console.log("Final Result Response")
                     console.log(responseData)
-                    swal("Good job!", "You successfully saved the result!", "success");
-                    history.push("/student/")
+                    swal(`Marks : ${achieveMarks}/${totalMarks}`, "You successfully saved the result!", "success");
+                    history.push("/student/old_test_results/")
                 }).catch(err => {
                     console.log(err)
                     swal("Good job!", "You successfully saved the result!", "success");
@@ -489,7 +489,7 @@ function Questions() {
 
                 <nav className="QuestionsPageNav">
                     <span onClick={() => {
-                        if(window.confirm("Are you sure to exit ?")){
+                        if (window.confirm("Are you sure to exit ?")) {
                             history.push("/student/")
                         }
                     }}>

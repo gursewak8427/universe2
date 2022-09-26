@@ -2,7 +2,7 @@ import React from "react";
 import { Col, Row } from "react-bootstrap";
 import { useLocation } from "react-router-dom";
 import CreateChapterBtn from "../../pages/chapters/createChapterBtn";
-import CreateTopicBtn from "../../pages/topics/createTopicBtn";
+import CreateTopicBtn from "../../pages/oldTest/createTopicBtn";
 import "./Heading.css";
 
 

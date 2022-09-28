@@ -18,6 +18,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setErrorMsg, setSuccessMsg, setTopics } from "../../../../../services/actions/mainAction";
 import { useSelect } from "@mui/base";
 import { Switch } from "@mui/material";
+import { Link } from "react-router-dom";
 
 
 function Questions() {
@@ -28,7 +29,10 @@ function Questions() {
     const dispatch = useDispatch();
     const { topicId } = useParams()
     const [isWait, setWait] = useState(true)
-    const [timingData, setTimingData] = useState(0)
+    const [timingData, setTimingData] = useState({
+        minutes: 0,
+        seconds: 0,
+    })
     const [timeDue, setTimeDue] = useState(false)
     const [state, setState] = useState({
         topicDetail: {},
@@ -68,12 +72,23 @@ function Questions() {
     useEffect(() => {
         if (isWait) return;
         const interval = setInterval(() => {
-            if (timingData == 0) {
-                fullResult()
-                clearInterval(interval);
-                return;
+            if (timingData.seconds == 0) {
+                if (timingData.minutes == 0) {
+                    fullResult()
+                    clearInterval(interval);
+                    return;
+                } else {
+                    setTimingData({
+                        minutes: timingData.minutes - 1,
+                        seconds: 60
+                    })
+                }
+            } else {
+                setTimingData({
+                    ...timingData,
+                    seconds: timingData.seconds - 1
+                })
             }
-            setTimingData(timingData - 1)
         }, 1000);
 
         return () => clearInterval(interval);
@@ -89,7 +104,10 @@ function Questions() {
                 var questiondata = response.data;
                 // remove empty questions 
                 const result = questiondata.filter((question) => question.subquestion.length > 0)
-                setTimingData(topicData[0].timing)
+                setTimingData({
+                    minutes: topicData[0].timing,
+                    seconds: 0,
+                })
                 assignQuestions(result, topicData)
             }).catch(err => console.log(err))
         }).catch(err => console.log(err))
@@ -225,8 +243,7 @@ function Questions() {
         dispatch(setErrorMsg("Response Cleared"))
     }
 
-    const NextQuestion = () => {
-
+    const SaveData = () => {
         // savedata
         let oldQuestionResult = state.questionAssigned;
         if (oldQuestionResult[state.selectedQuestion].questionType == "0") {
@@ -242,15 +259,18 @@ function Questions() {
         if (oldQuestionResult[state.selectedQuestion].questionType == "2") {
             oldQuestionResult[state.selectedQuestion].submittedAnswerForNumeric = currentAnswer.CorrectAnswer
         }
+        setState({
+            ...state,
+            questionAssigned: oldQuestionResult
+        })
 
+    }
+    const NextQuestion = () => {
+
+        let oldQuestionResult = state.questionAssigned;
         if (state.questionAssigned.length == state.selectedQuestion + 1) {
-            setState({
-                ...state,
-                questionAssigned: oldQuestionResult
-            })
             dispatch(setErrorMsg("No More Questions"))
             return;
-        } else {
         }
 
         let mainQuestionData = state.questionAssigned[state.selectedQuestion + 1].mainQuestionData
@@ -277,6 +297,20 @@ function Questions() {
         let subQuestionData = state.questionAssigned[QuestionIndex].subQuestionData
         oldQuestionResult[QuestionIndex].submittedStatus = 1
 
+        let oldCurrentAnswer = currentAnswer
+        if (oldQuestionResult[QuestionIndex].questionType == "0") {
+            oldCurrentAnswer.CorrectAnswer = oldQuestionResult[QuestionIndex].submittedAnswerForSingle
+        }
+        if (oldQuestionResult[QuestionIndex].questionType == "1") {
+            if (oldQuestionResult[QuestionIndex].submittedAnswerForMulti == null) {
+                oldCurrentAnswer.AnswerArr = [false, false, false, false]
+            } else {
+                oldCurrentAnswer.AnswerArr = oldQuestionResult[QuestionIndex].submittedAnswerForMulti
+            }
+        }
+        if (oldQuestionResult[QuestionIndex].questionType == "2") {
+            oldCurrentAnswer.CorrectAnswer = oldQuestionResult[QuestionIndex].submittedAnswerForNumeric
+        }
         setState({
             ...state,
             selectedQuestion: QuestionIndex,
@@ -285,10 +319,7 @@ function Questions() {
             questionAssigned: oldQuestionResult
         })
 
-        SetCurrentAnswer({
-            AnswerArr: [false, false, false, false], // for multi
-            CorrectAnswer: null, // for single and numeric is integer
-        })
+        SetCurrentAnswer(oldCurrentAnswer)
     }
 
     const fullResult = () => {
@@ -448,7 +479,7 @@ function Questions() {
                     "totalMarks": totalMarks,
                     "resultMarks": achieveMarks,
                     "totalTime": state.topicDetail.timing,
-                    "usedTime": state.topicDetail.timing - timingData,
+                    "usedTime": state.topicDetail.timing - timingData.minutes,
                     "examQuestions": singleQuestinResultList
                 }
 
@@ -469,7 +500,7 @@ function Questions() {
                     history.push("/student/old_test_results/")
                 }).catch(err => {
                     console.log(err)
-                    swal("Good job!", "You successfully saved the result!", "success");
+                    swal("Sorry!", "You already attempt the exam!", "error");
                     alert(err.response.data.message)
                 })
             }
@@ -487,18 +518,27 @@ function Questions() {
             </div>
             <div id="QuestionsPageId">
 
-                <nav className="QuestionsPageNav">
-                    <span onClick={() => {
+                <nav className="QuestionsPageNav d-flex justify-content-between">
+                    <span>
+                        <span onClick={() => {
+                            if (window.confirm("Are you sure to exit ?")) {
+                                history.push("/student/")
+                            }
+                        }}>
+                            <img src={"/assets/images/logo.png"} alt="" height={"60px"} />
+                            <h6>CelatomUniverse</h6>
+                        </span>
+                        <i class="fa-solid fa-bars" onClick={() => {
+                            document.getElementById("topicDtlId").classList.toggle("activeMobile")
+                        }}></i>
+                    </span>
+                    <Link onClick={() => {
                         if (window.confirm("Are you sure to exit ?")) {
                             history.push("/student/")
                         }
                     }}>
-                        <img src={"/assets/images/logo.png"} alt="" height={"60px"} />
-                        <h6>CelatomUniverse</h6>
-                    </span>
-                    <i class="fa-solid fa-bars" onClick={() => {
-                        document.getElementById("topicDtlId").classList.toggle("activeMobile")
-                    }}></i>
+                        <div className="homeBtnQuetion text-white">Home</div>
+                    </Link>
                 </nav>
 
                 {/* topic details */}
@@ -541,7 +581,7 @@ function Questions() {
                                     <span className={state.questionsList[state.selectedQuestion].level == "hard" ? "active" : ""}>Hard</span>
                                 </div>
                                 <div className="b">
-                                    Time Left : {timingData} min
+                                    <div className="text-secondary">Time Left :</div> &nbsp; <div className="text-primary mt-1">{timingData.minutes}:{timingData.seconds < 10 ? "0" + timingData.seconds : timingData.seconds}</div>
                                 </div>
                             </div>
                             {/* level row end */}
@@ -585,58 +625,71 @@ function Questions() {
                                     </div>
 
                                     <div className="options_div">
-                                        <div className="option_box">
-                                            {
-                                                currentAnswer.CorrectAnswer == 0 ?
-                                                    <div className="optionCircle a" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 0, }) }}><i class="fa-solid fa-check"></i></div> :
-                                                    <div className="optionCircle" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 0, }) }}></div>
-                                            }
-                                            {/* <input type="radio" name="singleAnswer" id="op1_radio"
+
+                                        {
+                                            state.selectedSubQuestion.Option1 != "" ?
+                                                <div className="option_box">
+                                                    {
+                                                        currentAnswer.CorrectAnswer == 0 ?
+                                                            <div className="optionCircle a" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 0, }) }}><i class="fa-solid fa-check"></i></div> :
+                                                            <div className="optionCircle" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 0, }) }}></div>
+                                                    }
+                                                    {/* <input type="radio" name="singleAnswer" id="op1_radio"
                                                 onChange={() => {
                                                     SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 0, })
                                                 }}
                                             /> */}
-                                            <label htmlFor="op1_radio">{state.selectedSubQuestion.Option1}</label>
-                                        </div>
-                                        <div className="option_box">
-                                            {
-                                                currentAnswer.CorrectAnswer == 1 ?
-                                                    <div className="optionCircle a" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 1, }) }}><i class="fa-solid fa-check"></i></div> :
-                                                    <div className="optionCircle" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 1, }) }}></div>
-                                            }
-                                            {/* <input type="radio" name="singleAnswer" id="op2_radio"
+                                                    <label htmlFor="op1_radio">{state.selectedSubQuestion.Option1}</label>
+                                                </div> : <></>
+                                        }
+
+                                        {
+                                            state.selectedSubQuestion.Option2 != "" ?
+
+                                                <div className="option_box">
+                                                    {
+                                                        currentAnswer.CorrectAnswer == 1 ?
+                                                            <div className="optionCircle a" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 1, }) }}><i class="fa-solid fa-check"></i></div> :
+                                                            <div className="optionCircle" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 1, }) }}></div>
+                                                    }
+                                                    {/* <input type="radio" name="singleAnswer" id="op2_radio"
                                                 onChange={() => {
                                                     SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 1, })
                                                 }}
                                             /> */}
-                                            <label htmlFor="op2_radio">{state.selectedSubQuestion.Option2}</label>
-                                        </div>
-                                        <div className="option_box">
-                                            {
-                                                currentAnswer.CorrectAnswer == 2 ?
-                                                    <div className="optionCircle a" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 2, }) }}><i class="fa-solid fa-check"></i></div> :
-                                                    <div className="optionCircle" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 2, }) }}></div>
-                                            }
-                                            {/* <input type="radio" name="singleAnswer" id="op3_radio"
+                                                    <label htmlFor="op2_radio">{state.selectedSubQuestion.Option2}</label>
+                                                </div> : <></>
+                                        }
+                                        {
+                                            state.selectedSubQuestion.Option3 != "" ?
+                                                <div className="option_box">
+                                                    {
+                                                        currentAnswer.CorrectAnswer == 2 ?
+                                                            <div className="optionCircle a" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 2, }) }}><i class="fa-solid fa-check"></i></div> :
+                                                            <div className="optionCircle" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 2, }) }}></div>
+                                                    }
+                                                    {/* <input type="radio" name="singleAnswer" id="op3_radio"
                                                 onChange={() => {
                                                     SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 2, })
                                                 }}
                                             /> */}
-                                            <label htmlFor="op3_radio">{state.selectedSubQuestion.Option3}</label>
-                                        </div>
-                                        <div className="option_box">
-                                            {
-                                                currentAnswer.CorrectAnswer == 3 ?
-                                                    <div className="optionCircle a" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 3, }) }}><i class="fa-solid fa-check"></i></div> :
-                                                    <div className="optionCircle" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 3, }) }}></div>
-                                            }
-                                            {/* <input type="radio" name="singleAnswer" id="op4_radio"
+                                                    <label htmlFor="op3_radio">{state.selectedSubQuestion.Option3}</label>
+                                                </div> : <></>}
+                                        {
+                                            state.selectedSubQuestion.Option4 != "" ?
+                                                <div className="option_box">
+                                                    {
+                                                        currentAnswer.CorrectAnswer == 3 ?
+                                                            <div className="optionCircle a" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 3, }) }}><i class="fa-solid fa-check"></i></div> :
+                                                            <div className="optionCircle" onClick={() => { SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 3, }) }}></div>
+                                                    }
+                                                    {/* <input type="radio" name="singleAnswer" id="op4_radio"
                                                 onChange={() => {
                                                     SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 3, })
                                                 }}
                                             /> */}
-                                            <label htmlFor="op4_radio">{state.selectedSubQuestion.Option4}</label>
-                                        </div>
+                                                    <label htmlFor="op4_radio">{state.selectedSubQuestion.Option4}</label>
+                                                </div> : <></>}
                                     </div>
                                 </div> : state.selectedSubQuestion.QuestionType == "1" ?
                                     //  for multiple answer 
@@ -646,18 +699,39 @@ function Questions() {
                                         </div>
 
                                         <div className="options_div">
-                                            <div className="option_box">
-                                                {
-                                                    currentAnswer.AnswerArr[0] == true ?
-                                                        <div className="optionCircle a" onClick={() => {
-                                                            // old array
-                                                            let oldAnswerArr = currentAnswer.AnswerArr;
-                                                            oldAnswerArr[0] = !oldAnswerArr[0]
-                                                            console.log(oldAnswerArr)
-                                                            SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        }}>
-                                                            <i class="fa-solid fa-check"></i>
-                                                        </div>
+                                            {state.selectedSubQuestion.Option1 != "" ?
+                                                <div className="option_box">
+                                                    {
+                                                        currentAnswer.AnswerArr[0] == true ?
+                                                            <div className="optionCircle a" onClick={() => {
+                                                                // old array
+                                                                let oldAnswerArr = currentAnswer.AnswerArr;
+                                                                oldAnswerArr[0] = !oldAnswerArr[0]
+                                                                console.log(oldAnswerArr)
+                                                                SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            }}>
+                                                                <i class="fa-solid fa-check"></i>
+                                                            </div>
+                                                            // <input type="checkbox" name="multiSelectorCheckbox" id="op1_checkbox"
+                                                            //     value={0}
+                                                            //     onChange={() => {
+                                                            //         // old array
+                                                            //         let oldAnswerArr = currentAnswer.AnswerArr;
+                                                            //         oldAnswerArr[0] = !oldAnswerArr[0]
+                                                            //         console.log(oldAnswerArr)
+                                                            //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            //     }}
+                                                            //     checked />
+                                                            :
+                                                            <div className="optionCircle" onClick={() => {
+                                                                // old array
+                                                                let oldAnswerArr = currentAnswer.AnswerArr;
+                                                                oldAnswerArr[0] = !oldAnswerArr[0]
+                                                                console.log(oldAnswerArr)
+                                                                SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            }}>
+
+                                                            </div>
                                                         // <input type="checkbox" name="multiSelectorCheckbox" id="op1_checkbox"
                                                         //     value={0}
                                                         //     onChange={() => {
@@ -667,42 +741,43 @@ function Questions() {
                                                         //         console.log(oldAnswerArr)
                                                         //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
                                                         //     }}
-                                                        //     checked />
-                                                        :
-                                                        <div className="optionCircle" onClick={() => {
-                                                            // old array
-                                                            let oldAnswerArr = currentAnswer.AnswerArr;
-                                                            oldAnswerArr[0] = !oldAnswerArr[0]
-                                                            console.log(oldAnswerArr)
-                                                            SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        }}>
-
-                                                        </div>
-                                                    // <input type="checkbox" name="multiSelectorCheckbox" id="op1_checkbox"
-                                                    //     value={0}
-                                                    //     onChange={() => {
-                                                    //         // old array
-                                                    //         let oldAnswerArr = currentAnswer.AnswerArr;
-                                                    //         oldAnswerArr[0] = !oldAnswerArr[0]
-                                                    //         console.log(oldAnswerArr)
-                                                    //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                    //     }}
-                                                    // />
-                                                }
-                                                <label htmlFor="op1_checkbox">{state.selectedSubQuestion.Option1}</label>
-                                            </div>
-                                            <div className="option_box">
-                                                {
-                                                    currentAnswer.AnswerArr[1] == true ?
-                                                        <div className="optionCircle a" onClick={() => {
-                                                            // old array
-                                                            let oldAnswerArr = currentAnswer.AnswerArr;
-                                                            oldAnswerArr[1] = !oldAnswerArr[1]
-                                                            console.log(oldAnswerArr)
-                                                            SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        }}>
-                                                            <i class="fa-solid fa-check"></i>
-                                                        </div>
+                                                        // />
+                                                    }
+                                                    <label htmlFor="op1_checkbox">{state.selectedSubQuestion.Option1}</label>
+                                                </div> : <></>}
+                                            {state.selectedSubQuestion.Option2 != "" ?
+                                                <div className="option_box">
+                                                    {
+                                                        currentAnswer.AnswerArr[1] == true ?
+                                                            <div className="optionCircle a" onClick={() => {
+                                                                // old array
+                                                                let oldAnswerArr = currentAnswer.AnswerArr;
+                                                                oldAnswerArr[1] = !oldAnswerArr[1]
+                                                                console.log(oldAnswerArr)
+                                                                SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            }}>
+                                                                <i class="fa-solid fa-check"></i>
+                                                            </div>
+                                                            // <input type="checkbox" name="multiSelectorCheckbox" id="op2_checkbox"
+                                                            //     value={1}
+                                                            //     onChange={() => {
+                                                            //         // old array
+                                                            //         let oldAnswerArr = currentAnswer.AnswerArr;
+                                                            //         oldAnswerArr[1] = !oldAnswerArr[1]
+                                                            //         console.log(oldAnswerArr)
+                                                            //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            //     }}
+                                                            //     checked
+                                                            // /> 
+                                                            :
+                                                            <div className="optionCircle" onClick={() => {
+                                                                // old array
+                                                                let oldAnswerArr = currentAnswer.AnswerArr;
+                                                                oldAnswerArr[1] = !oldAnswerArr[1]
+                                                                console.log(oldAnswerArr)
+                                                                SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            }}>
+                                                            </div>
                                                         // <input type="checkbox" name="multiSelectorCheckbox" id="op2_checkbox"
                                                         //     value={1}
                                                         //     onChange={() => {
@@ -712,86 +787,88 @@ function Questions() {
                                                         //         console.log(oldAnswerArr)
                                                         //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
                                                         //     }}
-                                                        //     checked
-                                                        // /> 
-                                                        :
-                                                        <div className="optionCircle" onClick={() => {
-                                                            // old array
-                                                            let oldAnswerArr = currentAnswer.AnswerArr;
-                                                            oldAnswerArr[1] = !oldAnswerArr[1]
-                                                            console.log(oldAnswerArr)
-                                                            SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        }}>
-                                                        </div>
-                                                    // <input type="checkbox" name="multiSelectorCheckbox" id="op2_checkbox"
-                                                    //     value={1}
-                                                    //     onChange={() => {
-                                                    //         // old array
-                                                    //         let oldAnswerArr = currentAnswer.AnswerArr;
-                                                    //         oldAnswerArr[1] = !oldAnswerArr[1]
-                                                    //         console.log(oldAnswerArr)
-                                                    //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                    //     }}
-                                                    // />
-                                                }
-                                                <label htmlFor="op2_checkbox">{state.selectedSubQuestion.Option2}</label>
-                                            </div>
-                                            <div className="option_box">
-                                                {
-                                                    currentAnswer.AnswerArr[2] == true ?
-                                                        <div className="optionCircle a" onClick={() => {
-                                                            // old array
-                                                            let oldAnswerArr = currentAnswer.AnswerArr;
-                                                            oldAnswerArr[2] = !oldAnswerArr[2]
-                                                            console.log(oldAnswerArr)
-                                                            SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        }}>
-                                                            <i class="fa-solid fa-check"></i>
-                                                        </div>
-                                                        // <input type="checkbox" name="multiSelectorCheckbox" id="op3_checkbox"
-                                                        //         value={2}
-                                                        //         onChange={() => {
-                                                        //             // old array
-                                                        //             let oldAnswerArr = currentAnswer.AnswerArr;
-                                                        //             oldAnswerArr[2] = !oldAnswerArr[2]
-                                                        //             SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        //         }}
-                                                        //         checked
-                                                        //     />
-                                                        :
-                                                        <div className="optionCircle" onClick={() => {
-                                                            // old array
-                                                            let oldAnswerArr = currentAnswer.AnswerArr;
-                                                            oldAnswerArr[2] = !oldAnswerArr[2]
-                                                            console.log(oldAnswerArr)
-                                                            SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        }}>
-                                                        </div>
+                                                        // />
+                                                    }
+                                                    <label htmlFor="op2_checkbox">{state.selectedSubQuestion.Option2}</label>
+                                                </div> : <></>}
+                                            {state.selectedSubQuestion.Option2 != "" ?
+                                                <div className="option_box">
+                                                    {
+                                                        currentAnswer.AnswerArr[2] == true ?
+                                                            <div className="optionCircle a" onClick={() => {
+                                                                // old array
+                                                                let oldAnswerArr = currentAnswer.AnswerArr;
+                                                                oldAnswerArr[2] = !oldAnswerArr[2]
+                                                                console.log(oldAnswerArr)
+                                                                SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            }}>
+                                                                <i class="fa-solid fa-check"></i>
+                                                            </div>
+                                                            // <input type="checkbox" name="multiSelectorCheckbox" id="op3_checkbox"
+                                                            //         value={2}
+                                                            //         onChange={() => {
+                                                            //             // old array
+                                                            //             let oldAnswerArr = currentAnswer.AnswerArr;
+                                                            //             oldAnswerArr[2] = !oldAnswerArr[2]
+                                                            //             SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            //         }}
+                                                            //         checked
+                                                            //     />
+                                                            :
+                                                            <div className="optionCircle" onClick={() => {
+                                                                // old array
+                                                                let oldAnswerArr = currentAnswer.AnswerArr;
+                                                                oldAnswerArr[2] = !oldAnswerArr[2]
+                                                                console.log(oldAnswerArr)
+                                                                SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            }}>
+                                                            </div>
 
-                                                    // <input type="checkbox" name="multiSelectorCheckbox" id="op3_checkbox"
-                                                    //     value={2}
-                                                    //     onChange={() => {
-                                                    //         // old array
-                                                    //         let oldAnswerArr = currentAnswer.AnswerArr;
-                                                    //         oldAnswerArr[2] = !oldAnswerArr[2]
-                                                    //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                    //     }}
-                                                    // />
-                                                }
-                                                <label htmlFor="op3_checkbox">{state.selectedSubQuestion.Option3}</label>
-                                            </div>
-                                            <div className="option_box">
-                                                {
-                                                    currentAnswer.AnswerArr[3] == true ?
-                                                        <div className="optionCircle a" onClick={() => {
-                                                            // old array
-                                                            let oldAnswerArr = currentAnswer.AnswerArr;
-                                                            oldAnswerArr[3] = !oldAnswerArr[3]
-                                                            console.log(oldAnswerArr)
-                                                            SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        }}>
-                                                            <i class="fa-solid fa-check"></i>
-                                                        </div>
+                                                        // <input type="checkbox" name="multiSelectorCheckbox" id="op3_checkbox"
+                                                        //     value={2}
+                                                        //     onChange={() => {
+                                                        //         // old array
+                                                        //         let oldAnswerArr = currentAnswer.AnswerArr;
+                                                        //         oldAnswerArr[2] = !oldAnswerArr[2]
+                                                        //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                        //     }}
+                                                        // />
+                                                    }
+                                                    <label htmlFor="op3_checkbox">{state.selectedSubQuestion.Option3}</label>
+                                                </div> : <></>}
+                                            {state.selectedSubQuestion.Option4 != "" ?
+                                                <div className="option_box">
+                                                    {
+                                                        currentAnswer.AnswerArr[3] == true ?
+                                                            <div className="optionCircle a" onClick={() => {
+                                                                // old array
+                                                                let oldAnswerArr = currentAnswer.AnswerArr;
+                                                                oldAnswerArr[3] = !oldAnswerArr[3]
+                                                                console.log(oldAnswerArr)
+                                                                SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            }}>
+                                                                <i class="fa-solid fa-check"></i>
+                                                            </div>
+
+                                                            // <input type="checkbox" name="multiSelectorCheckbox" id="op4_checkbox"
+                                                            //     value={3}
+                                                            //     onChange={() => {
+                                                            //         // old array
+                                                            //         let oldAnswerArr = currentAnswer.AnswerArr;
+                                                            //         oldAnswerArr[3] = !oldAnswerArr[3]
+                                                            //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            //     }}
+                                                            //     checked
+                                                            // /> 
+                                                            :
+                                                            <div className="optionCircle" onClick={() => {
+                                                                // old array
+                                                                let oldAnswerArr = currentAnswer.AnswerArr;
+                                                                oldAnswerArr[3] = !oldAnswerArr[3]
+                                                                console.log(oldAnswerArr)
+                                                                SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
+                                                            }}>
+                                                            </div>
 
                                                         // <input type="checkbox" name="multiSelectorCheckbox" id="op4_checkbox"
                                                         //     value={3}
@@ -801,30 +878,10 @@ function Questions() {
                                                         //         oldAnswerArr[3] = !oldAnswerArr[3]
                                                         //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
                                                         //     }}
-                                                        //     checked
-                                                        // /> 
-                                                        :
-                                                        <div className="optionCircle" onClick={() => {
-                                                            // old array
-                                                            let oldAnswerArr = currentAnswer.AnswerArr;
-                                                            oldAnswerArr[3] = !oldAnswerArr[3]
-                                                            console.log(oldAnswerArr)
-                                                            SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                        }}>
-                                                        </div>
-
-                                                    // <input type="checkbox" name="multiSelectorCheckbox" id="op4_checkbox"
-                                                    //     value={3}
-                                                    //     onChange={() => {
-                                                    //         // old array
-                                                    //         let oldAnswerArr = currentAnswer.AnswerArr;
-                                                    //         oldAnswerArr[3] = !oldAnswerArr[3]
-                                                    //         SetCurrentAnswer({ ...currentAnswer, AnswerArr: oldAnswerArr })
-                                                    //     }}
-                                                    // />
-                                                }
-                                                <label htmlFor="op4_checkbox">{state.selectedSubQuestion.Option4}</label>
-                                            </div>
+                                                        // />
+                                                    }
+                                                    <label htmlFor="op4_checkbox">{state.selectedSubQuestion.Option4}</label>
+                                                </div> : <></>}
                                         </div>
                                     </div> :
                                     // for numeric answer 
@@ -871,8 +928,8 @@ function Questions() {
                                 </button>
                             </div>
                             <div className="b">
-                                <button className="btn btn-primary" onClick={NextQuestion}>
-                                    save and next
+                                <button className="btn btn-primary" onClick={SaveData}>
+                                    SAVE
                                 </button>
                             </div>
                         </div>

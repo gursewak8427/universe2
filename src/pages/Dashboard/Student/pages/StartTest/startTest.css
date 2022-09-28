@@ -42,7 +42,12 @@
 
 
 
-
+.homeBtnQuetion{
+    padding: 5px 20px;
+    border: 2px solid white;
+    border-radius: 20px;
+    font-weight: bolder;
+}
 
 #startTest .right {
     width: 20%;

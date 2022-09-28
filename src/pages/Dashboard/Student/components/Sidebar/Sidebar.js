@@ -184,7 +184,7 @@ function Sidebar({ isSidebarShow }) {
       icons: (<></>
         // <DashboardIcon />
       ),
-      url: "student/dashboard"
+      url: "student/old_test_results"
     },
     {
       title: "Progress Calculator",

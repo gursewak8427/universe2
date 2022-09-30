@@ -47,18 +47,21 @@ function Preview() {
     }, [])
 
     const handleSingleAnswer = (e) => {
+        if (state.isSubmit) return
         setState({
             ...state,
             singleAnswer: e.target.value
         })
     }
     const onChangeKeypad = ({ value, name }) => {
+        if (state.isSubmit) return
         setState({
             ...state,
             numericAnswer: state.numericAnswer + name
         })
     };
     const handleMultiAnswer = (e) => {
+        if (state.isSubmit) return
         if (e.target.name == "Op1") {
             setState({
                 ...state,
@@ -88,34 +91,34 @@ function Preview() {
     const getRightOrWrong = (optionNumber) => {
         if (state.isSubmit == false) return ""
         var AnswerArr = state.questionDetail.Answer.split(",")
-        if (AnswerArr[optionNumber] == "true") {
-            return <span className='m-2 text-success'>Right</span>
-        } else {
-            if (state.singleAnswer == optionNumber) {
-                return <span className='m-2 text-danger'>Wrong</span>
+
+        if (state.questionDetail.QuestionType == "0") {
+
+            if (AnswerArr[optionNumber] == "true") {
+                return <span className='m-2 text-success'>Right</span>
             } else {
-                return ""
+                if (state.singleAnswer == optionNumber) {
+                    return <span className='m-2 text-danger'>Wrong</span>
+                } else {
+                    return ""
+                }
             }
         }
-        if (optionNumber == 0) {
-        }
-        if (optionNumber == 1) {
-        }
-        if (optionNumber == 2) {
-        }
-        if (optionNumber == 3) {
-        }
-        var AnswerArr = state.questionDetail.Answer.split(",")
-        if (state.questionDetail.QuestionType == "0") {
-            if (AnswerArr[parseInt(state.singleAnswer)] == "true") {
-                alert("Your answer is Right")
+
+        if (state.questionDetail.QuestionType == "1") {
+            if (AnswerArr[optionNumber] == "true") {
+                return <span className='m-2 text-success'>Right</span>
             } else {
-                alert("Your answer is Wrong")
+                if (optionNumber == 0 && state.Op1 == true) return <span className='m-2 text-danger'>Wrong</span>
+                if (optionNumber == 1 && state.Op2 == true) return <span className='m-2 text-danger'>Wrong</span>
+                if (optionNumber == 2 && state.Op3 == true) return <span className='m-2 text-danger'>Wrong</span>
+                if (optionNumber == 3 && state.Op4 == true) return <span className='m-2 text-danger'>Wrong</span>
             }
         }
     }
 
     const submitAnswer = () => {
+        if (state.isSubmit) return
         setState({
             ...state,
             isSubmit: true,
@@ -154,12 +157,27 @@ function Preview() {
             var correctAnswer = parseFloat(state.questionDetail.CorrectAnswer);
 
             if (parseFloat(state.numericAnswer) == correctAnswer) {
-                alert("Your answer is absolute correct")
+                // alert("Your answer is absolute correct")
             } else if (parseFloat(state.numericAnswer) <= rangeMax && parseFloat(state.numericAnswer) >= rangeMin) {
-                alert("Your answer is correct")
+                // alert("Your answer is correct")
             } else {
-                alert("Your answer is wrong")
+                // alert("Your answer is wrong")
             }
+        }
+    }
+
+
+    const getNumericResult = () => {
+        var rangeMax = parseFloat(state.questionDetail.Rangemax);
+        var rangeMin = parseFloat(state.questionDetail.Rangemin);
+        var correctAnswer = parseFloat(state.questionDetail.CorrectAnswer);
+
+        if (parseFloat(state.numericAnswer) == correctAnswer) {
+            return true;
+        } else if (parseFloat(state.numericAnswer) <= rangeMax && parseFloat(state.numericAnswer) >= rangeMin) {
+            return true;
+        } else {
+            return false;
         }
     }
 
@@ -242,6 +260,11 @@ function Preview() {
 
                                         </div>
                                         <button className='btn btn-success m-2' onClick={submitAnswer}>Submit Answer</button>
+                                        {
+                                            true ?
+                                                <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Hint</button>
+                                                : <></>
+                                        }
                                     </div> :
                                     state.questionDetail.QuestionType == 1 ?
                                         <div>
@@ -260,6 +283,7 @@ function Preview() {
                                                 <li>
                                                     <input type="checkbox" name='Op1' id='op1' onChange={handleMultiAnswer} value="0" />
                                                     <label htmlFor="op1">{state.questionDetail.Option1}</label>
+                                                    {getRightOrWrong(0)}
                                                     {
                                                         state.questionDetail.Option1Image ?
                                                             <>
@@ -272,6 +296,7 @@ function Preview() {
                                                         <li>
                                                             <input type="checkbox" name='Op2' id='op2' onChange={handleMultiAnswer} value="1" />
                                                             <label htmlFor="op2">{state.questionDetail.Option2}</label>
+                                                            {getRightOrWrong(1)}
                                                             {
                                                                 state.questionDetail.Option2Image ?
                                                                     <>
@@ -285,6 +310,7 @@ function Preview() {
                                                         <li>
                                                             <input type="checkbox" name='Op3' id='op3' onChange={handleMultiAnswer} value="2" />
                                                             <label htmlFor="op3">{state.questionDetail.Option3}</label>
+                                                            {getRightOrWrong(2)}
                                                             {
                                                                 state.questionDetail.Option3Image ?
                                                                     <>
@@ -298,6 +324,7 @@ function Preview() {
                                                         <li>
                                                             <input type="checkbox" name='Op4' id='op4' onChange={handleMultiAnswer} value="3" />
                                                             <label htmlFor="op4">{state.questionDetail.Option4}</label>
+                                                            {getRightOrWrong(3)}
                                                             {
                                                                 state.questionDetail.Option4Image ?
                                                                     <>
@@ -310,6 +337,11 @@ function Preview() {
 
                                             </div>
                                             <button className='btn btn-success m-2' onClick={submitAnswer}>Submit Answer</button>
+                                            {
+                                                true ?
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Hint</button>
+                                                    : <></>
+                                            }
                                         </div> :
                                         <div>
                                             <div className="question"> <span className="text-primary">Question:</span> <br /> {state.questionDetail.Question}</div>
@@ -343,10 +375,51 @@ function Preview() {
                                                 })
                                             }}>.</div>} />
                                             <button className='btn btn-success m-2' onClick={submitAnswer}>Submit Answer</button>
+                                            {
+                                                true ?
+                                                    <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#myModal">Hint</button>
+                                                    : <></>
+                                            }
+                                            <br />
+                                            {
+                                                state.isSubmit?
+                                                getNumericResult() ?
+                                                    <div className='text-success m-2'>
+                                                        <b>Your answer is Right</b>
+                                                    </div> :
+                                                    <div className='text-danger m-2'>
+                                                        <b>Your answer is Wrong</b>
+                                                        <br />
+                                                        <b className='text-info'>Correct Answer : {state.questionDetail.CorrectAnswer}</b>    
+                                                    </div> : <></>
+
+                                            }
+
+
                                         </div>
                         }
                     </div>
                 </main>
+            </div>
+
+            <div id="myModal" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Quetion Hint</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>{state.questionDetail ? state.questionDetail.Clue : <>Nothing</>}</p>
+                            {state.questionDetail ? state.questionDetail.ClueImage ? <img src={state.questionDetail.ClueImage} alt="" /> : <></> : <></>}
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+
+                </div>
             </div>
         </div>
     )

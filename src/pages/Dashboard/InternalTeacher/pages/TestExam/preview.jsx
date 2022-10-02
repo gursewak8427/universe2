@@ -55,6 +55,15 @@ function Preview() {
     }
     const onChangeKeypad = ({ value, name }) => {
         if (state.isSubmit) return
+        console.log([value, name]);
+
+        if (name == "Backspace") {
+            setState({
+                ...state,
+                numericAnswer: state.numericAnswer.slice(0, -1)
+            })
+            return;
+        }
         setState({
             ...state,
             numericAnswer: state.numericAnswer + name
@@ -356,15 +365,8 @@ function Preview() {
                                                 <b className='text-primary'>Numeric Answer Type</b>
                                             </div>
                                             <div className="answer m-2">
-                                                <input type="number" placeholder='Type Answer Here...' className='form-control' name='numericAnswer' onChange={
-                                                    (e) => {
-                                                        setState({
-                                                            ...state,
-                                                            numericAnswer: e.target.value
-                                                        })
-                                                    }
-                                                }
-                                                    value={parseFloat(state.numericAnswer)}
+                                                <input type="text" placeholder='Type answer from keypad below' className='form-control' name='numericAnswer'
+                                                    value={state.numericAnswer}
                                                     readOnly
                                                 />
                                             </div>
@@ -382,23 +384,38 @@ function Preview() {
                                             }
                                             <br />
                                             {
-                                                state.isSubmit?
-                                                getNumericResult() ?
-                                                    <div className='text-success m-2'>
-                                                        <b>Your answer is Right</b>
-                                                    </div> :
-                                                    <div className='text-danger m-2'>
-                                                        <b>Your answer is Wrong</b>
-                                                        <br />
-                                                        <b className='text-info'>Correct Answer : {state.questionDetail.CorrectAnswer}</b>    
-                                                    </div> : <></>
+                                                state.isSubmit ?
+                                                    getNumericResult() ?
+                                                        <div className='text-success m-2'>
+                                                            <b>Your answer is Right</b>
+                                                        </div> :
+                                                        <div className='text-danger m-2'>
+                                                            <b>Your answer is Wrong</b>
+                                                            <br />
+                                                            <b className='text-info'>Correct Answer : {state.questionDetail.CorrectAnswer}</b>
+                                                        </div> : <></>
 
                                             }
 
 
                                         </div>
                         }
+                        {
+                            state.isSubmit ?
+                                <div className="SolutionDiv m-2">
+                                    <h3 className="text-dark">
+                                        <b>Solution: </b>
+                                    </h3>
+                                    {
+                                        state.questionDetail ? state.questionDetail.SolutionImage ?
+                                            <img src={require(state.questionDetail.SolutionImage)} alt="" /> : <></> : <></>
+                                    }
+                                    <p>{state.questionDetail ? state.questionDetail.Solution : ""}</p>
+                                </div> : <></>
+                        }
+
                     </div>
+
                 </main>
             </div>
 
@@ -408,7 +425,7 @@ function Preview() {
                     <div class="modal-content">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal">&times;</button>
-                            <h4 class="modal-title">Quetion Hint</h4>
+                            <h4 class="modal-title">Question Hint</h4>
                         </div>
                         <div class="modal-body">
                             <p>{state.questionDetail ? state.questionDetail.Clue : <>Nothing</>}</p>

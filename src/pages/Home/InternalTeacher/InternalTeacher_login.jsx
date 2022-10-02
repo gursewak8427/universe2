@@ -37,9 +37,9 @@ function InternalTeacherLogin() {
 
                 const token = response.data.token;
                 authenticate(token, () => {
-                    dispatch(setSuccessMsg("Login Successfully"))
-                    setState({ ...state, isSubmit: false, })
                     setTimeout(() => {
+                        dispatch(setSuccessMsg("Login Successfully"))
+                        setState({ ...state, isSubmit: false, })
                         window.location.href = "/";
                     }, 500);
                 })
@@ -64,7 +64,7 @@ function InternalTeacherLogin() {
         })
     }
 
-    
+
     return (
         <>
             <div id="internalTeacher">
@@ -82,7 +82,14 @@ function InternalTeacherLogin() {
                     <div className="input_row">
                         <span>Reset Password</span>
                     </div>
-                    <button className="btn submitBtn b" onClick={() => loginNow()}>Sign In</button>
+                    <button className="btn submitBtn b" onClick={() => loginNow()}>
+                        {
+                            state.isSubmit ?
+                                <div class="spinner-border text-white" role="status"></div>
+                                :
+                                "Sign In"
+                        }
+                    </button>
                 </div>
                 <div className="right">
                     <img src={require("./sideImage.png")} />

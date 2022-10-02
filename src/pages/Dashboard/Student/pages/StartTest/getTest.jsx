@@ -118,7 +118,7 @@ function GetTest() {
 
     const selectMainTopicToGetTopics = (maintopicdata, index) => {
         // get main topics same
-        axios.get(`${process.env.REACT_APP_API_URI}students/maintopic/?id=${maintopicdata.id}`, config).then(response => {
+        axios.get(`${process.env.REACT_APP_API_URI}students/maintopic/?id=${maintopicdata.topic.id}`, config).then(response => {
             const mainTopicData = response.data;
             console.log("mainTopicData to get topics")
             console.log(mainTopicData)
@@ -237,7 +237,7 @@ function GetTest() {
                                                                 return (
                                                                     <div className="data_grid_box" onClick={() => selectMainTopicToGetTopics(maintopicdata)}>
                                                                         <h5>Main Topic</h5>
-                                                                        <p>{maintopicdata.topicname || "MT=" + maintopicdata.id}</p>
+                                                                        <p>{maintopicdata.topic.topicname || "MT=" + maintopicdata.topic.id}</p>
                                                                     </div>
                                                                 )
                                                             })

@@ -44,7 +44,7 @@ function StudentDashboard() {
                         </div>
                         <div className="right">
                             <p>Email ID : &nbsp; {admin.data.email}</p>
-                            <p>Grade : &nbsp; 9th Standard</p>
+                            <p>Class : &nbsp; 9th Standard</p>
                             <p>Subscription : &nbsp; Paid Subscription</p>
                         </div>
                     </div>

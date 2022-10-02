@@ -115,7 +115,7 @@ function CustomExpandableMenuItem({ menu, active }) {
             {menu.icons}
           </ListItemIcon> */}
           <ListItemText primary={menu.title} className="sidebar_text" />
-          {isExpand ? <ExpandLess /> : <ExpandMore />}
+          {/* {isExpand ? <ExpandLess /> : <ExpandMore />} */}
         </ListItem>
       </a>
       {menu.items.map((item, index) => (
@@ -248,11 +248,11 @@ function Sidebar({ isSidebarShow }) {
           </IconButton> */}
 
           <div className="appBar_items">
-            <Button color="inherit">Contact Us</Button>
+            {/* <Button color="inherit">Contact Us</Button> */}
             <Button color="inherit">
               <Link to="/">Home</Link>
             </Button>
-            <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" />
+            {/* <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" /> */}
             <Button color="inherit">
               {admin.data.first_name}
             </Button>

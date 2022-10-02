@@ -361,3 +361,14 @@ td .MuiButtonBase-root {
     align-items: center;
     justify-content: center;
 }
+.SolutionDiv img{
+    max-width: 200px;
+}
+
+.index-module_itemsContainer__CjP0y{
+    padding-bottom: 0 !important;
+}
+.index-module_itemsContainer__CjP0y > div{
+    font-weight: bolder;
+    background-color: white !important;
+}

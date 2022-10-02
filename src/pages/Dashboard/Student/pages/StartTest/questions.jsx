@@ -170,7 +170,14 @@ function Questions() {
             CorrectAnswer: currentAnswer.CorrectAnswer + name
         })
     };
-
+    const unMarkForReviewAndNext = () => {
+        let oldQuestionResult = state.questionAssigned;
+        oldQuestionResult[state.selectedQuestion].submittedStatus = 1
+        setState({
+            ...state,
+            questionAssigned: oldQuestionResult
+        })
+    }
     const markForReviewAndNext = () => {
         // savedata
         let oldQuestionResult = state.questionAssigned;
@@ -194,9 +201,7 @@ function Questions() {
                 ...state,
                 questionAssigned: oldQuestionResult
             })
-            dispatch(setErrorMsg("No More Questions"))
             return;
-        } else {
         }
 
         let mainQuestionData = state.questionAssigned[state.selectedQuestion + 1].mainQuestionData
@@ -259,17 +264,13 @@ function Questions() {
         if (oldQuestionResult[state.selectedQuestion].questionType == "2") {
             oldQuestionResult[state.selectedQuestion].submittedAnswerForNumeric = currentAnswer.CorrectAnswer
         }
-        setState({
-            ...state,
-            questionAssigned: oldQuestionResult
-        })
 
-    }
-    const NextQuestion = () => {
 
-        let oldQuestionResult = state.questionAssigned;
         if (state.questionAssigned.length == state.selectedQuestion + 1) {
-            dispatch(setErrorMsg("No More Questions"))
+            setState({
+                ...state,
+                questionAssigned: oldQuestionResult
+            })
             return;
         }
 
@@ -289,13 +290,20 @@ function Questions() {
             AnswerArr: [false, false, false, false], // for multi
             CorrectAnswer: null, // for single and numeric is integer
         })
+
+    }
+
+    const NextQuestion = () => {
+
     }
 
     const SelectQuestion = (QuestionIndex) => {
         let oldQuestionResult = state.questionAssigned;
         let mainQuestionData = state.questionAssigned[QuestionIndex].mainQuestionData
         let subQuestionData = state.questionAssigned[QuestionIndex].subQuestionData
-        oldQuestionResult[QuestionIndex].submittedStatus = 1
+        if (oldQuestionResult[QuestionIndex].submittedStatus == 0) {
+            oldQuestionResult[QuestionIndex].submittedStatus = 1
+        }
 
         let oldCurrentAnswer = currentAnswer
         if (oldQuestionResult[QuestionIndex].questionType == "0") {
@@ -501,7 +509,7 @@ function Questions() {
                 }).catch(err => {
                     console.log(err)
                     swal("Sorry!", "You already attempt the exam!", "error");
-                    alert(err.response.data.message)
+                    // alert(err.response.data.message)
                 })
             }
         })
@@ -556,17 +564,139 @@ function Questions() {
                                     <span>Calculator</span>
                                 </span> : <></>
                         }
-                        <span>
+                        <span data-toggle="modal" data-target="#exampleModalLong2">
                             <img src={require("./questionPaper.png")} alt="" />
                             <span>Question Paper</span>
                         </span>
-                        <span>
+                        <span data-toggle="modal" data-target="#exampleModalLong">
                             <img src={require("./viewInstructions.png")} alt="" />
                             <span>View Instructions</span>
                         </span>
                     </div>
                 </div>
                 {/* end topic details */}
+
+                {/* Instruction model */}
+                <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLongTitle">Instructions</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body instructionsModel">
+                                <img src={require("./instructions.png")} alt="" />
+                                <img src={require("./instructions2.png")} alt="" />
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {/* Instruction model End */}
+
+                {/* Question paper model */}
+                <div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLong2Title" aria-hidden="true">
+                    <div class="modal-dialog modal-lg" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLong2Title">Question Paper</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body instructionsModel">
+                                {
+                                    isWait ? <>Loading...</> :
+                                        state.questionAssigned.map((singleQuestion, index) => {
+                                            return <div className="singleQuestionPaperDetail">
+                                                {
+                                                    singleQuestion.subQuestionData.QuestionType == "0" ?
+                                                        <>
+                                                            <div className="text-primary d-flex justify-content-between">
+                                                                <span>Single Answer Type</span>
+                                                                <span>
+                                                                    <span className="text-success mx-2">+{singleQuestion.subQuestionData.Marks}</span>
+                                                                    <span className="text-danger">-{singleQuestion.subQuestionData.NegativeMarks}</span>
+                                                                </span>
+                                                            </div>
+                                                            <div>{`Q${index + 1})`} {singleQuestion.subQuestionData.Question}</div>
+
+                                                            <h6 className="mt-2">Options : </h6>
+                                                            {
+                                                                singleQuestion.subQuestionData.Option1 != "" ?
+                                                                    <div>{`A) ${singleQuestion.subQuestionData.Option1}`}</div> : <></>
+                                                            }
+                                                            {
+                                                                singleQuestion.subQuestionData.Option2 != "" ?
+                                                                    <div>{`B) ${singleQuestion.subQuestionData.Option2}`}</div> : <></>
+                                                            }
+                                                            {
+                                                                singleQuestion.subQuestionData.Option3 != "" ?
+                                                                    <div>{`C) ${singleQuestion.subQuestionData.Option3}`}</div> : <></>
+                                                            }
+                                                            {
+                                                                singleQuestion.subQuestionData.Option4 != "" ?
+                                                                    <div>{`D) ${singleQuestion.subQuestionData.Option4}`}</div> : <></>
+                                                            }
+                                                        </> :
+                                                        singleQuestion.subQuestionData.QuestionType == "1" ?
+                                                            <>
+                                                                <div className="text-primary d-flex justify-content-between">
+                                                                    <span>Multiple Answer Type</span>
+                                                                    <span>
+                                                                        <span className="text-success mx-2">+{singleQuestion.subQuestionData.Marks}</span>
+                                                                        <span className="text-danger">-{singleQuestion.subQuestionData.NegativeMarks}</span>
+                                                                    </span>
+                                                                </div>
+                                                                <div>{`Q${index + 1})`} {singleQuestion.subQuestionData.Question}</div>
+
+                                                                <h6 className="mt-2">Options : </h6>
+                                                                {
+                                                                    singleQuestion.subQuestionData.Option1 != "" ?
+                                                                        <div>{`A) ${singleQuestion.subQuestionData.Option1}`}</div> : <></>
+                                                                }
+                                                                {
+                                                                    singleQuestion.subQuestionData.Option2 != "" ?
+                                                                        <div>{`B) ${singleQuestion.subQuestionData.Option2}`}</div> : <></>
+                                                                }
+                                                                {
+                                                                    singleQuestion.subQuestionData.Option3 != "" ?
+                                                                        <div>{`C) ${singleQuestion.subQuestionData.Option3}`}</div> : <></>
+                                                                }
+                                                                {
+                                                                    singleQuestion.subQuestionData.Option4 != "" ?
+                                                                        <div>{`D) ${singleQuestion.subQuestionData.Option4}`}</div> : <></>
+                                                                }
+                                                            </> :
+                                                            singleQuestion.subQuestionData.QuestionType == "2" ?
+                                                                <>
+                                                                    <div className="text-primary d-flex justify-content-between">
+                                                                        <span>Numeric Type Answer</span>
+                                                                        <span>
+                                                                            <span className="text-success mx-2">+{singleQuestion.subQuestionData.Marks}</span>
+                                                                            <span className="text-danger">-{singleQuestion.subQuestionData.NegativeMarks}</span>
+                                                                        </span>
+                                                                    </div>
+                                                                    <div>{`Q${index + 1})`} {singleQuestion.subQuestionData.Question}</div>
+                                                                </> : <></>
+
+                                                }
+                                            </div>
+                                        })
+                                }
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                {/* Question paper model End */}
 
                 {/* question row div */}
                 <div id="mainDiv">
@@ -920,16 +1050,28 @@ function Questions() {
                             document.getElementsByClassName("bottom_save_and_next")[0].classList.toggle("active")
                         }}>
                             <div className="a">
-                                <button className="btn" onClick={markForReviewAndNext}>
-                                    Mark for review & next
-                                </button>
+                                {
+                                    state.questionAssigned[state.selectedQuestion].submittedStatus == 2 ?
+                                        <button className="btn btn-danger" onClick={unMarkForReviewAndNext}>
+                                            Unmark for review
+                                        </button> :
+                                        <button className="btn" onClick={markForReviewAndNext}>
+                                            {
+                                                state.questionAssigned.length != state.selectedQuestion + 1 ?
+                                                    "Mark for review & next" : "Mark for review"
+                                            }
+                                        </button>
+                                }
                                 <button className="btn" onClick={clearResponse}>
                                     Clear Response
                                 </button>
                             </div>
                             <div className="b">
                                 <button className="btn btn-primary" onClick={SaveData}>
-                                    SAVE
+                                    {
+                                        state.questionAssigned.length != state.selectedQuestion + 1 ?
+                                            "SAVE AND NEXT " : "SAVE"
+                                    }
                                 </button>
                             </div>
                         </div>

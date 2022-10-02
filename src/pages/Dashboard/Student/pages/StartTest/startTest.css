@@ -63,4 +63,15 @@
 .checkboxData input{
     margin: 3px;
 }
+
+.instructionsModel img{
+    max-width: 100%;
+}
+
+.singleQuestionPaperDetail{
+    background: whitesmoke;
+    margin: 10px 0;
+    padding: 10px;
+    border: 1px solid grey;
+}
    

@@ -68,7 +68,7 @@ function OldTestResults() {
                             options={{
                                 actionsColumnIndex: -1,
                                 paginationType: "stepped",
-                                exportButton: true
+                                exportButton: false
                             }}
                             localization={{
                                 header: {

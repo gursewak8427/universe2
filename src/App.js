@@ -33,6 +33,7 @@ import CreateMainTopic from "./pages/Dashboard/InternalTeacher/pages/mainTopics/
 import Preview from "./pages/Dashboard/InternalTeacher/pages/TestExam/preview";
 import Questions from "./pages/Dashboard/Student/pages/StartTest/questions";
 import OldTestResults from "./pages/Dashboard/Student/pages/oldTest/oldTestResults";
+import OldQuestions from "./pages/Dashboard/Student/pages/oldTest/oldquestions";
 
 function App() {
   const history = useHistory();
@@ -184,6 +185,7 @@ function App() {
               <PrivateRoute exact path="/student/start/:topicId" component={StartTest} />
               <PrivateRoute exact path="/student/questions/:topicId" component={Questions} />
               <PrivateRoute exact path="/student/old_test_results" component={OldTestResults} />
+              <PrivateRoute exact path="/student/old_test_results_preview/:examId" component={OldQuestions} />
 
             </Switch>
           </Router> :

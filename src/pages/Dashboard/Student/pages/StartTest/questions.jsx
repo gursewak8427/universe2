@@ -178,6 +178,7 @@ function Questions() {
             questionAssigned: oldQuestionResult
         })
     }
+
     const markForReviewAndNext = () => {
         // savedata
         let oldQuestionResult = state.questionAssigned;
@@ -208,6 +209,23 @@ function Questions() {
         let subQuestionData = state.questionAssigned[state.selectedQuestion + 1].subQuestionData
         oldQuestionResult[state.selectedQuestion + 1].submittedStatus = 1
 
+
+        // set answers
+        let oldCurrentAnswer = currentAnswer
+        if (oldQuestionResult[state.selectedQuestion + 1].questionType == "0") {
+            oldCurrentAnswer.CorrectAnswer = oldQuestionResult[state.selectedQuestion + 1].submittedAnswerForSingle
+        }
+        if (oldQuestionResult[state.selectedQuestion + 1].questionType == "1") {
+            if (oldQuestionResult[state.selectedQuestion + 1].submittedAnswerForMulti == null) {
+                oldCurrentAnswer.AnswerArr = [false, false, false, false]
+            } else {
+                oldCurrentAnswer.AnswerArr = oldQuestionResult[state.selectedQuestion + 1].submittedAnswerForMulti
+            }
+        }
+        if (oldQuestionResult[state.selectedQuestion + 1].questionType == "2") {
+            oldCurrentAnswer.CorrectAnswer = oldQuestionResult[state.selectedQuestion + 1].submittedAnswerForNumeric
+        }
+
         setState({
             ...state,
             selectedQuestion: state.selectedQuestion + 1,
@@ -216,10 +234,7 @@ function Questions() {
             questionAssigned: oldQuestionResult
         })
 
-        SetCurrentAnswer({
-            AnswerArr: [false, false, false, false], // for multi
-            CorrectAnswer: null, // for single and numeric is integer
-        })
+        SetCurrentAnswer(oldCurrentAnswer)
     }
 
     const clearResponse = () => {
@@ -277,6 +292,22 @@ function Questions() {
         let mainQuestionData = state.questionAssigned[state.selectedQuestion + 1].mainQuestionData
         let subQuestionData = state.questionAssigned[state.selectedQuestion + 1].subQuestionData
         oldQuestionResult[state.selectedQuestion + 1].submittedStatus = 1
+        
+        // set answers
+        let oldCurrentAnswer = currentAnswer
+        if (oldQuestionResult[state.selectedQuestion + 1].questionType == "0") {
+            oldCurrentAnswer.CorrectAnswer = oldQuestionResult[state.selectedQuestion + 1].submittedAnswerForSingle
+        }
+        if (oldQuestionResult[state.selectedQuestion + 1].questionType == "1") {
+            if (oldQuestionResult[state.selectedQuestion + 1].submittedAnswerForMulti == null) {
+                oldCurrentAnswer.AnswerArr = [false, false, false, false]
+            } else {
+                oldCurrentAnswer.AnswerArr = oldQuestionResult[state.selectedQuestion + 1].submittedAnswerForMulti
+            }
+        }
+        if (oldQuestionResult[state.selectedQuestion + 1].questionType == "2") {
+            oldCurrentAnswer.CorrectAnswer = oldQuestionResult[state.selectedQuestion + 1].submittedAnswerForNumeric
+        }
 
         setState({
             ...state,
@@ -286,16 +317,11 @@ function Questions() {
             questionAssigned: oldQuestionResult
         })
 
-        SetCurrentAnswer({
-            AnswerArr: [false, false, false, false], // for multi
-            CorrectAnswer: null, // for single and numeric is integer
-        })
+        SetCurrentAnswer(oldCurrentAnswer)
 
     }
 
-    const NextQuestion = () => {
-
-    }
+    const NextQuestion = () => {}
 
     const SelectQuestion = (QuestionIndex) => {
         let oldQuestionResult = state.questionAssigned;
@@ -339,8 +365,6 @@ function Questions() {
         state.questionAssigned.map((singleQuestion, index) => {
             let questionType = singleQuestion.questionType;
 
-
-
             if (questionType == "0") {
                 totalMarks += singleQuestion.subQuestionData.Marks
 
@@ -365,7 +389,7 @@ function Questions() {
                             "subQuestion": singleQuestion.subQuestionData.id,
                             "submittedAnswerForSingle": singleQuestion.submittedAnswerForSingle,
                             "submittedStatus": singleQuestion.submittedStatus,
-                            "marks": singleQuestion.subQuestionData.NegativeMarks
+                            "marks": -singleQuestion.subQuestionData.NegativeMarks
                         })
                     }
 
@@ -402,7 +426,7 @@ function Questions() {
                         singleQuestinResultList.push({
                             "mainQuestion": singleQuestion.mainQuestionData.id,
                             "subQuestion": singleQuestion.subQuestionData.id,
-                            "submittedAnswerForMulti": singleQuestion.submittedAnswerForMulti,
+                            "submittedAnswerForMulti": singleQuestion.submittedAnswerForMulti.toString(),
                             "submittedStatus": singleQuestion.submittedStatus,
                             "marks": singleQuestion.subQuestionData.Marks
                         })
@@ -412,9 +436,9 @@ function Questions() {
                         singleQuestinResultList.push({
                             "mainQuestion": singleQuestion.mainQuestionData.id,
                             "subQuestion": singleQuestion.subQuestionData.id,
-                            "submittedAnswerForMulti": singleQuestion.submittedAnswerForMulti,
+                            "submittedAnswerForMulti": singleQuestion.submittedAnswerForMulti.toString(),
                             "submittedStatus": singleQuestion.submittedStatus,
-                            "marks": singleQuestion.subQuestionData.NegativeMarks
+                            "marks": -singleQuestion.subQuestionData.NegativeMarks
                         })
                     }
                 } else {
@@ -461,7 +485,7 @@ function Questions() {
                             "subQuestion": singleQuestion.subQuestionData.id,
                             "submittedAnswerForNumeric": singleQuestion.submittedAnswerForNumeric,
                             "submittedStatus": singleQuestion.submittedStatus,
-                            "marks": singleQuestion.subQuestionData.NegativeMarks
+                            "marks": -singleQuestion.subQuestionData.NegativeMarks
                         })
                     }
                 } else {
@@ -499,7 +523,6 @@ function Questions() {
                         'Authorization': `Bearer ${admin.token}`
                     }
                 }
-
                 axios.post(`${process.env.REACT_APP_API_URI}students/examsubmit/`, finalResultData, config).then(response => {
                     const responseData = response.data;
                     console.log("Final Result Response")
@@ -1203,6 +1226,55 @@ function Questions() {
 
                                         if (myQuestionResults.submittedStatus == 1) {
                                             if (myQuestionResults.submittedAnswerForMulti == null) {
+                                                // not answer
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
+                                                    <img src={require("./n2.png")} alt="" />
+                                                    <p>{index + 1}</p>
+                                                </div>
+                                            } else {
+                                                // yes answer
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
+                                                    <img src={require("./n1.png")} alt="" />
+                                                    <p>{index + 1}</p>
+                                                </div>
+                                            }
+                                        }
+
+                                        if (myQuestionResults.submittedStatus == 0) {
+                                            return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
+                                                <img src={require("./n3.png")} alt="" />
+                                                <p>{index + 1}</p>
+                                            </div>
+                                        }
+
+                                    }
+
+                                    //  for numeric
+                                    if (myQuestionResults.questionType == "2") {
+
+                                        // visited
+                                        if (myQuestionResults.submittedStatus == 2) {
+                                            // inside mark review
+                                            // with answer
+                                            if (myQuestionResults.submittedAnswerForNumeric == null) {
+                                                // not answer
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
+                                                    <img src={require("./n4.png")} alt="" />
+                                                    <p>{index + 1}</p>
+                                                </div>
+                                            } else {
+                                                // yes answer
+                                                return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
+                                                    <img src={require("./n5.png")} alt="" />
+                                                    <p>{index + 1}</p>
+                                                </div>
+                                            }
+                                            // not answer
+                                        }
+                                        // not review
+
+                                        if (myQuestionResults.submittedStatus == 1) {
+                                            if (myQuestionResults.submittedAnswerForNumeric == null) {
                                                 // not answer
                                                 return <div className="notationDiv" onClick={() => SelectQuestion(index)}>
                                                     <img src={require("./n2.png")} alt="" />

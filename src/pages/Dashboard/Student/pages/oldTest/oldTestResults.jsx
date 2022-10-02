@@ -4,14 +4,13 @@ import { EyeIcon, DeleteIcon, EditIcon } from "../../../../../utils/Icons";
 import { useStyles } from "../../../../../utils/useStyles";
 import axios from "axios";
 import Sidebar from "../../components/Sidebar/Sidebar";
-import '../../dashboard.css'
 import MaterialTable from "material-table";
 
 import { Splide, SplideSlide } from '@splidejs/react-splide';
 
 // Default theme
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
-import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
+import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
 import { useDispatch, useSelector } from "react-redux";
 import { setSuccessMsg, setTopics } from "../../../../../services/actions/mainAction";
 import { useSelect } from "@mui/base";
@@ -40,8 +39,6 @@ function OldTestResults() {
         }).catch(err => {
             console.log(err)
         })
-
-
     }, [])
 
     const columns = [
@@ -50,7 +47,7 @@ function OldTestResults() {
         { title: "Subject", field: "Topic.subject.subject" },
         { title: "Topic", field: "Topic.Topicname", },
         { title: "Total Marks", field: "timing", render: (item) => <>{item.resultMarks}/{item.totalMarks}</> },
-        { title: "Test Preview", field: "updated", render: (item) => <button className="btn btn-primary">Preview</button> },
+        { title: "Test Preview", field: "updated", render: (item) => <button className="btn btn-primary" onClick={() => history.push("/student/old_test_results_preview/" + item.id)}>Preview</button> },
         { title: "", field: "updated", render: (item) => <button className="btn btn-primary">Reattempt</button> },
         { title: "", field: "updated", render: (item) => <button className="btn btn-primary">Reports</button> },
     ];

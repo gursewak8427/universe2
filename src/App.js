@@ -35,6 +35,9 @@ import Questions from "./pages/Dashboard/Student/pages/StartTest/questions";
 import OldTestResults from "./pages/Dashboard/Student/pages/oldTest/oldTestResults";
 import OldQuestions from "./pages/Dashboard/Student/pages/oldTest/oldquestions";
 
+// firebase
+import { auth } from './firebase-config';
+
 function App() {
   const history = useHistory();
   const { loader, error_msg, success_msg, login_loader } = useSelector((state) => state.main);

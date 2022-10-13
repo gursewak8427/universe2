@@ -5,6 +5,8 @@ import './Student.css';
 import { useDispatch } from "react-redux";
 import { setErrorMsg, setSuccessMsg } from "../../../services/actions/mainAction";
 import { authenticate } from "../../../helper/Cookies";
+import { RecaptchaVerifier, signInWithPhoneNumber } from "firebase/auth";
+import { auth, app } from "../../../firebase-config";
 
 function StudentSignUp() {
     const history = useHistory();
@@ -18,9 +20,23 @@ function StudentSignUp() {
         confPass: "",
         keepMe: false,
         isSubmit: false,
+        phoneloading: false,
+        emailloading: false,
+    })
+    const [otpval, setOtp] = useState({
+        phone: "",
+        email: "",
+    })
+    const [verification, setVerification] = useState({
+        phone: false,
+        email: false
     })
 
     const registerNow = async () => {
+        if (verification.email == false || verification.phone == false) {
+            dispatch(setErrorMsg("Please verify both email and phone"))
+            return;
+        }
         setState({ ...state, isSubmit: true, })
         if (state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "") {
             dispatch(setErrorMsg("Please fill all fields"))
@@ -66,6 +82,143 @@ function StudentSignUp() {
             [e.target.name]: e.target.value
         })
     }
+
+
+    const sendPhoneOTP = () => {
+        setState({
+            ...state,
+            phoneloading: true,
+        })
+        if (state.phone == "" || state.phone.length < 10) {
+            dispatch(setErrorMsg("Phone number is not valid"))
+            return;
+        }
+        var phone = "+91" + state.phone
+        // SEND OTP
+        if (!window.recaptchaVerifier) {
+            window.recaptchaVerifier = new RecaptchaVerifier('recaptcha-container', {
+                'size': 'invisible',
+                'callback': (response) => {
+                    // reCAPTCHA solved, allow signInWithPhoneNumber.
+                }
+            }, auth);
+        }
+        const appVerifier = window.recaptchaVerifier;
+        signInWithPhoneNumber(auth, phone, appVerifier).then((confirmationResult) => {
+            window.confirmationResult = confirmationResult;
+            dispatch(setSuccessMsg("OTP send to " + phone))
+            setState({
+                ...state,
+                phoneloading: false,
+            })
+        }).catch((error) => {
+            console.log(error);
+        });
+    }
+
+    // for phone otp verification
+    const getPhoneVerification = () => {
+        if (verification.phone) return
+        if (otpval.phone == "") {
+            dispatch(setErrorMsg("Please Enter OTP"));
+            return;
+        }
+        setState({
+            ...state,
+            phoneloading: true,
+        })
+        window.confirmationResult.confirm(otpval.phone).then((result) => {
+            // User signed in successfully.
+            const user = result.user;
+            console.log(user)
+            setState({
+                ...state,
+                phoneloading: false,
+            })
+            setVerification({
+                ...verification,
+                phone: true,
+            })
+            dispatch(setSuccessMsg("Phone number verified"))
+        }).catch((error) => {
+            console.log("usererr")
+            dispatch(setSuccessMsg("OTP verification failed, Please Enter OTP again"))
+            setState({
+                ...state,
+                phoneloading: false,
+            })
+        });
+
+
+    }
+
+    // for email otp verification
+    const getEmailVerification = () => {
+        setVerification({
+            ...verification,
+            email: true,
+        })
+    }
+
+
+    const verifierModel = () => {
+        return <div class="modal fade" id="verifierModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="exampleModalLabel">Verification</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div className="verify_box">
+                            <h3>
+                                Enter the verification code we just
+                                sent you on your mobile number.
+                            </h3>
+                            <input type="text" value={otpval.phone} placeholder="Enter Mobile OTP here" onChange={(e) => {
+                                setOtp({
+                                    ...otpval,
+                                    phone: e.target.value
+                                })
+                            }} />
+                            {
+                                state.phoneloading ?
+                                    <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div> :
+                                    <button onClick={getPhoneVerification} className={verification.phone ? "verifiedBtn" : ""}>{verification.phone ? "Verified" : "Verify"}</button>
+                            }
+                        </div>
+                        <div className="verify_box">
+                            <h3>
+                                Enter the verification code we just
+                                sent you on your email ID.
+                            </h3>
+                            <input type="text" value={otpval.email} placeholder="Enter Email OTP here" onChange={(e) => {
+                                setOtp({
+                                    ...otpval,
+                                    email: e.target.value
+                                })
+                            }} />
+                            {
+                                state.emailloading ?
+                                    <div class="spinner-border" role="status">
+                                        <span class="sr-only">Loading...</span>
+                                    </div> :
+                                    <button onClick={getEmailVerification} className={verification.email ? "verifiedBtn" : ""}>{verification.email ? "Verified" : "Verify"}</button>
+                            }
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-primary" onClick={registerNow}>Submit</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    }
+
     return (
         <>
             <div id="internalTeacher">
@@ -100,12 +253,14 @@ function StudentSignUp() {
                         <input type="checkbox" name="" id="" />
                         <p>By signing up you agree to recieve updates and special offers.</p>
                     </div>
-                    <button className="btn submitBtn" onClick={registerNow}>Submit</button>
+                    <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
                 </div>
                 <div className="right">
                     <img src={require("./sideImage.png")} />
                 </div>
             </div>
+            <div id="recaptcha-container"></div>
+            {verifierModel()}
         </>
     );
 }

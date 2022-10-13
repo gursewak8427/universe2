@@ -28,7 +28,9 @@
     flex-direction: row;
     justify-content: space-between;
 }
-
+.chooseClassSubject.topicChapter.col-12 > div{
+    overflow: auto; 
+}
 #startTest .left .bottomStartBtn .row2 button {
     margin: 10px;
 }

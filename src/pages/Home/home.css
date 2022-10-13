@@ -1,6 +1,6 @@
 #mainWrapper {
     min-height: 100vh;
-    font-family: 'Times New Roman', Times, serif;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     font-size: 20px;
 }
 
@@ -12,6 +12,7 @@
     align-items: center;
     background: white;
     padding: 20px 0;
+    margin-bottom: 10px;
 }
 
 
@@ -26,36 +27,32 @@
 }
 
 #mainWrapper nav .left .logoImg {
-    transform: scale(0.8);
+    transform: scale(1.4);
+    padding: 0;
+    margin: 0;
     margin-right: 20px;
 }
 
 #mainWrapper nav button {
-    width: 342px;
-    height: 95px;
-
-    background: #FFFEF9;
+    background: whitesmoke;
+    padding: 10px 20px;
+    border: 1px solid grey;
     box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.08);
     border-radius: 30px;
-    border: none;
-    font-size: 80%;
+    font-size: 100%;
     font-weight: bolder;
     outline: none;
+    font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
 }
 
 #mainWrapper nav button:hover {
     outline: none;
 }
 
-#mainWrapper header {
-    background: rgba(81, 150, 255, 0.4);
-    box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    height: 300px;
-}
-#exampleModal .modal-content{
+#exampleModal .modal-content {
     background: #FFF9CA;
 }
+
 .logo_row {
     width: 100%;
     display: flex;
@@ -72,14 +69,16 @@
     margin-top: 4px;
     font-weight: bolder;
 }
-.loginBtns{
+
+.loginBtns {
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
     padding: 70px 10px;
 }
-.loginBtns button{
+
+.loginBtns button {
     width: 70%;
     padding: 7px;
     margin: 20px;
@@ -89,16 +88,510 @@
     border-radius: 5px;
     border: 1px solid grey;
 }
-.loginBtns button a{
+
+.loginBtns button a {
     color: black;
 }
-.goToDashboardBtn{
+
+.goToDashboardBtn {
     font-weight: bolder;
     transition: .5s;
     cursor: pointer;
 }
-.goToDashboardBtn:hover{
+
+.goToDashboardBtn:hover {
     transition: .5s;
     color: darkcyan;
     text-decoration: underline;
 }
+
+
+/* main design of home page */
+#mainWrapper header {
+    background: rgba(81, 150, 255, 0.4);
+    box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: row;
+    padding: 10px;
+    padding: 30px;
+}
+
+#mainWrapper header .left * {
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#mainWrapper header .left {
+    width: 70%;
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+#mainWrapper header .left button {
+    padding: 10px 30px !important;
+    margin: 10px !important;
+    border-radius: 30px;
+    margin-left: 0 !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.466);
+}
+
+#mainWrapper header .left button:hover {
+    background: whitesmoke;
+    border: 1px solid grey !important;
+}
+
+#mainWrapper header .left h4 {
+    font-weight: bolder;
+}
+
+#mainWrapper header .left p {
+    color: black;
+}
+
+#mainWrapper header .left b {
+    color: black;
+    font-size: 110%;
+}
+
+#mainWrapper section {
+    background: #FFF9CA;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+#mainWrapper section .left {
+    width: 60%;
+    padding: 20px;
+}
+
+#mainWrapper section .left>div {
+    display: flex;
+    align-items: center;
+}
+
+#mainWrapper section .left>div p {
+    margin: 0;
+    padding: 0;
+}
+
+
+#mainWrapper section .left>div button {
+    padding: 10px 30px;
+    margin: 10px !important;
+    border-radius: 30px;
+    margin-left: 0 !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    font-size: 60%;
+    margin-left: 20px !important;
+    box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.466);
+}
+
+#mainWrapper section .left>div button:hover {
+    background: whitesmoke;
+    border: 1px solid grey !important;
+}
+
+
+
+#mainWrapper section .right {
+    width: 40%;
+    padding: 10px;
+}
+
+#mainWrapper section .right img {
+    width: 100px;
+    margin-right: 20px;
+}
+
+#mainWrapper section .right button {
+    padding: 15px 40px;
+    margin: 10px !important;
+    border-radius: 30px;
+    margin-left: 0 !important;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    margin-left: 20px !important;
+    box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.466);
+}
+
+#mainWrapper section .right button:hover {
+    background: whitesmoke;
+    border: 1px solid grey !important;
+}
+
+
+
+
+#mainWrapper header .right {
+    width: 30%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#mainWrapper header .right>div {
+    display: flex;
+    max-height: 50%;
+    align-items: center;
+    justify-content: center;
+}
+
+#mainWrapper header .right>div>img {
+    width: 50%;
+}
+
+#mainWrapper header .right>div:nth-child(2)>img {
+    width: 20%;
+}
+
+#mainWrapper header .right>div>button {
+    padding: 3% 6%;
+    border-radius: 30px;
+    margin-left: 10%;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.466);
+}
+
+#mainWrapper header .right>div>button:hover {
+    background: whitesmoke;
+    border: 1px solid grey !important;
+}
+
+#mainWrapper header.b {
+    display: flex;
+    height: auto !important;
+    flex-direction: column !important;
+    padding: 30px;
+}
+
+#mainWrapper header.b .top {
+    width: 100%;
+}
+
+#mainWrapper header.b .top * {
+    color: black !important;
+}
+
+#mainWrapper header.b .top h2 {
+    font-weight: bolder;
+}
+
+#mainWrapper header.b .bottom {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+#mainWrapper header.b .bottom .left {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: start !important;
+}
+
+#mainWrapper header.b .bottom .left button {
+    margin-left: 20px !important;
+    padding: 5px 20px !important;
+}
+
+#mainWrapper header.b .bottom .right {}
+
+#mainWrapper header.b .bottom .right button {
+    padding: 3% 6%;
+    border-radius: 30px;
+    margin-left: 10%;
+    cursor: pointer !important;
+    border: 1px solid transparent !important;
+    box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.466);
+}
+
+#mainWrapper header.b .bottom .right button:hover {
+    background: whitesmoke;
+    border: 1px solid grey !important;
+}
+
+#mainWrapper .subBoxContainer {
+    background: #FEF8C9;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-evenly;
+    padding: 30px;
+}
+
+#mainWrapper .subBoxContainer.b {
+    background: #5196FF66;
+}
+
+#mainWrapper .subBoxContainer .subBox {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 20%;
+    background: white;
+    box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.541);
+    border-radius: 10px;
+    padding: 10px;
+    position: relative;
+}
+
+#mainWrapper .subBoxContainer .subBox.five img:nth-child(2) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    transform: translate(-40%, 40%) scale(1.3);
+    padding: 0;
+    margin: 0;
+    width: 100px;
+    height: auto !important;
+}
+
+
+#mainWrapper .subBoxContainer .subBox.eight img:nth-child(2) {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(40%, -40%);
+    padding: 0;
+    margin: 0;
+    width: 70px;
+    height: auto !important;
+}
+
+
+#mainWrapper .subBoxContainer .subBox img {
+    padding-bottom: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 150px;
+}
+
+#mainWrapper .subBoxContainer .subBox span {
+    font-size: 120%;
+    font-weight: bolder;
+}
+
+.exploreContainer {
+    background: #FEF8C9;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 30px;
+}
+
+.exploreContainer h2 {
+    margin: 20px 0 40px 0;
+}
+
+
+.exploreContainer .bottom {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.exploreContainer .subBox {
+    width: 17%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: white;
+    box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.541);
+    border-radius: 10px;
+}
+
+.exploreContainer .subBox p {
+    font-size: 70%;
+}
+
+.loginDiv {
+    padding: 100px 30px !important;
+}
+
+.loginDiv .subBox {
+    width: 26% !important;
+}
+
+.loginDiv .subBox .t {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 5px 10px;
+    font-size: 70%;
+    background: #000482;
+    color: white;
+    border-radius: 0 10px 0 10px;
+}
+
+.loginDiv .subBox img {
+    margin-top: 30px;
+    max-width: 100% !important;
+    height: 200px !important;
+}
+
+.loginDiv .subBox span {
+    font-weight: normal !important;
+    text-align: center;
+    font-size: 90% !important;
+    color: black;
+}
+
+.loginDiv .subBox button {
+    background: #000482;
+    color: white;
+    border-radius: 10px;
+    margin: 20px 10px;
+    border: none;
+    padding: 10px 30px;
+}
+
+.loginDiv .subBox button:hover {
+    background: hsla(238, 100%, 25%, 0.774);
+}
+
+.swiperBox {
+    margin-bottom: 40px;
+    padding: 40px;
+    background: #FFF9CA;
+    position: relative !important;
+    overflow: hidden;
+}
+
+.swiperBox #carouselExampleControls {
+    width: 60%;
+    margin: auto !important;
+}
+
+.swiperBox .carousel-item {
+    background: white;
+    border: 1px solid grey;
+}
+
+.swiperBox .carousel-item .left {
+    width: 40%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    border-right: 1px solid black;
+}
+
+.swiperBox .carousel-item .left img.avatar {
+    width: 100px;
+    height: 100px;
+    border-radius: 50%;
+}
+
+.swiperBox .carousel-item .left p {
+    margin: 0;
+    padding: 0;
+    color: black;
+}
+
+.swiperBox .carousel-item .left span {
+    color: grey;
+}
+
+
+.swiperBox .carousel-item .right {
+    width: 60%;
+    padding: 30px;
+}
+
+.swiperBox .carousel-item .right p {
+    font-size: 80%;
+}
+
+.swiperBox .carousel-control-prev {
+    position: absolute;
+    transform: translateX(-100%);
+    font-weight: bolder !important;
+}
+
+.swiperBox .carousel-control-next {
+    position: absolute;
+    transform: translateX(100%);
+    font-weight: bolder !important;
+}
+.carousel-control-next-icon,
+    .carousel-control-prev-icon{
+    background-color: black;
+    padding: 30px;
+    border-radius: 50%;
+}
+.swiperBox .box1{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 300px;
+    height: 300px;
+    background: grey;
+    transform: rotate(45deg) translateX(-50%) translateY(-50%);
+    transform-origin: 0 0;
+}
+.swiperBox .box2{
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 300px;
+    height: 300px;
+    background: grey;
+    transform: rotate(45deg) translate(100%, -50%);
+    transform-origin: 0 0;
+}
+footer{
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    padding: 40px;
+}
+footer .left{
+    width: 50%;
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+}
+footer .left .row2{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    font-size: 130%;
+}
+
+footer .left img{
+    width: 130px;
+    margin: 20px;
+}
+footer .left p{
+    font-size: 90%;
+    color: black;
+    width: 70%;
+    margin: 40px;
+}
+footer .right{
+    width: 50%;
+    text-align: right;
+    padding: 30px;
+}
+footer .right h1{
+    margin-bottom: 40px;
+    color: black;
+}
+
+

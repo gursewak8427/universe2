@@ -9,6 +9,7 @@ import {
   SET_TOPICS,
   SET_CLASSES,
   SET_CHAPTERS,
+  SET_GLOBAL_IMAGE,
 } from "../constants/mainConstants";
 
 export const loaderAction = (loader) => async (dispatch) => {
@@ -45,4 +46,8 @@ export const setClasses = (data) => async (dispatch) => {
 
 export const setChapters = (data) => async (dispatch) => {
   dispatch({ type: SET_CHAPTERS, payload: data });
+};
+
+export const setGlobalImage = (data) => async (dispatch) => {
+  dispatch({ type: SET_GLOBAL_IMAGE, payload: data });
 };

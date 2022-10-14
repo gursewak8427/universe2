@@ -23,7 +23,7 @@ function Home() {
   }
 
   return (
-    <div id="mainWrapper" className="container">
+    <div id="mainWrapper" className="container-fluid">
       {/* login main model */}
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -42,10 +42,9 @@ function Home() {
                 <a href="/student_login">
                   Student Login
                 </a>
-                <Link to=""> Login</Link>
               </button>
               <button><Link to="">Tutor Login</Link></button>
-              <button data-toggle="modal" data-target="#exampleModal2"><Link>Guest Login</Link></button>
+              <button data-toggle="modal" data-target="#exampleModal"><Link>Guest Login</Link></button>
               <button>
                 <a href="/internal_teacher_login">
                   Internal Teacher Login
@@ -55,6 +54,38 @@ function Home() {
           </div>
         </div>
       </div>
+
+      {/* signup model */}
+      <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <div className="logo_row">
+                <img src="/assets/images/logo.png" className="logoImg" />
+                <h1>CelatomUniverse</h1>
+              </div>
+              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div className="loginBtns">
+              <button>
+                <a href="/student_signup">
+                  Student Sign Up
+                </a>
+              </button>
+              <button><Link to="">Tutor Sign Up</Link></button>
+              <button data-toggle="modal" data-target="#exampleModal2"><Link>Guest Sign Up</Link></button>
+              <button>
+                <a href="/internal_teacher_signup">
+                  Internal Teacher Sign Up
+                </a>
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
       {/* login main model end */}
       <nav>
         <div className="left">
@@ -63,7 +94,12 @@ function Home() {
         </div>
         {
           !isAuthenticated ?
-            <button type="button" data-toggle="modal" data-target="#exampleModal">LOGIN</button> :
+            <>
+              <span>
+                <button type="button" data-toggle="modal" data-target="#exampleModal2" className="m-2">SIGN UP</button>
+                <button type="button" data-toggle="modal" data-target="#exampleModal" className="m-2">LOGIN</button>
+              </span>
+            </> :
             <span className="goToDashboardBtn" onClick={goToDashboard}>Go to Dashboard</span>
         }
 

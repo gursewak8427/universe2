@@ -4,7 +4,7 @@ import { Button, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { setCurrentUpdatedHappyHour, setSuccessMsg } from '../../../../../services/actions/mainAction';
+import { setCurrentUpdatedHappyHour, setGlobalImage, setSuccessMsg } from '../../../../../services/actions/mainAction';
 import { useStyles } from "../../../../../utils/useStyles";
 import Heading from "../../components/Heading/Heading";
 import MaterialTable from "material-table";
@@ -381,30 +381,7 @@ function QuestionsManager() {
                 return;
             }
         }
-        const formdata = new FormData()
-        formdata.append('question', state.selectedQuestion.id)
-        formdata.append('Question', state.Question)
-        formdata.append('QuestionImage', state.QuestionImage)
-        formdata.append('Option1', state.Option1)
-        formdata.append('Option1Image', state.Option1Image)
-        formdata.append('Option2', state.Option2)
-        formdata.append('Option2Image', state.Option2Image)
-        formdata.append('Option3', state.Option3)
-        formdata.append('Option3Image', state.Option3Image)
-        formdata.append('Option4', state.Option4)
-        formdata.append('Option4Image', state.Option4Image)
-        formdata.append('Answer', state.Answer)
-        formdata.append('Clue', state.Clue)
-        formdata.append('ClueImage', state.Clue)
-        formdata.append('Solution', state.Solution)
-        formdata.append('SolutionImage', state.SolutionImage)
-        formdata.append('Level', state.selectedQuestion.level)
-        formdata.append('Marks', state.Marks)
-        formdata.append('QuestionType', state.questionType)
-        formdata.append('NegativeMarks', state.NegativeMarks)
-        formdata.append('CorrectAnswer', state.correctAnswer)
-        formdata.append('Rangemin', state.rangeMin)
-        formdata.append('Rangemax', state.rangeMax)
+
 
         const config = {
             headers: {
@@ -412,6 +389,31 @@ function QuestionsManager() {
             }
         }
         if (state.updatedId) {
+            const formdata = new FormData()
+            formdata.append('question', state.selectedQuestion.id)
+            formdata.append('Question', state.Question)
+            console.log(typeof state.QuestionImage);
+            if ((typeof state.QuestionImage) != "string") formdata.append('QuestionImage', state.QuestionImage)
+            formdata.append('Option1', state.Option1)
+            if ((typeof state.Option1Image) != "string") formdata.append('Option1Image', state.Option1Image)
+            formdata.append('Option2', state.Option2)
+            if ((typeof state.Option2Image) != "string") formdata.append('Option2Image', state.Option2Image)
+            formdata.append('Option3', state.Option3)
+            if ((typeof state.Option3Image) != "string") formdata.append('Option3Image', state.Option3Image)
+            formdata.append('Option4', state.Option4)
+            if ((typeof state.Option4Image) != "string") formdata.append('Option4Image', state.Option4Image)
+            formdata.append('Answer', state.Answer)
+            formdata.append('Clue', state.Clue)
+            if ((typeof state.ClueImage) != "string") formdata.append('ClueImage', state.ClueImage)
+            formdata.append('Solution', state.Solution)
+            if ((typeof state.SolutionImage) != "string") formdata.append('SolutionImage', state.SolutionImage)
+            formdata.append('Level', state.selectedQuestion.level)
+            formdata.append('Marks', state.Marks)
+            formdata.append('QuestionType', state.questionType)
+            formdata.append('NegativeMarks', state.NegativeMarks)
+            formdata.append('CorrectAnswer', state.correctAnswer)
+            formdata.append('Rangemin', state.rangeMin)
+            formdata.append('Rangemax', state.rangeMax)
             formdata.append("id", state.updatedId)
             // Get topic details
             axios.put(`${process.env.REACT_APP_API_URI}exams/subquestion/`, formdata, config).then(response => {
@@ -424,6 +426,30 @@ function QuestionsManager() {
                 console.log(err)
             })
         } else {
+            const formdata = new FormData()
+            formdata.append('question', state.selectedQuestion.id)
+            formdata.append('Question', state.Question)
+            formdata.append('QuestionImage', state.QuestionImage)
+            formdata.append('Option1', state.Option1)
+            formdata.append('Option1Image', state.Option1Image)
+            formdata.append('Option2', state.Option2)
+            formdata.append('Option2Image', state.Option2Image)
+            formdata.append('Option3', state.Option3)
+            formdata.append('Option3Image', state.Option3Image)
+            formdata.append('Option4', state.Option4)
+            formdata.append('Option4Image', state.Option4Image)
+            formdata.append('Answer', state.Answer)
+            formdata.append('Clue', state.Clue)
+            formdata.append('ClueImage', state.ClueImage)
+            formdata.append('Solution', state.Solution)
+            formdata.append('SolutionImage', state.SolutionImage)
+            formdata.append('Level', state.selectedQuestion.level)
+            formdata.append('Marks', state.Marks)
+            formdata.append('QuestionType', state.questionType)
+            formdata.append('NegativeMarks', state.NegativeMarks)
+            formdata.append('CorrectAnswer', state.correctAnswer)
+            formdata.append('Rangemin', state.rangeMin)
+            formdata.append('Rangemax', state.rangeMax)
             // Get topic details
             axios.post(`${process.env.REACT_APP_API_URI}exams/subquestion/`, formdata, config).then(response => {
                 const responseData = response.data;
@@ -769,7 +795,10 @@ function QuestionsManager() {
                                                                                         <div className='qq'>
                                                                                             <span className='q_row'>
                                                                                                 <span>Question: </span>
-                                                                                                <p>{subQuestion.Question}</p>
+                                                                                                {
+                                                                                                    subQuestion.QuestionImage != null ?
+                                                                                                        <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.QuestionImage))}>View Image</span> : <></>
+                                                                                                }
                                                                                             </span>
                                                                                             {/* manage question */}
 
@@ -777,6 +806,10 @@ function QuestionsManager() {
                                                                                         <div className='qq mt-1 d-flex'>
                                                                                             <div className="q_row">
                                                                                                 <span>Solution : </span>
+                                                                                                {
+                                                                                                    subQuestion.SolutionImage != null ?
+                                                                                                        <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.SolutionImage))}>View Image</span> : <></>
+                                                                                                }
                                                                                                 <p>{subQuestion.Solution}</p>
                                                                                             </div>
                                                                                         </div>
@@ -785,6 +818,10 @@ function QuestionsManager() {
                                                                                                 <div className='qq mt-1 d-flex'>
                                                                                                     <div className="q_row">
                                                                                                         <span>Clue : </span>
+                                                                                                        {
+                                                                                                            subQuestion.ClueImage != null ?
+                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.ClueImage))}>View Image</span> : <></>
+                                                                                                        }
                                                                                                         <p>{subQuestion.Clue}</p>
                                                                                                     </div>
 
@@ -798,16 +835,38 @@ function QuestionsManager() {
                                                                                                 </div>
                                                                                             </div>
                                                                                             {
-                                                                                                subQuestion.Option1 != "" ? <p className={subQuestion.Answer[0] == true ? "correct" : ""}> <span>(1)</span> {subQuestion.Option1}</p> : <></>
+                                                                                                subQuestion.Option1 != "" ?
+                                                                                                    <p className={subQuestion.Answer[0] == true ? "correct" : ""}>
+                                                                                                        <span>(1)</span> {subQuestion.Option1}
+                                                                                                        {
+                                                                                                            subQuestion.Option1Image != null ?
+                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option1Image))}>View Image</span> : <></>
+                                                                                                        }
+                                                                                                    </p> : <></>
                                                                                             }
                                                                                             {
-                                                                                                subQuestion.Option2 != "" ? <p className={subQuestion.Answer[1] == true ? "correct" : ""}> <span>(2)</span> {subQuestion.Option2}</p> : <></>
+                                                                                                subQuestion.Option2 != "" ? <p className={subQuestion.Answer[1] == true ? "correct" : ""}> <span>(2)</span> {subQuestion.Option2}
+                                                                                                    {
+                                                                                                        subQuestion.Option2Image != null ?
+                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option2Image))}>View Image</span> : <></>
+                                                                                                    }
+                                                                                                </p> : <></>
                                                                                             }
                                                                                             {
-                                                                                                subQuestion.Option3 != "" ? <p className={subQuestion.Answer[2] == true ? "correct" : ""}> <span>(3)</span> {subQuestion.Option3}</p> : <></>
+                                                                                                subQuestion.Option3 != "" ? <p className={subQuestion.Answer[2] == true ? "correct" : ""}> <span>(3)</span> {subQuestion.Option3}
+                                                                                                    {
+                                                                                                        subQuestion.Option3Image != null ?
+                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option3Image))}>View Image</span> : <></>
+                                                                                                    }
+                                                                                                </p> : <></>
                                                                                             }
                                                                                             {
-                                                                                                subQuestion.Option4 != "" ? <p className={subQuestion.Answer[3] == true ? "correct" : ""}> <span>(4)</span> {subQuestion.Option4}</p> : <></>
+                                                                                                subQuestion.Option4 != "" ? <p className={subQuestion.Answer[3] == true ? "correct" : ""}> <span>(4)</span> {subQuestion.Option4}
+                                                                                                    {
+                                                                                                        subQuestion.Option4Image != null ?
+                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option4Image))}>View Image</span> : <></>
+                                                                                                    }
+                                                                                                </p> : <></>
                                                                                             }
                                                                                         </div>
                                                                                     </div>
@@ -835,6 +894,10 @@ function QuestionsManager() {
                                                                                             <div className='qq'>
                                                                                                 <span className='q_row'>
                                                                                                     <span>Question: </span>
+                                                                                                    {
+                                                                                                        subQuestion.QuestionImage != null ?
+                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.QuestionImage))}>View Image</span> : <></>
+                                                                                                    }
                                                                                                     <p>{subQuestion.Question}</p>
                                                                                                 </span>
                                                                                                 {/* manage question */}
@@ -843,6 +906,10 @@ function QuestionsManager() {
                                                                                             <div className='qq mt-1 d-flex'>
                                                                                                 <div className="q_row">
                                                                                                     <span>Solution : </span>
+                                                                                                    {
+                                                                                                        subQuestion.SolutionImage != null ?
+                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.SolutionImage))}>View Image</span> : <></>
+                                                                                                    }
                                                                                                     <p>{subQuestion.Solution}</p>
                                                                                                 </div>
                                                                                             </div>
@@ -851,6 +918,10 @@ function QuestionsManager() {
                                                                                                     <div className='qq mt-1 d-flex'>
                                                                                                         <div className="q_row">
                                                                                                             <span>Clue : </span>
+                                                                                                            {
+                                                                                                                subQuestion.ClueImage != null ?
+                                                                                                                    <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.ClueImage))}>View Image</span> : <></>
+                                                                                                            }
                                                                                                             <p>{subQuestion.Clue}</p>
                                                                                                         </div>
 
@@ -864,16 +935,36 @@ function QuestionsManager() {
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 {
-                                                                                                    subQuestion.Option1 != "" ? <p className={subQuestion.Answer[0] == true ? "correct" : ""}> <span>(1)</span> {subQuestion.Option1}</p> : <></>
+                                                                                                    subQuestion.Option1 != "" ? <p className={subQuestion.Answer[0] == true ? "correct" : ""}> <span>(1)</span> {subQuestion.Option1}
+                                                                                                        {
+                                                                                                            subQuestion.Option1Image != null ?
+                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option1Image))}>View Image</span> : <></>
+                                                                                                        }
+                                                                                                    </p> : <></>
                                                                                                 }
                                                                                                 {
-                                                                                                    subQuestion.Option2 != "" ? <p className={subQuestion.Answer[1] == true ? "correct" : ""}> <span>(2)</span> {subQuestion.Option2}</p> : <></>
+                                                                                                    subQuestion.Option2 != "" ? <p className={subQuestion.Answer[1] == true ? "correct" : ""}> <span>(2)</span> {subQuestion.Option2}
+                                                                                                        {
+                                                                                                            subQuestion.Option2Image != null ?
+                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option2Image))}>View Image</span> : <></>
+                                                                                                        }
+                                                                                                    </p> : <></>
                                                                                                 }
                                                                                                 {
-                                                                                                    subQuestion.Option3 != "" ? <p className={subQuestion.Answer[2] == true ? "correct" : ""}> <span>(3)</span> {subQuestion.Option3}</p> : <></>
+                                                                                                    subQuestion.Option3 != "" ? <p className={subQuestion.Answer[2] == true ? "correct" : ""}> <span>(3)</span> {subQuestion.Option3}
+                                                                                                        {
+                                                                                                            subQuestion.Option3Image != null ?
+                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option3Image))}>View Image</span> : <></>
+                                                                                                        }
+                                                                                                    </p> : <></>
                                                                                                 }
                                                                                                 {
-                                                                                                    subQuestion.Option4 != "" ? <p className={subQuestion.Answer[3] == true ? "correct" : ""}> <span>(4)</span> {subQuestion.Option4}</p> : <></>
+                                                                                                    subQuestion.Option4 != "" ? <p className={subQuestion.Answer[3] == true ? "correct" : ""}> <span>(4)</span> {subQuestion.Option4}
+                                                                                                        {
+                                                                                                            subQuestion.Option4Image != null ?
+                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option4Image))}>View Image</span> : <></>
+                                                                                                        }
+                                                                                                    </p> : <></>
                                                                                                 }
                                                                                             </div>
                                                                                         </div>
@@ -901,6 +992,10 @@ function QuestionsManager() {
                                                                                                 <div className='qq'>
                                                                                                     <span className='q_row'>
                                                                                                         <span>Question: </span>
+                                                                                                        {
+                                                                                                            subQuestion.QuestionImage != null ?
+                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.QuestionImage))}>View Image</span> : <></>
+                                                                                                        }
                                                                                                         <p>{subQuestion.Question}</p>
                                                                                                     </span>
                                                                                                     {/* manage question */}
@@ -909,6 +1004,10 @@ function QuestionsManager() {
                                                                                                 <div className='qq mt-1 d-flex'>
                                                                                                     <div className="q_row">
                                                                                                         <span>Solution : </span>
+                                                                                                        {
+                                                                                                            subQuestion.SolutionImage != null ?
+                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.SolutionImage))}>View Image</span> : <></>
+                                                                                                        }
                                                                                                         <p>{subQuestion.Solution}</p>
                                                                                                     </div>
                                                                                                 </div>
@@ -917,6 +1016,10 @@ function QuestionsManager() {
                                                                                                         <div className='qq mt-1 d-flex'>
                                                                                                             <div className="q_row">
                                                                                                                 <span>Clue : </span>
+                                                                                                                {
+                                                                                                                    subQuestion.ClueImage != null ?
+                                                                                                                        <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.ClueImage))}>View Image</span> : <></>
+                                                                                                                }
                                                                                                                 <p>{subQuestion.Clue}</p>
                                                                                                             </div>
 
@@ -1028,9 +1131,14 @@ function QuestionsManager() {
                                                                 <>Image Upload</>
                                                         }
 
-                                                    </span> </label>
+                                                    </span></label>
                                                     <input class="form-control" type="file" name='QuestionImage' id='QuestionImage' onChange={handleFile} />
+                                                    {
+                                                        state.QuestionImage != null || state.QuestionImage != "" ?
+                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.QuestionImage))}>View Image</span> : <></>
+                                                    }
                                                 </div>
+
                                                 <div className="d-flex align-items-center">
                                                     {
                                                         imagesUrl.QuestionImage != "" ?
@@ -1061,7 +1169,12 @@ function QuestionsManager() {
                                                                 <>Image Upload</>
                                                         }
                                                     </span> </label>
+
                                                     <input class="form-control" type="file" name='SolutionImage' id='SolutionImage' onChange={handleFile} />
+                                                    {
+                                                        state.SolutionImage != "" ?
+                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.SolutionImage))}>View Image</span> : <></>
+                                                    }
                                                 </div>
                                                 <div className="d-flex align-items-center">
                                                     {
@@ -1094,6 +1207,10 @@ function QuestionsManager() {
                                                         }
                                                     </span> </label>
                                                     <input class="form-control" type="file" name='ClueImage' id='ClueImage' onChange={handleFile} />
+                                                    {
+                                                        state.ClueImage != "" ?
+                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.ClueImage))}>View Image</span> : <></>
+                                                    }
                                                 </div>
                                                 <div className="d-flex align-items-center">
                                                     {
@@ -1163,6 +1280,12 @@ function QuestionsManager() {
                                                                         if (index == 2) return imagesUrl.Option3Image;
                                                                         if (index == 3) return imagesUrl.Option4Image;
                                                                     }
+                                                                    const getImageState = () => {
+                                                                        if (index == 0) return state.Option1Image;
+                                                                        if (index == 1) return state.Option2Image;
+                                                                        if (index == 2) return state.Option3Image;
+                                                                        if (index == 3) return state.Option4Image;
+                                                                    }
                                                                     const getImageName = () => {
                                                                         if (index == 0) return imagesName.Option1Image;
                                                                         if (index == 1) return imagesName.Option2Image;
@@ -1226,6 +1349,10 @@ function QuestionsManager() {
                                                                                         }
                                                                                     </span> </label>
                                                                                     <input class="form-control" type="file" name={`Option` + (index + 1) + `Image`} id={`Option` + (index + 1) + `Image`} onChange={handleFile} />
+                                                                                    {
+                                                                                        getImageState() != "" ?
+                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(getImageState()))}>View Image</span> : <></>
+                                                                                    }
                                                                                 </div>
                                                                                 <div className="d-flex align-items-center">
                                                                                     {
@@ -1290,6 +1417,18 @@ function QuestionsManager() {
                                                                             if (index == 2) return "Option3Image";
                                                                             if (index == 3) return "Option4Image";
                                                                         }
+                                                                        const getImageUrl = () => {
+                                                                            if (index == 0) return imagesUrl.Option1Image;
+                                                                            if (index == 1) return imagesUrl.Option2Image;
+                                                                            if (index == 2) return imagesUrl.Option3Image;
+                                                                            if (index == 3) return imagesUrl.Option4Image;
+                                                                        }
+                                                                        const getImageState = () => {
+                                                                            if (index == 0) return state.Option1Image;
+                                                                            if (index == 1) return state.Option2Image;
+                                                                            if (index == 2) return state.Option3Image;
+                                                                            if (index == 3) return state.Option4Image;
+                                                                        }
 
                                                                         return (
                                                                             <>
@@ -1335,8 +1474,19 @@ function QuestionsManager() {
                                                                                         </div>
                                                                                     </div>
                                                                                     <div className="my-3 imageUploadIcon">
-                                                                                        <label htmlFor={`Option` + (index + 1) + `Image`} class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>Image Upload</span> </label>
+                                                                                        <label htmlFor={`Option` + (index + 1) + `Image`} class="form-label"><i class="fa fa-upload" aria-hidden="true"></i> <span>
+                                                                                            {
+                                                                                                getImageUrl() != "" ?
+                                                                                                    <>Change Image</>
+                                                                                                    :
+                                                                                                    <>Image Upload</>
+                                                                                            }
+                                                                                        </span> </label>
                                                                                         <input class="form-control" type="file" name={`Option` + (index + 1) + `Image`} id={`Option` + (index + 1) + `Image`} onChange={handleFile} />
+                                                                                        {
+                                                                                            getImageState() != "" ?
+                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(getImageState()))}>View Image</span> : <></>
+                                                                                        }
                                                                                     </div>
                                                                                     <div className="d-flex align-items-center">
                                                                                         {

@@ -1,4 +1,4 @@
-import { ERROR_MESSAGE, LOADER_START, LOADER_STOP, LOGIN_BTN_LOADER_START, LOGIN_BTN_LOADER_STOP, SET_CHAPTERS, SET_CLASSES, SET_SUBJECTS, SET_TOPICS, SET_TOTAL_TEST, SET_WALLET, SUCCESS_MESSAGE, UPDATE_EVENT, UPDATE_FAQ, UPDATE_HAPPY_HOUR } from "../constants/mainConstants";
+import { ERROR_MESSAGE, LOADER_START, LOADER_STOP, LOGIN_BTN_LOADER_START, LOGIN_BTN_LOADER_STOP, REMOVE_GLOBAL_IMAGE, SET_CHAPTERS, SET_CLASSES, SET_GLOBAL_IMAGE, SET_SUBJECTS, SET_TOPICS, SET_TOTAL_TEST, SET_WALLET, SUCCESS_MESSAGE, UPDATE_EVENT, UPDATE_FAQ, UPDATE_HAPPY_HOUR } from "../constants/mainConstants";
 
 const initialState = {
   loader: false,
@@ -13,6 +13,7 @@ const initialState = {
   topicsList: [],
   classesList: [],
   chaptersList: [],
+  globalImage: "",
 };
 
 export const mainReducer = (state = initialState, action) => {
@@ -77,6 +78,11 @@ export const mainReducer = (state = initialState, action) => {
         chaptersList: action.payload,
       };
 
+    case SET_GLOBAL_IMAGE:
+      return {
+        ...state,
+        globalImage: action.payload,
+      };
 
     default:
       return state;

@@ -8,6 +8,5 @@ export const SET_WALLET = "SET_WALLET";
 export const SET_CLASSES = "SET_CLASSES";
 export const SET_TOPICS = "SET_TOPICS";
 export const SET_CHAPTERS = "SET_CHAPTERS";
-
-
+export const SET_GLOBAL_IMAGE = "set global image view";
 

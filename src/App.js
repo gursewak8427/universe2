@@ -37,6 +37,7 @@ import OldQuestions from "./pages/Dashboard/Student/pages/oldTest/oldquestions";
 
 // firebase
 import { auth } from './firebase-config';
+import ImageViewHandler from "./components/imageViewHandler";
 
 function App() {
   const history = useHistory();
@@ -159,6 +160,7 @@ function App() {
         !wait ?
           <Router>
             <ToastHandler2 />
+            <ImageViewHandler />
             <Switch>
               <Route exact path="/" component={Home} />
 

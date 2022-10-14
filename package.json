@@ -38,6 +38,7 @@
     "react-hot-toast": "^2.3.0",
     "react-html-parser": "^2.0.2",
     "react-mathjax-preview": "^2.2.6",
+    "react-medium-image-zoom": "^5.1.0",
     "react-numeric-keyboard": "^1.0.2",
     "react-redux": "^7.2.3",
     "react-router-dom": "^5.2.0",

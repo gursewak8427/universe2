@@ -10,6 +10,14 @@ a{
 .input-group > div{
     width: 100%;
 }
+.viewImagetxt{
+    color: black !important;
+    font-size: 80% !important;
+    cursor: pointer;
+    margin: 10px 0;
+    color: blue !important;
+    margin-left: 10px;
+}
 @media screen and (max-width : 650px) {
     .modal {
         padding-right: 0 !important;

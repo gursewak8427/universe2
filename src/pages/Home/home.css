@@ -38,7 +38,7 @@
     padding: 10px 20px;
     border: 1px solid grey;
     box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.08);
-    border-radius: 30px;
+    border-radius: 10px;
     font-size: 100%;
     font-weight: bolder;
     outline: none;
@@ -111,7 +111,7 @@
     background: rgba(81, 150, 255, 0.4);
     box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.1);
     width: 100%;
-    height: 300px;
+    height: 400px;
     display: flex;
     flex-direction: row;
     padding: 10px;
@@ -171,8 +171,12 @@
 
 #mainWrapper section .left {
     width: 60%;
-    padding: 20px;
 }
+
+#mainWrapper section .left h1 {
+    font-size: 250%;
+}
+
 
 #mainWrapper section .left>div {
     display: flex;
@@ -207,6 +211,11 @@
 #mainWrapper section .right {
     width: 40%;
     padding: 10px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-end;
+    padding-right: 20px;
 }
 
 #mainWrapper section .right img {
@@ -329,6 +338,7 @@
     flex-direction: row;
     justify-content: space-evenly;
     padding: 30px;
+    margin: 30px 0;
 }
 
 #mainWrapper .subBoxContainer.b {
@@ -341,6 +351,7 @@
     align-items: center;
     justify-content: center;
     width: 20%;
+    height: 300px;
     background: white;
     box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.541);
     border-radius: 10px;
@@ -377,7 +388,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    height: 150px;
+    height: 180px;
 }
 
 #mainWrapper .subBoxContainer .subBox span {
@@ -392,6 +403,8 @@
     align-items: center;
     justify-content: center;
     padding: 30px;
+    height: 400px;
+    margin: 30px 0;
 }
 
 .exploreContainer h2 {
@@ -407,6 +420,7 @@
 
 .exploreContainer .subBox {
     width: 17%;
+    height: 250px;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -415,7 +429,9 @@
     box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.541);
     border-radius: 10px;
 }
-
+.exploreContainer .subBox img{
+    height: 120px !important;
+}
 .exploreContainer .subBox p {
     font-size: 70%;
 }
@@ -426,6 +442,7 @@
 
 .loginDiv .subBox {
     width: 26% !important;
+    height: auto !important;
 }
 
 .loginDiv .subBox .t {
@@ -529,13 +546,15 @@
     transform: translateX(100%);
     font-weight: bolder !important;
 }
+
 .carousel-control-next-icon,
-    .carousel-control-prev-icon{
+.carousel-control-prev-icon {
     background-color: black;
     padding: 30px;
     border-radius: 50%;
 }
-.swiperBox .box1{
+
+.swiperBox .box1 {
     position: absolute;
     top: 0;
     left: 0;
@@ -545,7 +564,8 @@
     transform: rotate(45deg) translateX(-50%) translateY(-50%);
     transform-origin: 0 0;
 }
-.swiperBox .box2{
+
+.swiperBox .box2 {
     position: absolute;
     bottom: 0;
     right: 0;
@@ -555,43 +575,52 @@
     transform: rotate(45deg) translate(100%, -50%);
     transform-origin: 0 0;
 }
-footer{
+
+footer {
     width: 100%;
     display: flex;
     flex-direction: row;
     padding: 40px;
 }
-footer .left{
+
+footer .left {
     width: 50%;
     display: flex;
     flex-direction: column;
     padding: 30px;
 }
-footer .left .row2{
+
+footer .left .row2 {
     display: flex;
     flex-direction: row;
     align-items: center;
     font-size: 130%;
 }
 
-footer .left img{
+footer .left img {
     width: 130px;
     margin: 20px;
 }
-footer .left p{
+
+footer .left p {
     font-size: 90%;
     color: black;
     width: 70%;
     margin: 40px;
 }
-footer .right{
+
+footer .right {
     width: 50%;
     text-align: right;
     padding: 30px;
 }
-footer .right h1{
+
+footer .right h1 {
     margin-bottom: 40px;
     color: black;
 }
 
-
+#mainWrapper header,
+#mainWrapper section {
+    border-radius: 10px;
+}

@@ -16,7 +16,8 @@ a{
     cursor: pointer;
     margin: 10px 0;
     color: blue !important;
-    margin-left: 10px;
+}
+.KatexDataDisplay{
 }
 @media screen and (max-width : 650px) {
     .modal {

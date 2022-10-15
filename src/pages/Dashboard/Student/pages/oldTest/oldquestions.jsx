@@ -26,7 +26,7 @@ function OldQuestions() {
     const classes = useStyles();
     const history = useHistory();
     const dispatch = useDispatch();
-    const { topicId, examId } = useParams()
+    const { topicId, examId, pageType } = useParams()
     const [isWait, setWait] = useState(true)
     const [timingData, setTimingData] = useState({
         minutes: 0,
@@ -93,7 +93,12 @@ function OldQuestions() {
 
     useEffect(() => {
         // get questionsList
-        axios.get(`${process.env.REACT_APP_API_URI}students/examsubmit/`, config).then(response => {
+        var url = `${process.env.REACT_APP_API_URI}students/examsubmit/`;
+        if (pageType == "reattempted") {
+            url = `${process.env.REACT_APP_API_URI}students/examreattempt/`;
+        }
+
+        axios.get(url, config).then(response => {
             var examdata = response.data;
             // get target exam 
             const result = examdata.filter((exam) => exam.id == examId)

@@ -17,26 +17,12 @@ import ClassicEditor from "ckeditor5-build-classic-mathtype";
 import ReactHtmlParser from "react-html-parser";
 import { MathComponent } from "mathjax-react";
 
-const Printmathdata = ({ children }) => {
-    return <MathComponent mathml={`${children}`} />
-}
+// katex
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
-function Latex(props) {
-    const node = React.createRef();
-    const renderMath = () => {
-        window.MathJax.Hub.Queue(['Typeset', window.MathJax.Hub, node.current]);
-    };
-    useEffect(() => {
-        renderMath();
-    });
-
-    return (
-        <div ref={node} {...props}>
-            {props.children}
-        </div>
-    );
-}
-
+// #KATEX
+const myCustomString = "$k$\\int_0^\\infty x^2 dx$k$ passed as <code>math prop</code>. This is an in-line $k$ \\int_0^\\infty x^2 dx $k$  expression passed as <code>children prop</code >."
 
 function QuestionsManager() {
     const { admin } = useSelector((state) => state.auth);
@@ -326,6 +312,14 @@ function QuestionsManager() {
 
 
     const onchange = e => {
+        // if (e.target.name == "Question") {
+        //     setState({
+        //         ...state,
+        //         [e.target.name]: encodeURI(e.target.value)
+        //     })
+        //     return;
+        // }
+
         setState({
             ...state,
             [e.target.name]: e.target.value
@@ -711,6 +705,18 @@ function QuestionsManager() {
                             />
                         </div>
                         <div className="right">
+                            <p>
+                                {/* Printing of #KATEX */}
+                                {/* {
+                                    myCustomString.split("$k$").map((data, index) => {
+                                        if (index % 2 == 1) {
+                                            return <InlineMath math={data} />
+                                        } else {
+                                            return data
+                                        }
+                                    })
+                                } */}
+                            </p>
                             {/* page 1 & 2 */}
                             {
                                 state.selectedQuestion == null ?
@@ -750,8 +756,8 @@ function QuestionsManager() {
                                                         }
                                                         {
                                                             state.subQuestionsList.map((subQuestion, index) => {
-                                                                console.log("#subQuestion")
-                                                                console.log(subQuestion)
+                                                                // console.log("#subQuestion")
+                                                                // console.log(subQuestion)
                                                                 if (typeof subQuestion.Answer === "string") {
                                                                     subQuestion.Answer = subQuestion.Answer.split(",")
                                                                 }
@@ -799,6 +805,17 @@ function QuestionsManager() {
                                                                                                     subQuestion.QuestionImage != null ?
                                                                                                         <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.QuestionImage))}>View Image</span> : <></>
                                                                                                 }
+                                                                                                <p>
+                                                                                                    {
+                                                                                                        subQuestion.Question.split("$k$").map((data, index) => {
+                                                                                                            if (index % 2 == 1) {
+                                                                                                                return <InlineMath math={data} />
+                                                                                                            } else {
+                                                                                                                return data
+                                                                                                            }
+                                                                                                        })
+                                                                                                    }
+                                                                                                </p>
                                                                                             </span>
                                                                                             {/* manage question */}
 
@@ -898,7 +915,17 @@ function QuestionsManager() {
                                                                                                         subQuestion.QuestionImage != null ?
                                                                                                             <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.QuestionImage))}>View Image</span> : <></>
                                                                                                     }
-                                                                                                    <p>{subQuestion.Question}</p>
+                                                                                                    <p>
+                                                                                                        {
+                                                                                                            subQuestion.Question.split("$k$").map((data, index) => {
+                                                                                                                if (index % 2 == 1) {
+                                                                                                                    return <InlineMath math={data} />
+                                                                                                                } else {
+                                                                                                                    return data
+                                                                                                                }
+                                                                                                            })
+                                                                                                        }
+                                                                                                    </p>
                                                                                                 </span>
                                                                                                 {/* manage question */}
 
@@ -996,11 +1023,21 @@ function QuestionsManager() {
                                                                                                             subQuestion.QuestionImage != null ?
                                                                                                                 <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.QuestionImage))}>View Image</span> : <></>
                                                                                                         }
-                                                                                                        <p>{subQuestion.Question}</p>
                                                                                                     </span>
-                                                                                                    {/* manage question */}
-
                                                                                                 </div>
+                                                                                                <p className='m-2'>
+                                                                                                    {console.log("subQuestion.Question")}
+                                                                                                    {console.log(subQuestion.Question)}
+                                                                                                    {
+                                                                                                        subQuestion.Question.split("$k$").map((data, index) => {
+                                                                                                            if (index % 2 == 1) {
+                                                                                                                return <InlineMath math={data} />
+                                                                                                            } else {
+                                                                                                                return decodeURI(data)
+                                                                                                            }
+                                                                                                        })
+                                                                                                    }
+                                                                                                </p>
                                                                                                 <div className='qq mt-1 d-flex'>
                                                                                                     <div className="q_row">
                                                                                                         <span>Solution : </span>
@@ -1050,76 +1087,11 @@ function QuestionsManager() {
                                             <div className='form-add-question'>
 
                                                 <h2 className='mb-3'>Question </h2>
-                                                {/* question field ck editor */}
-                                                <div className="bgRed">
-                                                    {/* <CKEditor
-                                                        editor={ClassicEditor}
-                                                        config={{
-                                                            toolbar: {
-                                                                shouldNotGroupWhenFull: true,
-                                                                items: [
-                                                                    // 'heading', '|',
-                                                                    // 'fontfamily', 'fontsize', '|',
-                                                                    // 'alignment', '|',
-                                                                    // 'fontColor', 'fontBackgroundColor', '|',
-                                                                    // 'bold', 'italic', 'strikethrough', 'underline', 'subscript', 'superscript', '|',
-                                                                    // 'link', '|',
-                                                                    // 'outdent', 'indent', '|',
-                                                                    // 'bulletedList', 'numberedList', 'todoList', '|',
-                                                                    // 'code', 'codeBlock', '|',
-                                                                    // 'insertTable', '|',
-                                                                    // 'uploadImage', 'blockQuote', '|',
-                                                                    "heading",
-                                                                    "fontsize",
-                                                                    "alignment",
-                                                                    "fontColor",
-                                                                    "fontBackgroundColor",
-                                                                    "outdent",
-                                                                    "indent",
-                                                                    "|",
-                                                                    "bold",
-                                                                    "italic",
-                                                                    "link",
-                                                                    "bulletedList",
-                                                                    "numberedList",
-                                                                    "imageUpload",
-                                                                    "mediaEmbed",
-                                                                    "insertTable",
-                                                                    "blockQuote",
-                                                                    "undo",
-                                                                    "redo",
-                                                                    "|",
-                                                                    "MathType",
-                                                                    "ChemType",
-                                                                    "maximize",
-                                                                ]
-                                                            }
-                                                        }}
-                                                        data={ckData}
-                                                        onReady={(editor) => {
-                                                            // You can store the "editor" and use when it is needed.
-                                                            // console.log( 'Editor is ready to use!', editor );
-                                                        }}
-                                                        onChange={(event, editor) => {
-                                                            const data = editor.getData();
-                                                            // console.log({ event, editor, data });
-                                                            setCkData(data);
-                                                            // let htmlData = ReactHtmlParser(data);
-                                                            // console.log(htmlData)  
-                                                            // let mathElementsData = htmlData.getElementsByTagName(`math`)
-                                                            // console.log(mathElementsData)  
-                                                        }}
-                                                    /> */}
-                                                    {/* <div>{ReactHtmlParser(ckData)}</div>
-                                                    <div>{ckData}</div>
-                                                    <Latex>{ckData}</Latex>
-                                                    <div dangerouslySetInnerHTML={{ __html: ckData }}></div>
-                                                    <MathComponent mathml='<math xmlns="http://www.w3.org/1998/Math/MathML"><mroot><mn>4</mn><mrow>&nbsp; </mrow></mroot></math>' /> */}
-                                                </div>
-
                                                 {/* question field */}
                                                 <div class="form-floating mb-3">
-                                                    <textarea name="Question" onChange={onchange} class="form-control" placeholder="Type Question Here..." id="floatingTextarea" style={{ "height": "100px" }}>{state.Question}</textarea>
+                                                    <textarea name="Question" onChange={onchange} class="form-control" placeholder="Type Question Here..." id="floatingTextarea" style={{ "height": "100px" }}>
+                                                        {state.Question}
+                                                    </textarea>
                                                     <label for="floatingTextarea">Type Question Here..</label>
                                                 </div>
                                                 <div className="my-3 imageUploadIcon d-flex align-items-center">
@@ -1134,7 +1106,7 @@ function QuestionsManager() {
                                                     </span></label>
                                                     <input class="form-control" type="file" name='QuestionImage' id='QuestionImage' onChange={handleFile} />
                                                     {
-                                                        state.QuestionImage != null || state.QuestionImage != "" ?
+                                                        state.QuestionImage != "" ?
                                                             <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.QuestionImage))}>View Image</span> : <></>
                                                     }
                                                 </div>

@@ -38,6 +38,10 @@ import OldQuestions from "./pages/Dashboard/Student/pages/oldTest/oldquestions";
 // firebase
 import { auth } from './firebase-config';
 import ImageViewHandler from "./components/imageViewHandler";
+import EmailVerify from "./components/EmailVerify";
+import ForgotPassword from "./components/forgot_password";
+import ForgotPassword2 from "./components/forgot_password_2";
+import ReattemptTest from "./pages/Dashboard/Student/pages/oldTest/reattemptQuestions";
 
 function App() {
   const history = useHistory();
@@ -191,7 +195,13 @@ function App() {
               <PrivateRoute exact path="/student/questions/:topicId" component={Questions} />
               <PrivateRoute exact path="/student/old_test_results" component={OldTestResults} />
               <PrivateRoute exact path="/student/old_test_results_preview/:examId" component={OldQuestions} />
-
+              <PrivateRoute exact path="/student/reattempt_test_results" component={ReattemptTest} />
+              <PrivateRoute exact path="/student/reattempt_test_results_preview/:examId/:pageType" component={OldQuestions} />
+              
+              
+              <Route exact path="/emailverify" component={EmailVerify} />
+              <Route exact path="/forgotpassword" component={ForgotPassword} />
+              <Route exact path="/setnewpassword" component={ForgotPassword2} />
             </Switch>
           </Router> :
           <div style={{ width: "100%", height: "100vh", display: "flex", justifyContent: "center", alignItems: "center" }}>

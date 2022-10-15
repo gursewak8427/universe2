@@ -29,12 +29,12 @@ function StudentSignUp() {
     })
     const [verification, setVerification] = useState({
         phone: false,
-        email: false
+        email: true // always true, if otp is not send at email
     })
 
     const registerNow = async () => {
         if (verification.email == false || verification.phone == false) {
-            dispatch(setErrorMsg("Please verify both email and phone"))
+            dispatch(setErrorMsg("Please verify your phone"))
             return;
         }
         setState({ ...state, isSubmit: true, })
@@ -64,6 +64,12 @@ function StudentSignUp() {
                 }, 500);
 
             }).catch(err => {
+                if (err.response.data.email) {
+                    dispatch(setErrorMsg("Email: " + err.response.data.email[0]));
+                }
+                if (err.response.data.password) {
+                    dispatch(setErrorMsg("Password: " + err.response.data.password[0]));
+                }
                 setState({ ...state, isSubmit: false, })
                 dispatch(setErrorMsg("Register Failed"));
                 console.log(err);
@@ -85,12 +91,21 @@ function StudentSignUp() {
 
 
     const sendPhoneOTP = () => {
+        if (verification.phone) return
         setState({
             ...state,
             phoneloading: true,
         })
+        if (state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "") {
+            dispatch(setErrorMsg("Please fill all fields"))
+            return;
+        }
         if (state.phone == "" || state.phone.length < 10) {
             dispatch(setErrorMsg("Phone number is not valid"))
+            return;
+        }
+        if (state.password !== state.confPass) {
+            dispatch(setErrorMsg("Both Passwords should be same"))
             return;
         }
         var phone = "+91" + state.phone
@@ -142,7 +157,7 @@ function StudentSignUp() {
             dispatch(setSuccessMsg("Phone number verified"))
         }).catch((error) => {
             console.log("usererr")
-            dispatch(setSuccessMsg("OTP verification failed, Please Enter OTP again"))
+            dispatch(setErrorMsg("OTP verification failed, Please Enter OTP again"))
             setState({
                 ...state,
                 phoneloading: false,
@@ -191,7 +206,7 @@ function StudentSignUp() {
                                     <button onClick={getPhoneVerification} className={verification.phone ? "verifiedBtn" : ""}>{verification.phone ? "Verified" : "Verify"}</button>
                             }
                         </div>
-                        <div className="verify_box">
+                        {/* <div className="verify_box">
                             <h3>
                                 Enter the verification code we just
                                 sent you on your email ID.
@@ -209,7 +224,7 @@ function StudentSignUp() {
                                     </div> :
                                     <button onClick={getEmailVerification} className={verification.email ? "verifiedBtn" : ""}>{verification.email ? "Verified" : "Verify"}</button>
                             }
-                        </div>
+                        </div> */}
                     </div>
                     <div class="modal-footer">
                         <button type="button" class="btn btn-primary" onClick={registerNow}>Submit</button>
@@ -223,7 +238,11 @@ function StudentSignUp() {
         <>
             <div id="internalTeacher">
                 <div className="left">
-                    <h1>Sign Up</h1>
+                    <h1>Sign Up
+                        <button className="btn btn-secondary mx-4">
+                            <Link to={"/"}>Home</Link>
+                        </button>
+                    </h1>
                     <p>Existing user? <Link to="/internal_teacher_login">Login Here.</Link></p>
                     <div className="input_row">
                         <label htmlFor="">First Name</label>
@@ -253,7 +272,14 @@ function StudentSignUp() {
                         <input type="checkbox" name="" id="" />
                         <p>By signing up you agree to recieve updates and special offers.</p>
                     </div>
-                    <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
+                    {/* so much for model opening */}
+                    {
+                        state.phone == "" || state.phone.length < 10 ||
+                            state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "" ||
+                            state.password !== state.confPass ?
+                            <button className="btn submitBtn" onClick={sendPhoneOTP}>Submit</button> :
+                            <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
+                    }
                 </div>
                 <div className="right">
                     <img src={require("./sideImage.png")} />

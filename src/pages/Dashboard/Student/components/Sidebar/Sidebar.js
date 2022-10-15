@@ -187,6 +187,13 @@ function Sidebar({ isSidebarShow }) {
       url: "student/old_test_results"
     },
     {
+      title: "Reattempt Tests",
+      icons: (<></>
+        // <DashboardIcon />
+      ),
+      url: "student/reattempt_test_results"
+    },
+    {
       title: "Progress Calculator",
       url: "in/chapters",
       items: [
@@ -310,7 +317,9 @@ function Sidebar({ isSidebarShow }) {
                                     ? "/student/dashboard"
                                     : menu.title === "Old Test Results"
                                       ? "/student/old_test_results"
-                                      : "#")
+                                      : menu.title === "Reattempt Tests"
+                                        ? "/student/reattempt_test_results"
+                                        : "#")
                             }
                           >
                             {

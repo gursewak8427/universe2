@@ -17,12 +17,12 @@ function StudentLogin() {
     })
 
     const loginNow = async () => {
-        setState({ ...state, isSubmit: true, })
         if (state.email == "" || state.password == "") {
             dispatch(setErrorMsg("Please fill all fields"))
             return;
         }
 
+        setState({ ...state, isSubmit: true, })
         const e = "abc@gmail.com";
         const p = "1234";
         try {
@@ -46,7 +46,9 @@ function StudentLogin() {
 
             }).catch(err => {
                 setState({ ...state, isSubmit: false, })
-                dispatch(setErrorMsg("Login Failed"));
+                if (err.response.data) {
+                    dispatch(setErrorMsg(err.response.data.error));
+                }
                 console.log(err.message);
             })
 
@@ -69,7 +71,12 @@ function StudentLogin() {
         <>
             <div id="internalTeacher">
                 <div className="left">
-                    <h1>Student Login</h1>
+                    <h1>
+                        Student Login
+                        <button className="btn btn-secondary mx-4">
+                            <Link to={"/"}>Home</Link>
+                        </button>
+                    </h1>
                     <p>Not a user? <Link to="/student_signup">Sign Up Here.</Link></p>
                     <div className="input_row">
                         <label htmlFor="">Email</label>
@@ -80,7 +87,9 @@ function StudentLogin() {
                         <input type="password" placeholder="Enter your password here" onChange={onchange} value={state.password} name="password" />
                     </div>
                     <div className="input_row">
-                        <span>Reset Password</span>
+                        <span>
+                            <Link to={"/forgotpassword"}>Forgot Password</Link>
+                        </span>
                     </div>
                     <button className="btn submitBtn b" onClick={() => loginNow()}>
                         {

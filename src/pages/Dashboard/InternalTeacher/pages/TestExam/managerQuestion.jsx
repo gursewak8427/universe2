@@ -22,7 +22,7 @@ import 'katex/dist/katex.min.css';
 import { InlineMath, BlockMath } from 'react-katex';
 
 // #KATEX
-const myCustomString = "$k$\\int_0^\\infty x^2 dx$k$ passed as <code>math prop</code>. This is an in-line $k$ \\int_0^\\infty x^2 dx $k$  expression passed as <code>children prop</code >."
+const myCustomString = "$k$\int_0^\infty x^2 dx$k$ passed as <code>math prop</code>. This is an in-line $k$ \int_0^\infty x^2 dx $k$  expression passed as <code>children prop</code >."
 
 function QuestionsManager() {
     const { admin } = useSelector((state) => state.auth);
@@ -312,13 +312,13 @@ function QuestionsManager() {
 
 
     const onchange = e => {
-        // if (e.target.name == "Question") {
-        //     setState({
-        //         ...state,
-        //         [e.target.name]: encodeURI(e.target.value)
-        //     })
-        //     return;
-        // }
+        if (e.target.name == "Question") {
+            setState({
+                ...state,
+                [e.target.name]: e.target.value
+            })
+            return;
+        }
 
         setState({
             ...state,
@@ -805,44 +805,64 @@ function QuestionsManager() {
                                                                                                     subQuestion.QuestionImage != null ?
                                                                                                         <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.QuestionImage))}>View Image</span> : <></>
                                                                                                 }
-                                                                                                <p>
-                                                                                                    {
-                                                                                                        subQuestion.Question.split("$k$").map((data, index) => {
-                                                                                                            if (index % 2 == 1) {
-                                                                                                                return <InlineMath math={data} />
-                                                                                                            } else {
-                                                                                                                return data
-                                                                                                            }
-                                                                                                        })
-                                                                                                    }
-                                                                                                </p>
                                                                                             </span>
-                                                                                            {/* manage question */}
-
                                                                                         </div>
-                                                                                        <div className='qq mt-1 d-flex'>
-                                                                                            <div className="q_row">
+                                                                                        <p className='m-2'>
+                                                                                            {
+                                                                                                subQuestion.Question.split("$k$").map((data, index) => {
+                                                                                                    if (index % 2 == 1) {
+                                                                                                        return <InlineMath math={data} />
+                                                                                                    } else {
+                                                                                                        return data
+                                                                                                    }
+                                                                                                })
+                                                                                            }
+                                                                                        </p>
+                                                                                        <div className='qq'>
+                                                                                            <span className="q_row">
                                                                                                 <span>Solution : </span>
                                                                                                 {
                                                                                                     subQuestion.SolutionImage != null ?
                                                                                                         <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.SolutionImage))}>View Image</span> : <></>
                                                                                                 }
-                                                                                                <p>{subQuestion.Solution}</p>
-                                                                                            </div>
+
+                                                                                            </span>
                                                                                         </div>
+                                                                                        <p className='m-2'>
+                                                                                            {
+                                                                                                subQuestion.Solution.split("$k$").map((data, index) => {
+                                                                                                    if (index % 2 == 1) {
+                                                                                                        return <InlineMath math={data} />
+                                                                                                    } else {
+                                                                                                        return data
+                                                                                                    }
+                                                                                                })
+                                                                                            }
+                                                                                        </p>
                                                                                         {
                                                                                             subQuestion.Clue == null ? <> </> :
-                                                                                                <div className='qq mt-1 d-flex'>
-                                                                                                    <div className="q_row">
-                                                                                                        <span>Clue : </span>
-                                                                                                        {
-                                                                                                            subQuestion.ClueImage != null ?
-                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.ClueImage))}>View Image</span> : <></>
-                                                                                                        }
-                                                                                                        <p>{subQuestion.Clue}</p>
+                                                                                                <>
+                                                                                                    <div className='qq mt-1 d-flex'>
+                                                                                                        <div className="q_row">
+                                                                                                            <span>Clue : </span>
+                                                                                                            {
+                                                                                                                subQuestion.ClueImage != null ?
+                                                                                                                    <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.ClueImage))}>View Image</span> : <></>
+                                                                                                            }
+                                                                                                        </div>
                                                                                                     </div>
-
-                                                                                                </div>
+                                                                                                    <p className='m-2'>
+                                                                                                        {
+                                                                                                            subQuestion.Clue.split("$k$").map((data, index) => {
+                                                                                                                if (index % 2 == 1) {
+                                                                                                                    return <InlineMath math={data} />
+                                                                                                                } else {
+                                                                                                                    return data
+                                                                                                                }
+                                                                                                            })
+                                                                                                        }
+                                                                                                    </p>
+                                                                                                </>
                                                                                         }
                                                                                         {/* options 4 */}
                                                                                         <div className='opp'>
@@ -854,35 +874,80 @@ function QuestionsManager() {
                                                                                             {
                                                                                                 subQuestion.Option1 != "" ?
                                                                                                     <p className={subQuestion.Answer[0] == true ? "correct" : ""}>
-                                                                                                        <span>(1)</span> {subQuestion.Option1}
+                                                                                                        <span>(1)</span>
                                                                                                         {
                                                                                                             subQuestion.Option1Image != null ?
-                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option1Image))}>View Image</span> : <></>
+                                                                                                                <span className='viewImagetxt m-2' onClick={() => dispatch(setGlobalImage(subQuestion.Option1Image))}>View Image</span> : <></>
+                                                                                                        }
+                                                                                                        <br />
+                                                                                                        {
+                                                                                                            subQuestion.Option1.split("$k$").map((data, index) => {
+                                                                                                                if (index % 2 == 1) {
+                                                                                                                    return <InlineMath math={data} />
+                                                                                                                } else {
+                                                                                                                    return data
+                                                                                                                }
+                                                                                                            })
                                                                                                         }
                                                                                                     </p> : <></>
                                                                                             }
                                                                                             {
-                                                                                                subQuestion.Option2 != "" ? <p className={subQuestion.Answer[1] == true ? "correct" : ""}> <span>(2)</span> {subQuestion.Option2}
+                                                                                                subQuestion.Option2 != "" ? <p className={subQuestion.Answer[1] == true ? "correct" : ""}> <span>(2)</span>
                                                                                                     {
                                                                                                         subQuestion.Option2Image != null ?
-                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option2Image))}>View Image</span> : <></>
+                                                                                                            <span className='viewImagetxt m-2' onClick={() => dispatch(setGlobalImage(subQuestion.Option2Image))}>View Image</span> : <></>
                                                                                                     }
+                                                                                                    <br />
+                                                                                                    {
+                                                                                                        subQuestion.Option2.split("$k$").map((data, index) => {
+                                                                                                            if (index % 2 == 1) {
+                                                                                                                return <InlineMath math={data} />
+                                                                                                            } else {
+                                                                                                                return data
+                                                                                                            }
+                                                                                                        })
+                                                                                                    }
+
+
                                                                                                 </p> : <></>
                                                                                             }
                                                                                             {
-                                                                                                subQuestion.Option3 != "" ? <p className={subQuestion.Answer[2] == true ? "correct" : ""}> <span>(3)</span> {subQuestion.Option3}
+                                                                                                subQuestion.Option3 != "" ? <p className={subQuestion.Answer[2] == true ? "correct" : ""}> <span>(3)</span>
                                                                                                     {
                                                                                                         subQuestion.Option3Image != null ?
-                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option3Image))}>View Image</span> : <></>
+                                                                                                            <span className='viewImagetxt m-2' onClick={() => dispatch(setGlobalImage(subQuestion.Option3Image))}>View Image</span> : <></>
                                                                                                     }
+                                                                                                    <br />
+                                                                                                    {
+                                                                                                        subQuestion.Option3.split("$k$").map((data, index) => {
+                                                                                                            if (index % 2 == 1) {
+                                                                                                                return <InlineMath math={data} />
+                                                                                                            } else {
+                                                                                                                return data
+                                                                                                            }
+                                                                                                        })
+                                                                                                    }
+
+
                                                                                                 </p> : <></>
                                                                                             }
                                                                                             {
-                                                                                                subQuestion.Option4 != "" ? <p className={subQuestion.Answer[3] == true ? "correct" : ""}> <span>(4)</span> {subQuestion.Option4}
+                                                                                                subQuestion.Option4 != "" ? <p className={subQuestion.Answer[3] == true ? "correct" : ""}> <span>(4)</span>
                                                                                                     {
                                                                                                         subQuestion.Option4Image != null ?
-                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option4Image))}>View Image</span> : <></>
+                                                                                                            <span className='viewImagetxt m-2' onClick={() => dispatch(setGlobalImage(subQuestion.Option4Image))}>View Image</span> : <></>
                                                                                                     }
+                                                                                                    <br />
+                                                                                                    {
+                                                                                                        subQuestion.Option4.split("$k$").map((data, index) => {
+                                                                                                            if (index % 2 == 1) {
+                                                                                                                return <InlineMath math={data} />
+                                                                                                            } else {
+                                                                                                                return data
+                                                                                                            }
+                                                                                                        })
+                                                                                                    }
+
                                                                                                 </p> : <></>
                                                                                             }
                                                                                         </div>
@@ -915,21 +980,19 @@ function QuestionsManager() {
                                                                                                         subQuestion.QuestionImage != null ?
                                                                                                             <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.QuestionImage))}>View Image</span> : <></>
                                                                                                     }
-                                                                                                    <p>
-                                                                                                        {
-                                                                                                            subQuestion.Question.split("$k$").map((data, index) => {
-                                                                                                                if (index % 2 == 1) {
-                                                                                                                    return <InlineMath math={data} />
-                                                                                                                } else {
-                                                                                                                    return data
-                                                                                                                }
-                                                                                                            })
-                                                                                                        }
-                                                                                                    </p>
                                                                                                 </span>
-                                                                                                {/* manage question */}
-
                                                                                             </div>
+                                                                                            <p className='m-2'>
+                                                                                                {
+                                                                                                    subQuestion.Question.split("$k$").map((data, index) => {
+                                                                                                        if (index % 2 == 1) {
+                                                                                                            return <InlineMath math={data} />
+                                                                                                        } else {
+                                                                                                            return data
+                                                                                                        }
+                                                                                                    })
+                                                                                                }
+                                                                                            </p>
                                                                                             <div className='qq mt-1 d-flex'>
                                                                                                 <div className="q_row">
                                                                                                     <span>Solution : </span>
@@ -937,22 +1000,44 @@ function QuestionsManager() {
                                                                                                         subQuestion.SolutionImage != null ?
                                                                                                             <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.SolutionImage))}>View Image</span> : <></>
                                                                                                     }
-                                                                                                    <p>{subQuestion.Solution}</p>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <p className='m-2'>
+                                                                                                {
+                                                                                                    subQuestion.Solution.split("$k$").map((data, index) => {
+                                                                                                        if (index % 2 == 1) {
+                                                                                                            return <InlineMath math={data} />
+                                                                                                        } else {
+                                                                                                            return data
+                                                                                                        }
+                                                                                                    })
+                                                                                                }
+                                                                                            </p>
                                                                                             {
                                                                                                 subQuestion.Clue == null ? <> </> :
-                                                                                                    <div className='qq mt-1 d-flex'>
+                                                                                                    <> <div className='qq mt-1 d-flex'>
                                                                                                         <div className="q_row">
                                                                                                             <span>Clue : </span>
                                                                                                             {
                                                                                                                 subQuestion.ClueImage != null ?
                                                                                                                     <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.ClueImage))}>View Image</span> : <></>
                                                                                                             }
-                                                                                                            <p>{subQuestion.Clue}</p>
                                                                                                         </div>
 
                                                                                                     </div>
+                                                                                                        <p className='m-2'>
+                                                                                                            {
+                                                                                                                subQuestion.Clue.split("$k$").map((data, index) => {
+                                                                                                                    if (index % 2 == 1) {
+                                                                                                                        return <InlineMath math={data} />
+                                                                                                                    } else {
+                                                                                                                        return data
+                                                                                                                    }
+                                                                                                                })
+                                                                                                            }
+
+                                                                                                        </p>
+                                                                                                    </>
                                                                                             }
                                                                                             {/* options 4 */}
                                                                                             <div className='opp'>
@@ -962,15 +1047,38 @@ function QuestionsManager() {
                                                                                                     </div>
                                                                                                 </div>
                                                                                                 {
-                                                                                                    subQuestion.Option1 != "" ? <p className={subQuestion.Answer[0] == true ? "correct" : ""}> <span>(1)</span> {subQuestion.Option1}
+                                                                                                    subQuestion.Option1 != "" ? <p className={subQuestion.Answer[0] == true ? "correct" : ""}> <span>(1)</span>
                                                                                                         {
                                                                                                             subQuestion.Option1Image != null ?
-                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option1Image))}>View Image</span> : <></>
+                                                                                                                <span className='viewImagetxt m-2' onClick={() => dispatch(setGlobalImage(subQuestion.Option1Image))}>View Image</span> : <></>
                                                                                                         }
+                                                                                                        <br />
+                                                                                                        {
+                                                                                                            subQuestion.Option1.split("$k$").map((data, index) => {
+                                                                                                                if (index % 2 == 1) {
+                                                                                                                    return <InlineMath math={data} />
+                                                                                                                } else {
+                                                                                                                    return data
+                                                                                                                }
+                                                                                                            })}
+
                                                                                                     </p> : <></>
                                                                                                 }
                                                                                                 {
-                                                                                                    subQuestion.Option2 != "" ? <p className={subQuestion.Answer[1] == true ? "correct" : ""}> <span>(2)</span> {subQuestion.Option2}
+                                                                                                    subQuestion.Option2 != "" ? <p className={subQuestion.Answer[1] == true ? "correct" : ""}> <span>(2)</span>
+                                                                                                        {
+                                                                                                            subQuestion.Option2Image != null ?
+                                                                                                                <span className='viewImagetxt m-2' onClick={() => dispatch(setGlobalImage(subQuestion.Option2Image))}>View Image</span> : <></>
+                                                                                                        }
+                                                                                                        <br />
+                                                                                                        {
+                                                                                                            subQuestion.Option2.split("$k$").map((data, index) => {
+                                                                                                                if (index % 2 == 1) {
+                                                                                                                    return <InlineMath math={data} />
+                                                                                                                } else {
+                                                                                                                    return data
+                                                                                                                }
+                                                                                                            })}
                                                                                                         {
                                                                                                             subQuestion.Option2Image != null ?
                                                                                                                 <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option2Image))}>View Image</span> : <></>
@@ -978,19 +1086,40 @@ function QuestionsManager() {
                                                                                                     </p> : <></>
                                                                                                 }
                                                                                                 {
-                                                                                                    subQuestion.Option3 != "" ? <p className={subQuestion.Answer[2] == true ? "correct" : ""}> <span>(3)</span> {subQuestion.Option3}
+                                                                                                    subQuestion.Option3 != "" ? <p className={subQuestion.Answer[2] == true ? "correct" : ""}>  <span>(3)</span>
                                                                                                         {
                                                                                                             subQuestion.Option3Image != null ?
-                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option3Image))}>View Image</span> : <></>
+                                                                                                                <span className='viewImagetxt m-2' onClick={() => dispatch(setGlobalImage(subQuestion.Option3Image))}>View Image</span> : <></>
                                                                                                         }
+                                                                                                        <br />
+                                                                                                        {
+                                                                                                            subQuestion.Option3.split("$k$").map((data, index) => {
+                                                                                                                if (index % 2 == 1) {
+                                                                                                                    return <InlineMath math={data} />
+                                                                                                                } else {
+                                                                                                                    return data
+                                                                                                                }
+                                                                                                            })}
+
                                                                                                     </p> : <></>
                                                                                                 }
                                                                                                 {
-                                                                                                    subQuestion.Option4 != "" ? <p className={subQuestion.Answer[3] == true ? "correct" : ""}> <span>(4)</span> {subQuestion.Option4}
+                                                                                                    subQuestion.Option4 != "" ? <p className={subQuestion.Answer[3] == true ? "correct" : ""}> <span>(4)</span>
                                                                                                         {
                                                                                                             subQuestion.Option4Image != null ?
-                                                                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.Option4Image))}>View Image</span> : <></>
+                                                                                                                <span className='viewImagetxt m-2' onClick={() => dispatch(setGlobalImage(subQuestion.Option4Image))}>View Image</span> : <></>
                                                                                                         }
+                                                                                                        <br />
+                                                                                                        {
+                                                                                                            subQuestion.Option4.split("$k$").map((data, index) => {
+                                                                                                                if (index % 2 == 1) {
+                                                                                                                    return <InlineMath math={data} />
+                                                                                                                } else {
+                                                                                                                    return data
+                                                                                                                }
+                                                                                                            })
+                                                                                                        }
+
                                                                                                     </p> : <></>
                                                                                                 }
                                                                                             </div>
@@ -1026,41 +1155,52 @@ function QuestionsManager() {
                                                                                                     </span>
                                                                                                 </div>
                                                                                                 <p className='m-2'>
-                                                                                                    {console.log("subQuestion.Question")}
-                                                                                                    {console.log(subQuestion.Question)}
                                                                                                     {
                                                                                                         subQuestion.Question.split("$k$").map((data, index) => {
                                                                                                             if (index % 2 == 1) {
                                                                                                                 return <InlineMath math={data} />
                                                                                                             } else {
-                                                                                                                return decodeURI(data)
+                                                                                                                return data
                                                                                                             }
                                                                                                         })
                                                                                                     }
                                                                                                 </p>
-                                                                                                <div className='qq mt-1 d-flex'>
+                                                                                                <div className='qq d-flex'>
                                                                                                     <div className="q_row">
                                                                                                         <span>Solution : </span>
                                                                                                         {
                                                                                                             subQuestion.SolutionImage != null ?
                                                                                                                 <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.SolutionImage))}>View Image</span> : <></>
                                                                                                         }
-                                                                                                        <p>{subQuestion.Solution}</p>
                                                                                                     </div>
                                                                                                 </div>
+                                                                                                <p className='m-2'>{subQuestion.Solution.split("$k$").map((data, index) => {
+                                                                                                    if (index % 2 == 1) {
+                                                                                                        return <InlineMath math={data} />
+                                                                                                    } else {
+                                                                                                        return data
+                                                                                                    }
+                                                                                                })}</p>
                                                                                                 {
                                                                                                     subQuestion.Clue == null ? <> </> :
-                                                                                                        <div className='qq mt-1 d-flex'>
-                                                                                                            <div className="q_row">
-                                                                                                                <span>Clue : </span>
-                                                                                                                {
-                                                                                                                    subQuestion.ClueImage != null ?
-                                                                                                                        <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.ClueImage))}>View Image</span> : <></>
-                                                                                                                }
-                                                                                                                <p>{subQuestion.Clue}</p>
+                                                                                                        <>
+                                                                                                            <div className='qq mt-1 d-flex'>
+                                                                                                                <div className="q_row">
+                                                                                                                    <span>Clue : </span>
+                                                                                                                    {
+                                                                                                                        subQuestion.ClueImage != null ?
+                                                                                                                            <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(subQuestion.ClueImage))}>View Image</span> : <></>
+                                                                                                                    }
+                                                                                                                </div>
                                                                                                             </div>
-
-                                                                                                        </div>
+                                                                                                            <p className='m-2'>{subQuestion.Clue.split("$k$").map((data, index) => {
+                                                                                                                if (index % 2 == 1) {
+                                                                                                                    return <InlineMath math={data} />
+                                                                                                                } else {
+                                                                                                                    return data
+                                                                                                                }
+                                                                                                            })}</p>
+                                                                                                        </>
                                                                                                 }
                                                                                                 {/* options 4 */}
                                                                                                 <div className='opp'>

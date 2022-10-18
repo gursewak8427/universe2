@@ -48,7 +48,7 @@ function OldTestResults() {
         { title: "Topic", field: "Topic.Topicname", },
         { title: "Total Marks", field: "timing", render: (item) => <>{item.resultMarks}/{item.totalMarks}</> },
         { title: "Test Preview", field: "updated", render: (item) => <button className="btn btn-primary" onClick={() => history.push("/student/old_test_results_preview/" + item.id)}>Preview</button> },
-        { title: "", field: "updated", render: (item) => <button className="btn btn-primary">Reattempt</button> },
+        { title: "", field: "updated", render: (item) => <button className="btn btn-primary" onClick={() => history.push("/student/questions/" + item.Topic.id)}>Reattempt</button> },
         { title: "", field: "updated", render: (item) => <button className="btn btn-primary">Reports</button> },
     ];
 

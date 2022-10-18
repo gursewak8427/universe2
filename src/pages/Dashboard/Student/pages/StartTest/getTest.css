@@ -344,6 +344,7 @@
     font-size: 150%;
 }
 
+
 #QuestionsPageId #mainDiv .left #questionDetailBox .options_div .option_box input {
     margin-right: 10px;
     cursor: pointer;
@@ -351,6 +352,9 @@
 
 #QuestionsPageId #mainDiv .left #questionDetailBox .options_div .option_box label {
     cursor: pointer;
+    background: rgb(185 178 178);
+    border-radius: 10px;
+    padding: 10px;
 }
 
 .optionCircle.a {

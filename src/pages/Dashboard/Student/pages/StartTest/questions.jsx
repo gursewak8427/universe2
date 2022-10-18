@@ -11,6 +11,10 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import { ReactCalculator } from "simple-react-calculator";
 import swal from 'sweetalert';
 
+// katex
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
+
 // Default theme
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import { useHistory, useParams } from "react-router-dom/cjs/react-router-dom.min";
@@ -292,7 +296,7 @@ function Questions() {
         let mainQuestionData = state.questionAssigned[state.selectedQuestion + 1].mainQuestionData
         let subQuestionData = state.questionAssigned[state.selectedQuestion + 1].subQuestionData
         oldQuestionResult[state.selectedQuestion + 1].submittedStatus = 1
-        
+
         // set answers
         let oldCurrentAnswer = currentAnswer
         if (oldQuestionResult[state.selectedQuestion + 1].questionType == "0") {
@@ -321,7 +325,7 @@ function Questions() {
 
     }
 
-    const NextQuestion = () => {}
+    const NextQuestion = () => { }
 
     const SelectQuestion = (QuestionIndex) => {
         let oldQuestionResult = state.questionAssigned;
@@ -527,7 +531,7 @@ function Questions() {
                     const responseData = response.data;
                     console.log("Final Result Response")
                     console.log(responseData)
-                    swal(`Marks : ${achieveMarks}/${totalMarks}`, "You successfully saved the result!", "success");
+                    swal(`Marks : ${achieveMarks}/${totalMarks}`, responseData.message, "success");
                     history.push("/student/old_test_results/")
                 }).catch(err => {
                     console.log(err)
@@ -774,7 +778,13 @@ function Questions() {
                             state.selectedSubQuestion.QuestionType == "0" ?
                                 <div id="questionDetailBox">
                                     <div className="question">
-                                        {state.selectedSubQuestion.Question}
+                                        {state.selectedSubQuestion.Question.split("$k$").map((data, index) => {
+                                            if (index % 2 == 1) {
+                                                return <InlineMath math={data} />
+                                            } else {
+                                                return data
+                                            }
+                                        })}
                                     </div>
 
                                     <div className="options_div">
@@ -792,7 +802,13 @@ function Questions() {
                                                     SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 0, })
                                                 }}
                                             /> */}
-                                                    <label htmlFor="op1_radio">{state.selectedSubQuestion.Option1}</label>
+                                                    <label htmlFor="op1_radio">{state.selectedSubQuestion.Option1.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                 </div> : <></>
                                         }
 
@@ -810,7 +826,13 @@ function Questions() {
                                                     SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 1, })
                                                 }}
                                             /> */}
-                                                    <label htmlFor="op2_radio">{state.selectedSubQuestion.Option2}</label>
+                                                    <label htmlFor="op2_radio">{state.selectedSubQuestion.Option2.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                 </div> : <></>
                                         }
                                         {
@@ -826,7 +848,13 @@ function Questions() {
                                                     SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 2, })
                                                 }}
                                             /> */}
-                                                    <label htmlFor="op3_radio">{state.selectedSubQuestion.Option3}</label>
+                                                    <label htmlFor="op3_radio">{state.selectedSubQuestion.Option3.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                 </div> : <></>}
                                         {
                                             state.selectedSubQuestion.Option4 != "" ?
@@ -841,14 +869,26 @@ function Questions() {
                                                     SetCurrentAnswer({ ...currentAnswer, CorrectAnswer: 3, })
                                                 }}
                                             /> */}
-                                                    <label htmlFor="op4_radio">{state.selectedSubQuestion.Option4}</label>
+                                                    <label htmlFor="op4_radio">{state.selectedSubQuestion.Option4.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                 </div> : <></>}
                                     </div>
                                 </div> : state.selectedSubQuestion.QuestionType == "1" ?
                                     //  for multiple answer 
                                     <div id="questionDetailBox">
                                         <div className="question">
-                                            {state.selectedSubQuestion.Question}
+                                            {state.selectedSubQuestion.Question.split("$k$").map((data, index) => {
+                                                if (index % 2 == 1) {
+                                                    return <InlineMath math={data} />
+                                                } else {
+                                                    return data
+                                                }
+                                            })}
                                         </div>
 
                                         <div className="options_div">
@@ -896,7 +936,13 @@ function Questions() {
                                                         //     }}
                                                         // />
                                                     }
-                                                    <label htmlFor="op1_checkbox">{state.selectedSubQuestion.Option1}</label>
+                                                    <label htmlFor="op1_checkbox">{state.selectedSubQuestion.Option1.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                 </div> : <></>}
                                             {state.selectedSubQuestion.Option2 != "" ?
                                                 <div className="option_box">
@@ -942,7 +988,13 @@ function Questions() {
                                                         //     }}
                                                         // />
                                                     }
-                                                    <label htmlFor="op2_checkbox">{state.selectedSubQuestion.Option2}</label>
+                                                    <label htmlFor="op2_checkbox">{state.selectedSubQuestion.Option2.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                 </div> : <></>}
                                             {state.selectedSubQuestion.Option2 != "" ?
                                                 <div className="option_box">
@@ -987,7 +1039,13 @@ function Questions() {
                                                         //     }}
                                                         // />
                                                     }
-                                                    <label htmlFor="op3_checkbox">{state.selectedSubQuestion.Option3}</label>
+                                                    <label htmlFor="op3_checkbox">{state.selectedSubQuestion.Option3.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                 </div> : <></>}
                                             {state.selectedSubQuestion.Option4 != "" ?
                                                 <div className="option_box">
@@ -1033,14 +1091,26 @@ function Questions() {
                                                         //     }}
                                                         // />
                                                     }
-                                                    <label htmlFor="op4_checkbox">{state.selectedSubQuestion.Option4}</label>
+                                                    <label htmlFor="op4_checkbox">{state.selectedSubQuestion.Option4.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                 </div> : <></>}
                                         </div>
                                     </div> :
                                     // for numeric answer 
                                     <div id="questionDetailBox">
                                         <div className="question">
-                                            {state.selectedSubQuestion.Question}
+                                            {state.selectedSubQuestion.Question.split("$k$").map((data, index) => {
+                                                if (index % 2 == 1) {
+                                                    return <InlineMath math={data} />
+                                                } else {
+                                                    return data
+                                                }
+                                            })}
                                         </div>
 
                                         <div className="options_div col-4">

@@ -7,9 +7,11 @@
     padding: 0;
     position: relative;
 }
-.bgRed{
+
+.bgRed {
     background: red;
 }
+
 .mainQuestionTable img[alt="eye"] {
     transform: scale(0.5) !important;
 }
@@ -33,26 +35,27 @@ img[alt="delete_icon"] {
     border-radius: none;
 }
 
-#testExam .left::-webkit-scrollbar ,
-    #testExam .right::-webkit-scrollbar {
+#testExam .left::-webkit-scrollbar,
+#testExam .right::-webkit-scrollbar {
     width: 10px;
 }
 
-#testExam .left::-webkit-scrollbar-thumb ,
-    #testExam .right::-webkit-scrollbar-thumb {
+#testExam .left::-webkit-scrollbar-thumb,
+#testExam .right::-webkit-scrollbar-thumb {
     width: 10px;
     background: grey;
     border-radius: 20px;
     cursor: pointer;
 }
 
-#testExam .left::-webkit-scrollbar-track ,
-    #testExam .right::-webkit-scrollbar-track {
+#testExam .left::-webkit-scrollbar-track,
+#testExam .right::-webkit-scrollbar-track {
     width: 10px;
     cursor: pointer;
     background: rgba(199, 197, 197, 0.631);
 }
-.removeImage:hover{
+
+.removeImage:hover {
     background: rgb(176, 37, 37);
 }
 
@@ -116,10 +119,12 @@ img[alt="delete_icon"] {
     /* background: rgba(59, 204, 161, 0.397); */
     /* background: rgba(128, 128, 128, 0.397); */
 }
-.iconsHover span{
+
+.iconsHover span {
     cursor: pointer;
 }
-.iconsHover span:nth-child(1) > img{
+
+.iconsHover span:nth-child(1)>img {
     transform: scale(1) !important;
     margin-right: 3px;
 }
@@ -336,39 +341,89 @@ td .MuiButtonBase-root {
 
 #previewPage .options li {
     /* background: grey; */
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
     list-style-type: none;
     margin: 10px;
     padding: 10px;
+    border-radius: 10px;
+    position: relative;
 }
 
 #previewPage .options li input {}
 
 #previewPage .options li label {
-    margin-bottom: 5px;
-    padding-left: 10px;
+    margin-left: 10px;
+    padding: 10px;
+    border-radius: 10px;
     cursor: pointer;
+    background: rgba(128, 128, 128, 0.322);
     font-weight: bolder;
 }
+
+#previewPage .options li>span.text-success {
+    padding: 2px 10px;
+    background: green;
+    color: white !important;
+    margin: 0 !important;
+    margin-left: 10px !important;
+}
+
+#previewPage .options li>span.text-danger {
+    padding: 2px 10px;
+    background: red;
+    color: white !important;
+    margin: 0 !important;
+    margin-left: 10px !important;
+}
+
+#previewPage span.viewImagetxt:hover {
+    background: #4da6c4f1;
+}
+
+#previewPage span.viewImagetxt {
+    padding: 2px 10px;
+    background: skyblue;
+    color: black !important;
+    margin: 0 !important;
+    margin-left: 10px !important;
+}
+
+
+#previewPage .options li label:hover {
+    background: rgba(128, 128, 128, 0.422);
+}
+
 
 #previewPage .options li img {
     margin-left: 20px;
 }
 
-.dotStyle{
+.dotStyle {
     width: 100%;
     height: 100%;
     display: flex;
     align-items: center;
     justify-content: center;
 }
-.SolutionDiv img{
+
+.SolutionDiv img {
     max-width: 200px;
 }
 
-.index-module_itemsContainer__CjP0y{
+.SolutionDiv>p {
+    background: rgba(128, 128, 128, 0.322);
+    padding: 10px;
+    border-radius: 10px;
+    color: black !important;
+}
+
+.index-module_itemsContainer__CjP0y {
     padding-bottom: 0 !important;
 }
-.index-module_itemsContainer__CjP0y > div{
+
+.index-module_itemsContainer__CjP0y>div {
     font-weight: bolder;
     background-color: white !important;
 }

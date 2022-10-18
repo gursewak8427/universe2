@@ -4,12 +4,16 @@ import { Button, Form, FormControl, InputGroup, Row } from 'react-bootstrap';
 import { useDispatch, useSelector } from 'react-redux';
 import { useHistory, useParams } from 'react-router-dom/cjs/react-router-dom.min';
 import Sidebar from "../../components/Sidebar/Sidebar";
-import { setCurrentUpdatedHappyHour, setSuccessMsg, setTopics } from '../../../../../services/actions/mainAction';
+import { setCurrentUpdatedHappyHour, setGlobalImage, setSuccessMsg, setTopics } from '../../../../../services/actions/mainAction';
 import { useStyles } from "../../../../../utils/useStyles";
 import Heading from "../../components/Heading/Heading";
 import Multiselect from 'multiselect-react-dropdown';
 import Select from 'react-select';
 import { NumericKeyboard } from 'react-numeric-keyboard';
+
+// katex
+import 'katex/dist/katex.min.css';
+import { InlineMath, BlockMath } from 'react-katex';
 
 function Preview() {
     const [isOpenKeyboard, setIsOpenKeyboard] = useState(true);
@@ -200,12 +204,22 @@ function Preview() {
                             !state.questionDetail ? <>Loading...</> :
                                 state.questionDetail.QuestionType == 0 ?
                                     <div>
-                                        <div className="question"><span className="text-primary">Question:</span> <br /> {state.questionDetail.Question}</div>
+                                        <div className="question"><span className="text-primary">Question:</span> <br /> {state.questionDetail.Question.split("$k$").map((data, index) => {
+                                            if (index % 2 == 1) {
+                                                return <InlineMath math={data} />
+                                            } else {
+                                                return data
+                                            }
+                                        })}</div>
                                         <div className="m-2">
                                             {
+                                                state.questionDetail.QuestionImage != null ?
+                                                    <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.questionDetail.QuestionImage))}>View Image</span> : <></>
+                                            }
+                                            {/* {
                                                 state.questionDetail.QuestionImage == null ? <></> :
                                                     <a href={state.questionDetail.QuestionImage} target="blank"><img src={state.questionDetail.QuestionImage} alt="" width={"100px"} /></a>
-                                            }
+                                            } */}
                                         </div>
                                         <div className="m-2">
                                             <hr />
@@ -214,26 +228,46 @@ function Preview() {
                                         <div className="options">
                                             <li>
                                                 <input type="radio" name='singleCheckAnswer' id='op1' onChange={handleSingleAnswer} value="0" />
-                                                <label htmlFor="op1">{state.questionDetail.Option1}</label>
+                                                <label htmlFor="op1">{state.questionDetail.Option1.split("$k$").map((data, index) => {
+                                                    if (index % 2 == 1) {
+                                                        return <InlineMath math={data} />
+                                                    } else {
+                                                        return data
+                                                    }
+                                                })}</label>
                                                 {getRightOrWrong(0)}
                                                 {
+                                                    state.questionDetail.Option1Image != null ?
+                                                        <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.questionDetail.Option1Image))}>View Image</span> : <></>
+                                                }
+                                                {/* {
                                                     state.questionDetail.Option1Image ?
                                                         <>
                                                             <a href={state.questionDetail.Option1Image} target="blank"><img src={state.questionDetail.Option1Image} alt="" width={"50px"} /></a>
                                                         </> : <></>
-                                                }
+                                                } */}
                                             </li>
                                             {
                                                 state.questionDetail.Option2 != "" ?
                                                     <li>
                                                         <input type="radio" name='singleCheckAnswer' id='op2' onChange={handleSingleAnswer} value="1" />
-                                                        <label htmlFor="op2">{state.questionDetail.Option2}</label>
+                                                        <label htmlFor="op2">{state.questionDetail.Option2.split("$k$").map((data, index) => {
+                                                            if (index % 2 == 1) {
+                                                                return <InlineMath math={data} />
+                                                            } else {
+                                                                return data
+                                                            }
+                                                        })}</label>
                                                         {getRightOrWrong(1)}
-                                                        {
+                                                        {/* {
                                                             state.questionDetail.Option2Image ?
                                                                 <>
                                                                     <a href={state.questionDetail.Option2Image} target="blank"><img src={state.questionDetail.Option2Image} alt="" width={"50px"} /></a>
                                                                 </> : <></>
+                                                        } */}
+                                                        {
+                                                            state.questionDetail.Option2Image != null ?
+                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.questionDetail.Option2Image))}>View Image</span> : <></>
                                                         }
                                                     </li> : <></>
                                             }
@@ -241,13 +275,23 @@ function Preview() {
                                                 state.questionDetail.Option3 != "" ?
                                                     <li>
                                                         <input type="radio" name='singleCheckAnswer' id='op3' onChange={handleSingleAnswer} value="2" />
-                                                        <label htmlFor="op3">{state.questionDetail.Option3}</label>
+                                                        <label htmlFor="op3">{state.questionDetail.Option3.split("$k$").map((data, index) => {
+                                                            if (index % 2 == 1) {
+                                                                return <InlineMath math={data} />
+                                                            } else {
+                                                                return data
+                                                            }
+                                                        })}</label>
                                                         {getRightOrWrong(2)}
-                                                        {
+                                                        {/* {
                                                             state.questionDetail.Option3Image ?
                                                                 <>
                                                                     <a href={state.questionDetail.Option3Image} target="blank"><img src={state.questionDetail.Option3Image} alt="" width={"50px"} /></a>
                                                                 </> : <></>
+                                                        } */}
+                                                        {
+                                                            state.questionDetail.Option3Image != null ?
+                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.questionDetail.Option3Image))}>View Image</span> : <></>
                                                         }
                                                     </li> : <></>
                                             }
@@ -255,14 +299,24 @@ function Preview() {
                                                 state.questionDetail.Option4 != "" ?
                                                     <li>
                                                         <input type="radio" name='singleCheckAnswer' id='op4' onChange={handleSingleAnswer} value="3" />
-                                                        <label htmlFor="op4">{state.questionDetail.Option4}</label>
+                                                        <label htmlFor="op4">{state.questionDetail.Option4.split("$k$").map((data, index) => {
+                                                            if (index % 2 == 1) {
+                                                                return <InlineMath math={data} />
+                                                            } else {
+                                                                return data
+                                                            }
+                                                        })}</label>
                                                         {getRightOrWrong(3)}
                                                         {
+                                                            state.questionDetail.Option4Image != null ?
+                                                                <span className='viewImagetxt' onClick={() => dispatch(setGlobalImage(state.questionDetail.Option4Image))}>View Image</span> : <></>
+                                                        }
+                                                        {/* {
                                                             state.questionDetail.Option4Image ?
                                                                 <>
                                                                     <a href={state.questionDetail.Option4Image} target="blank"><img src={state.questionDetail.Option4Image} alt="" width={"50px"} /></a>
                                                                 </> : <></>
-                                                        }
+                                                        } */}
                                                     </li> : <></>
                                             }
 
@@ -277,7 +331,13 @@ function Preview() {
                                     </div> :
                                     state.questionDetail.QuestionType == 1 ?
                                         <div>
-                                            <div className="question"> <span className="text-primary">Question:</span> <br /> {state.questionDetail.Question}</div>
+                                            <div className="question"> <span className="text-primary">Question:</span> <br /> {state.questionDetail.Question.split("$k$").map((data, index) => {
+                                                if (index % 2 == 1) {
+                                                    return <InlineMath math={data} />
+                                                } else {
+                                                    return data
+                                                }
+                                            })}</div>
                                             <div className="m-2">
                                                 {
                                                     state.questionDetail.QuestionImage == null ? <></> :
@@ -291,7 +351,13 @@ function Preview() {
                                             <div className="options">
                                                 <li>
                                                     <input type="checkbox" name='Op1' id='op1' onChange={handleMultiAnswer} value="0" />
-                                                    <label htmlFor="op1">{state.questionDetail.Option1}</label>
+                                                    <label htmlFor="op1">{state.questionDetail.Option1.split("$k$").map((data, index) => {
+                                                        if (index % 2 == 1) {
+                                                            return <InlineMath math={data} />
+                                                        } else {
+                                                            return data
+                                                        }
+                                                    })}</label>
                                                     {getRightOrWrong(0)}
                                                     {
                                                         state.questionDetail.Option1Image ?
@@ -304,7 +370,13 @@ function Preview() {
                                                     state.questionDetail.Option2 != "" ?
                                                         <li>
                                                             <input type="checkbox" name='Op2' id='op2' onChange={handleMultiAnswer} value="1" />
-                                                            <label htmlFor="op2">{state.questionDetail.Option2}</label>
+                                                            <label htmlFor="op2">{state.questionDetail.Option2.split("$k$").map((data, index) => {
+                                                                if (index % 2 == 1) {
+                                                                    return <InlineMath math={data} />
+                                                                } else {
+                                                                    return data
+                                                                }
+                                                            })}</label>
                                                             {getRightOrWrong(1)}
                                                             {
                                                                 state.questionDetail.Option2Image ?
@@ -318,7 +390,13 @@ function Preview() {
                                                     state.questionDetail.Option3 != "" ?
                                                         <li>
                                                             <input type="checkbox" name='Op3' id='op3' onChange={handleMultiAnswer} value="2" />
-                                                            <label htmlFor="op3">{state.questionDetail.Option3}</label>
+                                                            <label htmlFor="op3">{state.questionDetail.Option3.split("$k$").map((data, index) => {
+                                                                if (index % 2 == 1) {
+                                                                    return <InlineMath math={data} />
+                                                                } else {
+                                                                    return data
+                                                                }
+                                                            })}</label>
                                                             {getRightOrWrong(2)}
                                                             {
                                                                 state.questionDetail.Option3Image ?
@@ -332,7 +410,13 @@ function Preview() {
                                                     state.questionDetail.Option4 != "" ?
                                                         <li>
                                                             <input type="checkbox" name='Op4' id='op4' onChange={handleMultiAnswer} value="3" />
-                                                            <label htmlFor="op4">{state.questionDetail.Option4}</label>
+                                                            <label htmlFor="op4">{state.questionDetail.Option4.split("$k$").map((data, index) => {
+                                                                if (index % 2 == 1) {
+                                                                    return <InlineMath math={data} />
+                                                                } else {
+                                                                    return data
+                                                                }
+                                                            })}</label>
                                                             {getRightOrWrong(3)}
                                                             {
                                                                 state.questionDetail.Option4Image ?
@@ -353,7 +437,13 @@ function Preview() {
                                             }
                                         </div> :
                                         <div>
-                                            <div className="question"> <span className="text-primary">Question:</span> <br /> {state.questionDetail.Question}</div>
+                                            <div className="question"> <span className="text-primary">Question:</span> <br /> {state.questionDetail.Question.split("$k$").map((data, index) => {
+                                                if (index % 2 == 1) {
+                                                    return <InlineMath math={data} />
+                                                } else {
+                                                    return data
+                                                }
+                                            })}</div>
                                             <div className="m-2">
                                                 {
                                                     state.questionDetail.QuestionImage == null ? <></> :
@@ -408,9 +498,15 @@ function Preview() {
                                     </h3>
                                     {
                                         state.questionDetail ? state.questionDetail.SolutionImage ?
-                                            <img src={require(state.questionDetail.SolutionImage)} alt="" /> : <></> : <></>
+                                            <a href={state.questionDetail.SolutionImage}><img src={state.questionDetail.SolutionImage} alt="" /></a> : <></> : <></>
                                     }
-                                    <p>{state.questionDetail ? state.questionDetail.Solution : ""}</p>
+                                    <p className='mt-3'>{state.questionDetail ? state.questionDetail.Solution.split("$k$").map((data, index) => {
+                                        if (index % 2 == 1) {
+                                            return <InlineMath math={data} />
+                                        } else {
+                                            return data
+                                        }
+                                    }) : ""}</p>
                                 </div> : <></>
                         }
 
@@ -428,7 +524,13 @@ function Preview() {
                             <h4 class="modal-title">Question Hint</h4>
                         </div>
                         <div class="modal-body">
-                            <p>{state.questionDetail ? state.questionDetail.Clue : <>Nothing</>}</p>
+                            <p>{state.questionDetail ? state.questionDetail.Clue.split("$k$").map((data, index) => {
+                                if (index % 2 == 1) {
+                                    return <InlineMath math={data} />
+                                } else {
+                                    return data
+                                }
+                            }) : <>Nothing</>}</p>
                             {state.questionDetail ? state.questionDetail.ClueImage ? <img src={state.questionDetail.ClueImage} alt="" /> : <></> : <></>}
                         </div>
                         <div class="modal-footer">

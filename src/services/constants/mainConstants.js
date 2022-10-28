@@ -9,4 +9,5 @@ export const SET_CLASSES = "SET_CLASSES";
 export const SET_TOPICS = "SET_TOPICS";
 export const SET_CHAPTERS = "SET_CHAPTERS";
 export const SET_GLOBAL_IMAGE = "set global image view";
+export const GUEST_TOPIC = "GUEST_TOPIC";
 

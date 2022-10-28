@@ -42,6 +42,8 @@ import EmailVerify from "./components/EmailVerify";
 import ForgotPassword from "./components/forgot_password";
 import ForgotPassword2 from "./components/forgot_password_2";
 import ReattemptTest from "./pages/Dashboard/Student/pages/oldTest/reattemptQuestions";
+import GetTestGuest from "./pages/Dashboard/Guest/getTest";
+import QuestionsGuest from "./pages/Dashboard/Guest/questions";
 
 function App() {
   const history = useHistory();
@@ -197,8 +199,11 @@ function App() {
               <PrivateRoute exact path="/student/old_test_results_preview/:examId" component={OldQuestions} />
               <PrivateRoute exact path="/student/reattempt_test_results" component={ReattemptTest} />
               <PrivateRoute exact path="/student/reattempt_test_results_preview/:examId/:pageType" component={OldQuestions} />
-              
-              
+
+              {/* guest */}
+              <Route exact path="/guest/topics" component={GetTestGuest} />
+              <Route exact path="/guest/questions/:topicId" component={QuestionsGuest} />
+
               <Route exact path="/emailverify" component={EmailVerify} />
               <Route exact path="/forgotpassword" component={ForgotPassword} />
               <Route exact path="/setnewpassword" component={ForgotPassword2} />

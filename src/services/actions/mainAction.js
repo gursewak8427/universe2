@@ -10,6 +10,7 @@ import {
   SET_CLASSES,
   SET_CHAPTERS,
   SET_GLOBAL_IMAGE,
+  GUEST_TOPIC,
 } from "../constants/mainConstants";
 
 export const loaderAction = (loader) => async (dispatch) => {
@@ -50,4 +51,9 @@ export const setChapters = (data) => async (dispatch) => {
 
 export const setGlobalImage = (data) => async (dispatch) => {
   dispatch({ type: SET_GLOBAL_IMAGE, payload: data });
+};
+
+
+export const setGuestTopic = (data) => async (dispatch) => {
+  dispatch({ type: GUEST_TOPIC, payload: data });
 };

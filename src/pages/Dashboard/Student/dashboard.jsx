@@ -22,10 +22,10 @@ function StudentDashboard() {
     },[])
     
     return (
-        <div className={classes.root}>
+        <div className={`${classes.root}`}>
             <Sidebar />
 
-            <main className={classes.content}>
+            <main className={`${classes.content} dashboardStudent`}>
                 <div className={classes.toolbar} />
 
                 {/* box 1 */}

@@ -104,9 +104,6 @@ function StartTest() {
 
                         }
                     </div>
-                    <div className="right">
-
-                    </div>
                 </div>
             </main>
         </div>

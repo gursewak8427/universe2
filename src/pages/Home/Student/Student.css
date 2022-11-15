@@ -86,10 +86,12 @@
     color: white;
     font-weight: bold;
 }
-#internalTeacher .submitBtn.b{
+
+#internalTeacher .submitBtn.b {
     width: 100%;
     border-radius: 10px;
 }
+
 #internalTeacher span {
     color: #4b51f0;
     margin-bottom: 20px;
@@ -102,4 +104,58 @@
 #internalTeacher .submitBtn:hover {
     background: #4b51f0;
     color: black;
+}
+
+
+@media screen and (max-width: 650px) {
+    #internalTeacher {
+        flex-direction: column;
+    }
+
+    #internalTeacher .right {
+        display: none;
+    }
+
+    #internalTeacher .left {
+        width: 100%;
+        padding: 15px;
+        display: block;
+    }
+
+    #internalTeacher .left h1{
+        width: 100%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    #internalTeacher .left > p{
+        margin-bottom: 100px;
+    }
+
+    #internalTeacher .left .input_row{
+        flex-direction: column;
+        width: 100%;
+        justify-content: start;
+        align-items: start;
+    }
+    #internalTeacher .left .input_row input{
+        border-radius: 5px;
+        border: 1px solid grey;
+        width: 100%;
+    }
+    #internalTeacher .left .input_row.checkboxInput{
+        flex-direction: row !important;
+        justify-content: center;
+        letter-spacing: 1px;
+        font-size: 120%;
+    }
+    #internalTeacher .left .submitBtn{
+        width: 100%;
+        border-radius: 5px;
+        margin-bottom: 50px;
+    }
+        
+
+
 }

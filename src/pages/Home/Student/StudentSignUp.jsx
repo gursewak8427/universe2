@@ -268,7 +268,7 @@ function StudentSignUp() {
                         <label htmlFor="">Confirm Password</label>
                         <input type="text" name="confPass" onChange={onchange} value={state.confPass} />
                     </div>
-                    <div className="input_row">
+                    <div className="input_row checkboxInput">
                         <input type="checkbox" name="" id="" />
                         <p>By signing up you agree to recieve updates and special offers.</p>
                     </div>

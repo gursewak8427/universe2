@@ -148,7 +148,7 @@ function GetTest() {
                 <div className={classes.toolbar} />
                 <Heading />
                 <div className="mt-2">
-                    <div className="mt-2 card_box">
+                    <div className="mt-2 card_box phone">
                         {/* here is the content */}
                         {
                             state.pageNo == 1 ?

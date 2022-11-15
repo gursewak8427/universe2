@@ -429,9 +429,11 @@
     box-shadow: 0 0 15px 2px rgba(128, 128, 128, 0.541);
     border-radius: 10px;
 }
-.exploreContainer .subBox img{
+
+.exploreContainer .subBox img {
     height: 120px !important;
 }
+
 .exploreContainer .subBox p {
     font-size: 70%;
 }
@@ -623,4 +625,192 @@ footer .right h1 {
 #mainWrapper header,
 #mainWrapper section {
     border-radius: 10px;
+}
+
+
+@media screen and (max-width: 650px) {
+    #mainWrapper nav {
+        width: 100%;
+        margin: 0;
+        padding-top: 20px;
+    }
+
+    #mainWrapper nav .left img {
+        width: 50px;
+    }
+
+    #mainWrapper nav .left h1 {
+        display: none;
+    }
+
+    #mainWrapper nav .span>button {
+        padding: 0;
+    }
+
+    #mainWrapper header {
+        flex-direction: column;
+        height: auto;
+        font-size: 80%;
+    }
+
+    #mainWrapper header .left,
+    #mainWrapper header .right {
+        width: 100%;
+        margin: 20px 0;
+    }
+
+    #mainWrapper header .right {
+        font-size: 80%;
+    }
+
+    #mainWrapper header .right img {
+        transform: scale(1.5);
+    }
+
+    #mainWrapper section {
+        flex-direction: column;
+        font-size: 70%;
+        text-align: center;
+    }
+
+    #mainWrapper section .left,
+    #mainWrapper section .right {
+        width: 100%;
+    }
+
+    #mainWrapper section .right>div {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+    }
+
+
+    #mainWrapper section .left>h1 {
+        font-size: 150%;
+        font-weight: bolder;
+    }
+
+    #mainWrapper section .left>div {
+        flex-direction: column;
+    }
+
+    #mainWrapper section .left>div button {
+        font-size: 110%;
+        font-weight: bolder;
+        letter-spacing: 1px;
+    }
+
+    #mainWrapper section .right>div>img {
+        width: 60px !important;
+    }
+
+    #mainWrapper section .right>div>button {
+        padding: 10px 20px;
+        font-weight: bold;
+    }
+
+    #mainWrapper header.b {
+        text-align: center;
+    }
+
+    #mainWrapper header.b .top h2 {
+        margin-bottom: 20px;
+    }
+
+    #mainWrapper header.b .bottom,
+    #mainWrapper header.b .bottom .left {
+        flex-direction: column;
+        margin: 0;
+    }
+
+    #mainWrapper header.b .bottom .right {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 0;
+    }
+
+    #mainWrapper header.b .bottom button,
+    #mainWrapper header.b .bottom .right button {
+        font-weight: bolder !important;
+        margin: 0 10px;
+    }
+
+
+    #mainWrapper .exploreContainer {
+        height: auto;
+        text-align: center;
+    }
+
+    #mainWrapper .exploreContainer>.bottom,
+    #mainWrapper .subBoxContainer {
+        flex-direction: column;
+    }
+
+    #mainWrapper .exploreContainer>.bottom .subBox,
+    #mainWrapper .subBoxContainer .subBox {
+        width: 100% !important;
+        margin: 15px 0;
+        font-size: 80%;
+    }
+
+    .swiperBox .box1,
+    .swiperBox .box2 {
+        display: none;
+    }
+
+    .swiperBox {
+        padding: 10px;
+    }
+
+    .swiperBox .carousel-item .row {
+        flex-direction: column;
+    }
+
+    .swiperBox #carouselExampleControls {
+        width: 100%;
+    }
+
+    .swiperBox .carousel-item .row .left,
+    .swiperBox .carousel-item .row .right {
+        padding: 20px;
+        width: 100%;
+        text-align: center;
+    }
+
+    .swiperBox .carousel-control-prev,
+    .swiperBox .carousel-control-next {
+        display: none;
+    }
+
+    #mainWrapper footer {
+        flex-direction: column;
+        padding: 10px;
+    }
+
+    #mainWrapper footer .left,
+    #mainWrapper footer .right {
+        width: 100%;
+        text-align: center;
+    }
+
+    #mainWrapper footer .left .row2 {
+        align-items: center;
+        justify-content: center;
+    }
+
+    #mainWrapper footer .left .row2 span {
+        display: none;
+    }
+
+    #mainWrapper footer .left {
+        font-size: 85%;
+    }
+
+    #mainWrapper footer .right {
+        font-size: 70%;
+    }
+
 }

@@ -72,12 +72,12 @@ function StudentLogin() {
             <div id="internalTeacher">
                 <div className="left">
                     <h1>
-                        Student Login
+                        <div>Student Login</div>
                         <button className="btn btn-secondary mx-4">
                             <Link to={"/"}>Home</Link>
                         </button>
                     </h1>
-                    <p>Not a user? <Link to="/student_signup">Sign Up Here.</Link></p>
+                    <p className="mb-100">Not a user? <Link to="/student_signup">Sign Up Here.</Link></p>
                     <div className="input_row">
                         <label htmlFor="">Email</label>
                         <input type="text" placeholder="Enter your email here" onChange={onchange} value={state.email} name="email" />

@@ -59,6 +59,7 @@ const useStyles = makeStyles((theme) => ({
     width: drawerWidth,
     flexShrink: 0,
     whiteSpace: "nowrap",
+    position: 'absolute'
   },
   drawerOpen: {
     width: drawerWidth,
@@ -73,7 +74,7 @@ const useStyles = makeStyles((theme) => ({
       duration: theme.transitions.duration.leavingScreen,
     }),
     overflowX: "hidden",
-    width: theme.spacing(7) + 1,
+    width: 0,
     [theme.breakpoints.up("sm")]: {
       width: theme.spacing(9) + 1,
     },
@@ -144,7 +145,7 @@ function Sidebar({ isSidebarShow }) {
   const dispatch = useDispatch();
   const classes = useStyles();
   const theme = useTheme();
-  const [open, setOpen] = React.useState(true);
+  const [open, setOpen] = React.useState(false);
   const { admin } = useSelector((state) => state.auth);
 
   let location = useLocation();
@@ -152,7 +153,7 @@ function Sidebar({ isSidebarShow }) {
   const [active, setActive] = React.useState("/");
 
   const handleDrawerOpen = () => {
-    setOpen(true);
+    setOpen(!open);
   };
 
   const handleDrawerClose = () => {
@@ -232,7 +233,7 @@ function Sidebar({ isSidebarShow }) {
   ];
 
   return (
-    <div>
+    <div className={true ? "StudentSidebar" : "StudentSidebar disabled"}>
 
       <CssBaseline />
 
@@ -243,26 +244,32 @@ function Sidebar({ isSidebarShow }) {
         })}
       >
         <Toolbar>
-          <h3 style={{ width: "100%" }}>Welcome to CelatomUniverse</h3>
-          {/* <IconButton
-            color="inherit"
-            aria-label="open drawer"
-            onClick={handleDrawerOpen}
-            edge="start"
-            className={clsx(classes.menuButton,)}
-          >
-            <MenuIcon />
-          </IconButton> */}
+          {
+            isSidebarShow == false ? <></> :
+              <IconButton
+                color="inherit"
+                aria-label="open drawer"
+                onClick={handleDrawerOpen}
+                edge="start"
+                className={clsx(classes.menuButton,)}
+              >
+                <MenuIcon />
+              </IconButton> 
+          }
 
-          <div className="appBar_items">
-            {/* <Button color="inherit">Contact Us</Button> */}
-            <Button color="inherit">
-              <Link to="/">Home</Link>
-            </Button>
-            {/* <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" /> */}
-            <Button color="inherit">
-              {admin.data.first_name}
-            </Button>
+          <div className="mob-col d-flex">
+            <h3 style={{ width: "100%" }} className="mob-hide">Welcome to CelatomUniverse</h3>
+
+            <div className="appBar_items">
+              {/* <Button color="inherit">Contact Us</Button> */}
+              <Button color="inherit">
+                <Link to="/">Home</Link>
+              </Button>
+              {/* <img src="https://wac-cdn.atlassian.com/dam/jcr:ba03a215-2f45-40f5-8540-b2015223c918/Max-R_Headshot%20(1).jpg?cdnVersion=486" /> */}
+              <Button color="inherit" className="mob-hide">
+                {admin.data.first_name}
+              </Button>
+            </div>
           </div>
 
         </Toolbar>

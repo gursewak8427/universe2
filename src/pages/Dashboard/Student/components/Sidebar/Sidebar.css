@@ -1,11 +1,22 @@
 .sidebar_logo {
   width: 100%;
 }
-.MuiDrawer-root > div {
+
+.mob-col {
+  width: 100%;
+}
+
+.MuiDrawer-root>div {
   box-shadow: -2px 0px 20px 2px grey;
 }
+
 .m-row {
   display: flex;
+}
+
+.StudentSidebar.disabled{
+  display: none;
+  position: absolute;
 }
 
 .sidebar_items_list_student {
@@ -16,13 +27,16 @@
   height: 100vh;
   /* padding-top: 100px; */
 }
-.sidebar_text span{
+
+.sidebar_text span {
   font-size: 90% !important;
 }
+
 .sidebar_items_list_student a.active {
   background: rgb(5, 236, 236);
 }
-.sub_menu_btn_active{
+
+.sub_menu_btn_active {
   color: rgb(5, 236, 236);
 }
 
@@ -37,9 +51,11 @@
   border-radius: 10px;
   margin: 10px 0;
 }
-.student_sidebar_books_image{
+
+.student_sidebar_books_image {
   margin: auto;
 }
+
 .sidebar_items_list_student a>div {
   padding: 6px 10px;
   text-align: center;
@@ -102,4 +118,16 @@
   bottom: 0;
   right: 0;
   width: 150px;
+}
+
+@media screen and (max-width: 650px) {
+  .mob-hide{
+    display: none !important;
+  }
+
+
+  .StudentSidebar header{
+    width: 100%;
+    overflow: hidden;
+  }
 }

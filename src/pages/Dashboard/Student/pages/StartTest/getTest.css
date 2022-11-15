@@ -747,5 +747,38 @@
         z-index: 9991;
     }
 
+    .chooseClassSubject {
+        text-align: center;
+    }
+
+    .chooseClassSubject .data_grid{
+        flex-direction: row;
+    }
+    .chooseClassSubject .data_grid .data_grid_box{
+        width: 40%;
+    }
+ 
+    .topicChapter {
+        flex-direction: column;
+    }
+
+    .topicChapter > .col-6{
+        width: 100% !important;
+        margin: 0;
+        margin-bottom: 20px;
+    }
+
+    .card_box.phone{
+        padding: 0 !important;
+    }
+
+    .selectedTopicDetails{
+        flex-direction: column-reverse;
+    }
+
+    .selectedTopicDetails .left,
+    .selectedTopicDetails .right{
+        width: 100%;
+    }
 
 }

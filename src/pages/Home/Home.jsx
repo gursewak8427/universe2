@@ -54,6 +54,7 @@ function Home() {
           </div>
         </div>
       </div>
+      {/* login main model end */}
 
       {/* signup model */}
       <div class="modal fade" id="exampleModal2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -85,8 +86,9 @@ function Home() {
           </div>
         </div>
       </div>
+      {/* signup model end*/}
 
-      {/* login main model end */}
+
       <nav>
         <div className="left">
           <img src="/assets/images/logo.png" className="logoImg" />
@@ -100,10 +102,11 @@ function Home() {
                 <button type="button" data-toggle="modal" data-target="#exampleModal" className="m-2">LOGIN</button>
               </span>
             </> :
-            <span className="goToDashboardBtn" onClick={goToDashboard}>Go to Dashboard</span>
+            <span className="goToDashboardBtn" onClick={goToDashboard}>Dashboard</span>
         }
 
       </nav>
+
       <header>
         <div className="left">
           <h4>Start Your Test With Just ₹20* Only</h4>
@@ -179,20 +182,20 @@ function Home() {
         <div className="subBox five">
           <img src={require("./images/a5.png")} alt="" />
           <img src={require("./images/a51.png")} alt="" />
-          <span>Reports</span>
+          <span>100+ Tests</span>
         </div>
         <div className="subBox">
           <img src={require("./images/a6.png")} alt="" />
-          <span>Ranking</span>
+          <span>1200+ Students</span>
         </div>
         <div className="subBox">
           <img src={require("./images/a7.png")} alt="" />
-          <span>Doubt Solving</span>
+          <span>50+ Trained Tutor</span>
         </div>
         <div className="subBox eight">
           <img src={require("./images/a8.png")} alt="" />
           <img src={require("./images/a81.png")} alt="" />
-          <span>Career Support</span>
+          <span>50+ Digital Institutions</span>
         </div>
       </div>
       <hr />

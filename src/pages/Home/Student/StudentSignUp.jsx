@@ -60,7 +60,7 @@ function StudentSignUp() {
                 dispatch(setSuccessMsg("Register Successfully"))
                 setState({ ...state, isSubmit: false, })
                 setTimeout(() => {
-                    window.location.href = "/internal_teacher_login";
+                    window.location.href = "/student_login";
                 }, 500);
 
             }).catch(err => {

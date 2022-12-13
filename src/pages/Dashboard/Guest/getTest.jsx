@@ -12,6 +12,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { useSelect } from "@mui/base";
 import { Switch } from "@mui/material";
 import { setGuestTopic } from "../../../services/actions/mainAction";
+import ShortLoading from "../Student/components/ShortLoading/ShortLoading";
 
 
 function GetTestGuest() {
@@ -21,8 +22,10 @@ function GetTestGuest() {
     const dispatch = useDispatch();
     const [state, setState] = useState({
         topicList: [],
+        shortLoading: true,
     })
     useEffect(() => {
+        setState({ ...state, shortLoading: true })
         console.log(admin)
         console.log("admin")
         // STEP-1: get topics data from the API here and store to data variable..
@@ -31,7 +34,8 @@ function GetTestGuest() {
             console.log("#topicdata")
             setState({
                 ...state,
-                topicList: topicdata
+                topicList: topicdata,
+                shortLoading: false,
             })
         }).catch(err => console.log(err))
     }, [])
@@ -39,6 +43,7 @@ function GetTestGuest() {
 
 
     const startTest = (topicData) => {
+        setState({ ...state, shortLoading: true })
         dispatch(setGuestTopic(topicData))
         history.push(`/guest/questions/${topicData.id}`)
     }
@@ -87,6 +92,10 @@ function GetTestGuest() {
                     </div>
                 </div>
             </main>
+            {
+                state.shortLoading ?
+                    <ShortLoading /> : <></>
+            }
         </div>
     );
 }

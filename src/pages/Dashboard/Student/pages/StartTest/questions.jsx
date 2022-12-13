@@ -44,6 +44,7 @@ function Questions() {
         selectedQuestion: 0,
         selectedSubQuestion: {},
         questionAssigned: [],
+        isSubmitingExam: false,
     })
 
     const [currentAnswer, SetCurrentAnswer] = useState({
@@ -361,6 +362,7 @@ function Questions() {
     }
 
     const fullResult = () => {
+        setState({ ...state, isSubmitingExam: true })
         console.log("Results : ")
         console.log(state.questionAssigned)
         var totalMarks = 0;
@@ -533,9 +535,11 @@ function Questions() {
                     console.log(responseData)
                     swal(`Marks : ${achieveMarks}/${totalMarks}`, responseData.message, "success");
                     history.push("/student/old_test_results/")
+                    setState({ ...state, isSubmitingExam: false })
                 }).catch(err => {
                     console.log(err)
                     swal("Sorry!", "You already attempt the exam!", "error");
+                    setState({ ...state, isSubmitingExam: false })
                     // alert(err.response.data.message)
                 })
             }
@@ -553,7 +557,7 @@ function Questions() {
             </div>
             <div id="QuestionsPageId">
 
-                <nav className="QuestionsPageNav d-flex justify-content-between">
+                {/* <nav className="QuestionsPageNav d-flex justify-content-between">
                     <span>
                         <span onClick={() => {
                             if (window.confirm("Are you sure to exit ?")) {
@@ -574,7 +578,7 @@ function Questions() {
                     }}>
                         <div className="homeBtnQuetion text-white">Home</div>
                     </Link>
-                </nav>
+                </nav> */}
 
                 {/* topic details */}
                 <div className="topicDtl" id="topicDtlId">
@@ -598,6 +602,15 @@ function Questions() {
                         <span data-toggle="modal" data-target="#exampleModalLong">
                             <img src={require("./viewInstructions.png")} alt="" />
                             <span>View Instructions</span>
+                        </span>
+                        <span data-toggle="modal" data-target="#exampleModalLong2">
+                            <Link onClick={() => {
+                                if (window.confirm("Are you sure to exit ?")) {
+                                    history.push("/student/")
+                                }
+                            }}>
+                                <div className="homeBtnQuetion text-white">Home</div>
+                            </Link>
                         </span>
                     </div>
                 </div>
@@ -1372,7 +1385,14 @@ function Questions() {
                         </div>
 
                         <div className="submitBtn am">
-                            <button className="btn btn-primary" onClick={fullResult}>Submit</button>
+                            <button className="btn btn-primary" onClick={fullResult}>
+                                {
+                                    state.isSubmitingExam ?
+                                        <div class="spinner-border text-white" role="status"></div>
+                                        :
+                                        "Submit"
+                                }
+                            </button>
                         </div>
                     </div>
                 </div>

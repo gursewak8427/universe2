@@ -46,6 +46,7 @@ function InternalTeacherSignUp() {
             dispatch(setErrorMsg("Both Passwords should be same"))
             return;
         }
+
         try {
             var data = {
                 email: state.email,
@@ -106,6 +107,12 @@ function InternalTeacherSignUp() {
             dispatch(setErrorMsg("Both Passwords should be same"))
             return;
         }
+        var regularExpressionStrongPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+        if (!regularExpressionStrongPassword.test(state.password)) {
+            dispatch(setErrorMsg("Please use Strong password"))
+            return;
+        }
+
         var phone = "+91" + state.phone
         // SEND OTP
         if (!window.recaptchaVerifier) {
@@ -224,7 +231,14 @@ function InternalTeacherSignUp() {
                         </div> */}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onClick={registerNow}>Submit</button>
+                        <button type="button" class="btn btn-primary" onClick={registerNow}>
+                            {
+                                state.isSubmit ?
+                                    <div class="spinner-border text-white" role="status"></div>
+                                    :
+                                    "Submit"
+                            }
+                        </button>
                     </div>
                 </div>
             </div>
@@ -237,8 +251,8 @@ function InternalTeacherSignUp() {
                 <div className="left">
                     <h1>Sign Up
                         <button className="btn btn-secondary mx-4">
-                        <Link to={"/"}>Home</Link>
-                    </button></h1>
+                            <Link to={"/"}>Home</Link>
+                        </button></h1>
                     <p>Existing user? <Link to="/internal_teacher_login">Login Here.</Link></p>
                     <div className="input_row">
                         <label htmlFor="">First Name</label>
@@ -271,7 +285,7 @@ function InternalTeacherSignUp() {
                     {
                         state.phone == "" || state.phone.length < 10 ||
                             state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "" ||
-                            state.password !== state.confPass ?
+                            state.password !== state.confPass || !/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(state.password) ?
                             <button className="btn submitBtn" onClick={sendPhoneOTP}>Submit</button> :
                             <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
                     }

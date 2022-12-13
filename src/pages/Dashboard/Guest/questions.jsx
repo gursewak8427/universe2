@@ -93,7 +93,7 @@ function QuestionsGuest() {
     useEffect(() => {
         console.log("guest topic data")
         console.log(guestTopic)
-        if(!guestTopic.timing){
+        if (!guestTopic.timing) {
             history.push("/guest/topics")
         }
         // get questionsList
@@ -357,6 +357,7 @@ function QuestionsGuest() {
     }
 
     const fullResult = () => {
+        setState({ ...state, isSubmitingExam: true })
         console.log("Results : ")
         console.log(state.questionAssigned)
         var totalMarks = 0;
@@ -518,6 +519,7 @@ function QuestionsGuest() {
                 console.log("finalResultData")
                 console.log(finalResultData)
                 swal(`Marks : ${achieveMarks}/${totalMarks}`, "Test Submit Successfully", "success");
+                setState({ ...state, isSubmitingExam: false })
             }
         })
     }
@@ -572,13 +574,13 @@ function QuestionsGuest() {
                                 </span> : <></>
                         }
                         <span data-toggle="modal" data-target="#exampleModalLong2">
-                        <Link onClick={() => {
-                        if (window.confirm("Are you sure to exit ?")) {
-                            history.push("/student/")
-                        }
-                    }}>
-                        <div className="homeBtnQuetion text-white">Home</div>
-                    </Link>
+                            <Link onClick={() => {
+                                if (window.confirm("Are you sure to exit ?")) {
+                                    history.push("/student/")
+                                }
+                            }}>
+                                <div className="homeBtnQuetion text-white">Home</div>
+                            </Link>
                         </span>
                         <span data-toggle="modal" data-target="#exampleModalLong2">
                             <img src={require("./questionPaper.png")} alt="" />
@@ -1361,7 +1363,14 @@ function QuestionsGuest() {
                         </div>
 
                         <div className="submitBtn am">
-                            <button className="btn btn-primary" onClick={fullResult}>Submit</button>
+                            <button className="btn btn-primary" onClick={fullResult}>
+                                {
+                                    state.isSubmitingExam ?
+                                        <div class="spinner-border text-white" role="status"></div>
+                                        :
+                                        "Submit"
+                                }
+                            </button>
                         </div>
                     </div>
                 </div>

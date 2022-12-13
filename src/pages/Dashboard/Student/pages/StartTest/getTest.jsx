@@ -13,9 +13,10 @@ import { Splide, SplideSlide } from '@splidejs/react-splide';
 import '@splidejs/splide/dist/css/themes/splide-default.min.css';
 import { useHistory } from "react-router-dom/cjs/react-router-dom.min";
 import { useDispatch, useSelector } from "react-redux";
-import { setSuccessMsg, setTopics } from "../../../../../services/actions/mainAction";
+import { setSubjects, setSuccessMsg, setTopics } from "../../../../../services/actions/mainAction";
 import { useSelect } from "@mui/base";
 import { Switch } from "@mui/material";
+import ShortLoading from "../../components/ShortLoading/ShortLoading";
 
 
 function GetTest() {
@@ -35,6 +36,7 @@ function GetTest() {
         chooseChapterId: [],
         ChtopicsList: [],
         topicList: [],
+        shortLoading: false,
     })
     const config = {
         headers: {
@@ -42,6 +44,7 @@ function GetTest() {
         }
     }
     useEffect(() => {
+        setState({ ...state, shortLoading: true })
         console.log(admin)
         console.log("admin")
         // STEP-1: get topics data from the API here and store to data variable..
@@ -50,11 +53,14 @@ function GetTest() {
             console.log(classData)
             setState({
                 ...state,
-                classList: classData
+                classList: classData,
+                shortLoading: false
             })
         }).catch(err => console.log(err))
     }, [])
+
     const selectClass = (classData) => {
+        setState({ ...state, shortLoading: true })
         axios.get(`${process.env.REACT_APP_API_URI}students/subject/?class_name=${classData.id}`, config).then(response => {
             const subjectData = response.data;
             console.log(subjectData)
@@ -62,6 +68,7 @@ function GetTest() {
                 ...state,
                 subjectList: subjectData,
                 pageNo: 2,
+                shortLoading: false,
             })
 
         }).catch(err => console.log(err))
@@ -69,6 +76,7 @@ function GetTest() {
     }
 
     const selectSubject = (subjectData) => {
+        setState({ ...state, shortLoading: true })
         // get chapters
         https://celatomuniverse.com/students/chapter/?class_name=1&subject=1 
         axios.get(`${process.env.REACT_APP_API_URI}students/chapter/?class_name=${subjectData.class_name}&subject=${subjectData.id}`, config).then(response => {
@@ -84,6 +92,7 @@ function GetTest() {
                     mainTopicList: mainTopicData,
                     chaptersList: chapterdata,
                     pageNo: 3,
+                    shortLoading: false,
                 })
             }).catch(err => console.log(err))
 
@@ -91,6 +100,7 @@ function GetTest() {
     }
 
     const selectCHchapter = (chapterdata, index) => {
+        setState({ ...state, shortLoading: true })
         // get chapters
         // https://celatomuniverse.com/students/maintopic/?id=2
         // https://celatomuniverse.com/students/chapter/?class_name=1&subject=1 
@@ -99,12 +109,14 @@ function GetTest() {
             ...state,
             chooseChapterId: index,
             pageNo: 31,
+            shortLoading: false,
         })
 
     }
 
 
     const selectCHmaintopic = (maintopicdata, index) => {
+        setState({ ...state, shortLoading: true })
         // get chapters
         // https://celatomuniverse.com/students/maintopic/?id=2
         // https://celatomuniverse.com/students/chapter/?class_name=1&subject=1 
@@ -112,11 +124,13 @@ function GetTest() {
             ...state,
             chooseMainTopicId: index,
             pageNo: 32,
+            shortLoading: false,
         })
     }
 
 
     const selectMainTopicToGetTopics = (maintopicdata, index) => {
+        setState({ ...state, shortLoading: true })
         // get main topics same
         axios.get(`${process.env.REACT_APP_API_URI}students/maintopic/?id=${maintopicdata.topic.id}`, config).then(response => {
             const mainTopicData = response.data;
@@ -126,17 +140,20 @@ function GetTest() {
                 ...state,
                 topicList: mainTopicData,
                 pageNo: 33,
+                shortLoading: false,
             })
         }).catch(err => console.log(err))
     }
 
     const selectTopic = (topicData) => {
+        setState({ ...state, shortLoading: true })
         console.log("topicData that selected")
         console.log(topicData)
         setState(({
             ...state,
             pageNo: 4,
-            selectedTopic: topicData
+            selectedTopic: topicData,
+            shortLoading: false,
         }))
     }
 
@@ -356,6 +373,10 @@ function GetTest() {
                     </div>
                 </div>
             </main>
+            {
+                state.shortLoading ?
+                    <ShortLoading /> : <></>
+            }
         </div>
     );
 }

@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { setSuccessMsg, setTopics } from "../../../../../services/actions/mainAction";
 import { useSelect } from "@mui/base";
 import { Switch } from "@mui/material";
+import ShortLoading from "../../components/ShortLoading/ShortLoading";
 
 
 function StartTest() {
@@ -27,7 +28,8 @@ function StartTest() {
     const [state, setState] = useState({
         pageNo: 1,
         topicDetail: {},
-        questionsList: []
+        questionsList: [],
+        shortLoading: true,
     })
     const config = {
         headers: {
@@ -40,7 +42,8 @@ function StartTest() {
             console.log(classData)
             setState({
                 ...state,
-                classList: classData
+                classList: classData,
+                shortLoading: false,
             })
         }).catch(err => console.log(err))
     }, [])
@@ -106,6 +109,10 @@ function StartTest() {
                     </div>
                 </div>
             </main>
+            {
+                state.shortLoading ?
+                <ShortLoading /> : <></>
+            }
         </div>
     );
 }

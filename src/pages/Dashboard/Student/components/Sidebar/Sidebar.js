@@ -63,6 +63,10 @@ const useStyles = makeStyles((theme) => ({
   },
   drawerOpen: {
     width: drawerWidth,
+    [theme.breakpoints.up("sm")]: {
+      width: 0,
+      position: 'absolute'
+    },
     transition: theme.transitions.create("width", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.enteringScreen,
@@ -76,7 +80,8 @@ const useStyles = makeStyles((theme) => ({
     overflowX: "hidden",
     width: 0,
     [theme.breakpoints.up("sm")]: {
-      width: theme.spacing(9) + 1,
+      width: drawerWidth,
+      position: 'relative'
     },
   },
   toolbar: {
@@ -254,7 +259,7 @@ function Sidebar({ isSidebarShow }) {
                 className={clsx(classes.menuButton,)}
               >
                 <MenuIcon />
-              </IconButton> 
+              </IconButton>
           }
 
           <div className="mob-col d-flex">

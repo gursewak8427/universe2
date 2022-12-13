@@ -108,6 +108,13 @@ function StudentSignUp() {
             dispatch(setErrorMsg("Both Passwords should be same"))
             return;
         }
+
+        var regularExpressionStrongPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
+        if(!regularExpressionStrongPassword.test(state.password)){
+            dispatch(setErrorMsg("Please use Strong password"))
+            return;
+        }
+
         var phone = "+91" + state.phone
         // SEND OTP
         if (!window.recaptchaVerifier) {
@@ -227,7 +234,14 @@ function StudentSignUp() {
                         </div> */}
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-primary" onClick={registerNow}>Submit</button>
+                        <button type="button" class="btn btn-primary" onClick={registerNow}>
+                            {
+                                state.isSubmit ?
+                                    <div class="spinner-border text-white" role="status"></div>
+                                    :
+                                    "Submit"
+                            }
+                        </button>
                     </div>
                 </div>
             </div>
@@ -276,7 +290,7 @@ function StudentSignUp() {
                     {
                         state.phone == "" || state.phone.length < 10 ||
                             state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "" ||
-                            state.password !== state.confPass ?
+                            state.password !== state.confPass || !/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(state.password) ? 
                             <button className="btn submitBtn" onClick={sendPhoneOTP}>Submit</button> :
                             <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
                     }

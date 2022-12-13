@@ -44,7 +44,7 @@ function Home() {
                 </a>
               </button>
               <button><Link to="">Tutor Login</Link></button>
-              <button data-toggle="modal" data-target="#exampleModal"><Link to={"/guest/topics"}>Guest Login</Link></button>
+              <button data-toggle="modal" data-target="#exampleModal"><a href={"/guest/topics"}>Guest Login</a></button>
               <button>
                 <a href="/internal_teacher_login">
                   Internal Teacher Login

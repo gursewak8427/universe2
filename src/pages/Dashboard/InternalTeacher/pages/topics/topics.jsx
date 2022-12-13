@@ -210,13 +210,15 @@ function TopicManage() {
     }
 
     const getIndex = data => {
-        var index = data.tableData.id + 1;
+        // var index = data.tableData.id + 1;
         return <>
             <div className="d-flex align-items-center justify-center">
-                {
+                {/* {
                     index < 10 ?
                         "#0" + index :
                         "#" + index
+                } */}{
+                    data.id
                 }
                 {
                     data.calculatorStatus ?

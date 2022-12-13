@@ -105,6 +105,8 @@ function QuestionsGuest() {
                 minutes: guestTopic.timing,
                 seconds: 0,
             })
+            console.log("#1result");
+            console.log(result);
             assignQuestions(result, questiondata)
         }).catch(err => console.log(err))
     }, [])
@@ -144,6 +146,8 @@ function QuestionsGuest() {
                     selectedSubQuestion: ssQuestion, // self subquestion
                     questionAssigned: assignedQuestionsArray
                 })
+                console.log("#topicDetail1")
+                console.log(topicData)
                 setWait(false)
             }
         });
@@ -529,7 +533,7 @@ function QuestionsGuest() {
             </div>
             <div id="QuestionsPageId">
 
-                <nav className="QuestionsPageNav d-flex justify-content-between">
+                {/* <nav className="QuestionsPageNav d-flex justify-content-between">
                     <span>
                         <span onClick={() => {
                             if (window.confirm("Are you sure to exit ?")) {
@@ -550,12 +554,12 @@ function QuestionsGuest() {
                     }}>
                         <div className="homeBtnQuetion text-white">Home</div>
                     </Link>
-                </nav>
+                </nav> */}
 
                 {/* topic details */}
                 <div className="topicDtl" id="topicDtlId">
                     <div className="left">
-                        Topic - {state.topicDetail.Topicname}
+                        Topic - {guestTopic.Topicname}
                     </div>
                     <div className="right">
                         {
@@ -567,6 +571,15 @@ function QuestionsGuest() {
                                     <span>Calculator</span>
                                 </span> : <></>
                         }
+                        <span data-toggle="modal" data-target="#exampleModalLong2">
+                        <Link onClick={() => {
+                        if (window.confirm("Are you sure to exit ?")) {
+                            history.push("/student/")
+                        }
+                    }}>
+                        <div className="homeBtnQuetion text-white">Home</div>
+                    </Link>
+                        </span>
                         <span data-toggle="modal" data-target="#exampleModalLong2">
                             <img src={require("./questionPaper.png")} alt="" />
                             <span>Question Paper</span>

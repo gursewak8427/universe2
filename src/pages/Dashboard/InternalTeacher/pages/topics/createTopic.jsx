@@ -229,13 +229,17 @@ function CreateTopic() {
                                     <select class="form-select" aria-label="Default select example" name="subject" onChange={onchange}>
                                         <option selected>Select Subject</option>
                                         {
-                                            subjects_list.map(item => {
-                                                if (item.id == state.subject) {
-                                                    return <option selected value={item.id}>{item.subject}</option>
-                                                } else {
-                                                    return <option value={item.id}>{item.subject}</option>
-                                                }
-                                            })
+                                            state.class == "" ? <></> :
+                                                subjects_list.map(item => {
+                                                    if (state.class == item.class_name) {
+                                                        if (item.id == state.subject) {
+                                                            return <option value={item.id}>{item.class.class_name}/{item.subject}</option>
+                                                        } else {
+                                                            return <option value={item.id}>{item.class.class_name}/{item.subject}</option>
+                                                        }
+                                                    }
+
+                                                })
                                         }
                                     </select>
                                 </InputGroup>

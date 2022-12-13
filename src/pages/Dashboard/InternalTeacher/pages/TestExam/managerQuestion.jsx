@@ -12,8 +12,7 @@ import { EyeIcon, DeleteIcon, EditIcon } from "../../../../../utils/Icons";
 import './testExam.css'
 import $ from "jquery";
 
-import { CKEditor } from "@ckeditor/ckeditor5-react";
-import ClassicEditor from "ckeditor5-build-classic-mathtype";
+
 import ReactHtmlParser from "react-html-parser";
 import { MathComponent } from "mathjax-react";
 

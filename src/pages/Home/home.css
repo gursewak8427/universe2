@@ -50,7 +50,7 @@
 }
 
 #exampleModal .modal-content {
-    background: #FFF9CA;
+    /* background: #FFF9CA; */
 }
 
 .logo_row {
@@ -111,16 +111,17 @@
     background: rgba(81, 150, 255, 0.4);
     box-shadow: 0px 25px 50px rgba(0, 0, 0, 0.1);
     width: 100%;
-    height: 400px;
+    height: auto;
     display: flex;
     flex-direction: row;
-    padding: 10px;
-    padding: 30px;
+    align-items: center;
+    justify-content: center;
+    padding: 10px 30px;
 }
 
 #mainWrapper header .left * {
     margin: 0 !important;
-    padding: 0 !important;
+    padding: 5px 0 !important;
 }
 
 #mainWrapper header .left {

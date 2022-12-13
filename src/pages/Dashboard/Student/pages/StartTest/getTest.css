@@ -218,7 +218,7 @@
     justify-content: space-between;
     align-items: center;
     padding: 5px 20px;
-    margin-top: 15px;
+    margin-top: 0;
 }
 
 #QuestionsPageId .topicDtl .left {

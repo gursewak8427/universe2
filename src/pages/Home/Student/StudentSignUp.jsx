@@ -55,7 +55,7 @@ function StudentSignUp() {
                 password: state.password,
                 password2: state.confPass
             }
-            axios.post(process.env.REACT_APP_API_URI + "accounts/internalteacherregister/", data).then(response => {
+            axios.post(process.env.REACT_APP_API_URI + "accounts/studentregister/", data).then(response => {
 
                 dispatch(setSuccessMsg("Register Successfully"))
                 setState({ ...state, isSubmit: false, })

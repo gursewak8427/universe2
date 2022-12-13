@@ -243,7 +243,7 @@ function StudentSignUp() {
                             <Link to={"/"}>Home</Link>
                         </button>
                     </h1>
-                    <p>Existing user? <Link to="/internal_teacher_login">Login Here.</Link></p>
+                    <p>Existing user? <Link to="/student_login">Login Here.</Link></p>
                     <div className="input_row">
                         <label htmlFor="">First Name</label>
                         <input type="text" name="fname" onChange={onchange} value={state.fname} />

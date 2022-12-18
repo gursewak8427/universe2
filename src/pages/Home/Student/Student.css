@@ -1,161 +1,323 @@
-#internalTeacher {
-    background: #FFF9CA;
-    display: flex;
-    justify-content: flex-start;
-    min-height: 100vh;
-    font-size: 15px;
-}
-
-#internalTeacher h1 {
-    font-weight: bolder;
-    margin-bottom: 20px;
-}
-
-#internalTeacher p {
-    color: black;
-}
-
-#internalTeacher .left {
-    width: 60%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: space-evenly;
-    flex-direction: column;
-    padding-top: 20px;
-    padding-bottom: 20px;
-    padding-left: 120px;
-}
-
-#internalTeacher .right {
-    width: 40%;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    flex-direction: column;
-}
-
-#internalTeacher .right img {
-    width: 70%;
-}
-
-#internalTeacher .input_row {
-    width: 100%;
-    margin: 20px 0;
-    display: flex;
-    align-items: center;
-}
-
-#internalTeacher .input_row label {
-    width: 40%;
-    font-weight: bolder;
-    font-size: 170%;
-    margin: 0;
-    padding: 0;
-}
-
-#internalTeacher .input_row input {
-    width: 60%;
-    border: none;
-    border-radius: 40px;
-    background: white;
-    padding: 10px 20px;
-    outline: none;
-}
-
-#internalTeacher .input_row p {
-    display: inline;
-    font-size: 70%;
-    color: blue;
-    margin-bottom: 0;
-}
-
-#internalTeacher .input_row input[type="checkbox"] {
-    width: 25px !important;
-    height: 25px !important;
-    cursor: pointer;
-    margin-right: 10px;
-}
-
-#internalTeacher .submitBtn {
-    width: 210px;
-    height: 50px;
-    margin: 0 auto;
-    background: #5C62FF;
-    border-radius: 150px;
-    font-size: 100%;
-    color: white;
-    font-weight: bold;
-}
-
-#internalTeacher .submitBtn.b {
-    width: 100%;
-    border-radius: 10px;
-}
-
-#internalTeacher span {
-    color: #4b51f0;
-    margin-bottom: 20px;
-    border-bottom: 1px solid #4b51f0;
-    font-size: 120%;
-    font-weight: bolder;
-    cursor: pointer;
-}
-
-#internalTeacher .submitBtn:hover {
-    background: #4b51f0;
-    color: black;
-}
-
-
-@media screen and (max-width: 650px) {
     #internalTeacher {
-        flex-direction: column;
+        background: #FFF9CA;
+        display: flex;
+        justify-content: flex-start;
+        min-height: 100vh;
+        font-size: 15px;
     }
 
-    #internalTeacher .right {
-        display: none;
+    #internalTeacher h1 {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        font-weight: bolder;
+        margin-bottom: 20px;
+    }
+
+    #internalTeacher h1 button {
+        margin: 0;
+        color: black !important;
+    }
+
+
+    #internalTeacher p {
+        color: black;
     }
 
     #internalTeacher .left {
-        width: 100%;
-        padding: 15px;
-        display: block;
-    }
-
-    #internalTeacher .left h1{
-        width: 100%;
+        width: 35%;
+        max-width: 35%;
+        min-height: 100vh;
+        margin: 0;
+        padding: 0;
+        margin: 0 auto;
         display: flex;
-        justify-content: space-between;
-        align-items: center;
-    }
-
-    #internalTeacher .left > p{
-        margin-bottom: 100px;
-    }
-
-    #internalTeacher .left .input_row{
         flex-direction: column;
-        width: 100%;
-        justify-content: start;
-        align-items: start;
-    }
-    #internalTeacher .left .input_row input{
-        border-radius: 5px;
-        border: 1px solid grey;
-        width: 100%;
-    }
-    #internalTeacher .left .input_row.checkboxInput{
-        flex-direction: row !important;
         justify-content: center;
-        letter-spacing: 1px;
-        font-size: 120%;
     }
-    #internalTeacher .left .submitBtn{
+
+    #internalTeacher .left.bigForm {
+        font-size: 80%;
+    }
+
+    #internalTeacher .left.bigForm .input_row {
+        padding: 10px !important;
+        margin: 0;
+    }
+
+    #internalTeacher .left.bigForm h1 {
+        font-size: 220%;
+        padding: 10px;
+    }
+
+
+    #internalTeacher .right.bigForm {
+        max-height: 100vh;
+    }
+
+    .submit_row_signUP {
+        justify-content: space-between;
+        display: flex;
+        align-items: center;
+        padding: 10px;
+    }
+
+    .submit_row_signUP p,
+    .submit_row_signUP button {
+        margin: 0 !important;
+        padding: 0 !important;
+        border-radius: 10px !important;
+        font-size: 150% !important;
+    }
+
+    .submit_row_signUP p a {
+        font-weight: bold;
+    }
+
+
+    #internalTeacher .one_row {
+        display: flex;
+    }
+
+    #internalTeacher .one_row .input_row {
+        margin-right: 10px;
+    }
+
+    #internalTeacher .right {
+        width: 40%;
+        min-height: 100vh;
+        display: flex;
+        justify-content: center;
+        flex-direction: column;
+        transform: translateX(-15%);
+    }
+
+    #internalTeacher .right img {
         width: 100%;
-        border-radius: 5px;
-        margin-bottom: 50px;
+        max-height: 100%;
     }
-        
+
+    #internalTeacher .input_row {
+        width: 100%;
+        margin: 20px 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    #internalTeacher .input_row label {
+        width: 100%;
+        font-weight: bolder;
+        font-size: 170%;
+        margin: 0;
+        padding: 0;
+    }
+
+    #internalTeacher .input_row input {
+        width: 100%;
+        border: none;
+        border-radius: 5px;
+        background: white;
+        padding: 10px 20px;
+        outline: none;
+        border: 2px solid black;
+    }
+
+    #internalTeacher .input_row p {
+        display: inline;
+        margin-bottom: 0;
+        font-size: 80%;
+    }
+
+    #internalTeacher .input_row p a {
+        font-size: 100%;
+        font-weight: bold !important;
+        color: blue !important;
+    }
+
+    #internalTeacher .input_row p a:hover {
+        color: rgba(0, 0, 255, 0.747) !important;
+    }
+
+    #internalTeacher .input_row input[type="checkbox"] {
+        width: 25px !important;
+        height: 25px !important;
+        cursor: pointer;
+        margin-right: 10px;
+    }
+
+    #internalTeacher .submitBtn {
+        width: 210px;
+        height: 50px;
+        margin: 0 auto;
+        background: #5C62FF;
+        border-radius: 150px;
+        font-size: 100%;
+        color: white;
+        font-weight: bold;
+    }
+
+    #internalTeacher .submitBtn.b {
+        width: 100%;
+        border-radius: 10px;
+    }
+
+    #internalTeacher .left .input_row.checkboxInput {
+        display: flex;
+        flex-direction: row !important;
+        align-items: center;
+        margin-bottom: 10px;
+    }
+
+    #internalTeacher .left .input_row input {
+        border: 1px solid grey;
+    }
+
+    #internalTeacher .left .input_row.checkboxInput p {
+        font-size: 130%;
+    }
+
+    #internalTeacher span {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        margin-bottom: 20px;
+        align-items: center;
+        font-size: 120%;
+        font-weight: bolder;
+        cursor: pointer;
+    }
+
+    #internalTeacher span a {
+        text-decoration: none;
+        color: #4b51f0;
+    }
 
 
-}
+    #internalTeacher .submitBtn:hover {
+        background: #4b51f0;
+        color: black;
+    }
+
+    @media screen and (max-width: 1024px) {
+        #internalTeacher .left {
+            width: 32%;
+            max-width: 32%;
+            font-size: 80%;
+            transform: translateX(20%);
+        }
+
+        #internalTeacher .left h1 {
+            font-size: 150% !important;
+        }
+
+        #internalTeacher .right {
+            width: 50%;
+            transform: translateX(-10%);
+        }
+
+    }
+
+    @media screen and (max-width: 650px) {
+        #internalTeacher {
+            width: 100%;
+            flex-direction: column;
+        }
+
+        #internalTeacher .right {
+            display: none;
+        }
+
+        #internalTeacher .left {
+            width: 100%;
+            max-width: 100%;
+            margin: 0 !important;
+            display: block;
+            transform: none;
+            font-size: 100%;
+            padding: 10px;
+        }
+
+        #internalTeacher .left.bigForm{
+            font-size: 80%;
+        }
+
+        #internalTeacher .left.bigForm h1 {
+            width: 100%;
+            font-size: 200% !important;
+            margin-bottom: 100px;
+        }
+        #internalTeacher .left h1 {
+            margin-bottom: 150px;
+        }
+        .input_row.forgot a{
+            text-align: right !important;
+        }
+        #internalTeacher .left .input_row.checkboxInput {
+            flex-direction: row !important;
+            justify-content: center;
+            letter-spacing: 1px;
+            font-size: 80%;
+        }
+        #internalTeacher .left .input_row.checkboxInput p{
+            font-weight: bold !important;
+        }
+        #internalTeacher .left .submitBtn {
+            width: 100%;
+            border-radius: 5px;
+            margin-bottom: 50px;
+        }
+
+        .submit_row_signUP{
+            flex-direction: column-reverse;
+        }
+
+        .submit_row_signUP button{
+            margin-bottom: 20px !important;
+        }
+
+
+
+
+    }
+
+
+
+    .verify_box {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        margin: 30px 0;
+    }
+
+    .verify_box h3 {
+        font-size: 150%;
+        text-align: center;
+    }
+
+    .verify_box input {
+        width: 80%;
+        margin: 10px;
+        padding: 10px;
+        text-align: center;
+    }
+
+    .verify_box button {
+        background: #FFEFAB;
+        border-radius: 30px;
+        border: none;
+        padding: 10px 7px;
+        width: 40%;
+        margin-bottom: 20px;
+    }
+
+    .verify_box button:hover {
+        background: #d6bb43;
+    }
+
+    .verifiedBtn {
+        cursor: not-allowed !important;
+        background: green !important;
+        color: white !important;
+    }

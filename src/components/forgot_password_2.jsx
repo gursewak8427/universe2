@@ -65,7 +65,11 @@ function ForgotPassword2() {
         <>
             <div id="internalTeacher">
                 <div className="left">
-                    <h1>Set New Password</h1>
+                    <h1>Set New Password
+                        <button className="btn btn-secondary mx-4">
+                            <Link to={"/"}>Home</Link>
+                        </button>
+                    </h1>
                     <div className="input_row">
                         <label htmlFor="">New Password</label>
                         <input type="text" placeholder="Enter new password" onChange={onchange} value={state.pass1} name="pass1" />
@@ -74,13 +78,13 @@ function ForgotPassword2() {
                         <label htmlFor="">Confirm Password</label>
                         <input type="text" placeholder="Enter confirm password" onChange={onchange} value={state.pass2} name="pass2" />
                     </div>
-                    <div className="input_row">
+                    {/* <div className="input_row">
                         <span>
                             <span><Link to={"/student_login"}>Student Login</Link></span>
                             <br />
                             <big><b><Link to={"/internal_teacher_login"}>Internal Teacher Login</Link></b></big>
                         </span>
-                    </div>
+                    </div> */}
                     <button className="btn submitBtn b" onClick={() => forgotPasswordApi()}>
                         {
                             state.isSubmit ?

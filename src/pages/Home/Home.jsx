@@ -112,7 +112,7 @@ function Home() {
           <h4>Start Your Test With Just ₹20* Only</h4>
           <p>No Monthly Plan, No Yearly Plan, Learn What You Want.</p>
           <b>Give any 2 Tests of your choice on Sign Up.</b>
-          <button>Sign Up</button>
+          <button onClick={() => window.location.href = "/student_login"}>Sign Up</button>
           <h1>Getting You Where You Want to Study</h1>
         </div>
         <div className="right">
@@ -122,7 +122,7 @@ function Home() {
           </div>
           <div>
             <img src={require("./arrow-right.png")} alt="" />
-            <button>Take a Free Test</button>
+            <button onClick={() => window.location.href = "/student_login"}>Take a Free Test</button>
           </div>
         </div>
       </header>
@@ -237,7 +237,7 @@ function Home() {
           <span>Topic wise tests for practice</span>
           <span>Only ₹20 per test</span>
           <span>Innovative and creative methods</span>
-          <button>Sign Up</button>
+          <button onClick={()=>window.location.href="/student_login"}>Sign Up</button>
         </div>
         <div className="subBox">
           <div className="t">For Tutors</div>
@@ -253,7 +253,7 @@ function Home() {
           <span>Create test and get paid</span>
           <span>Variety of topics</span>
           <span>Ease of accesibilty</span>
-          <button>Sign Up</button>
+          <button onClick={()=>window.location.href="/internal_teacher_login"}>Sign Up</button>
         </div>
       </div>
       <hr />

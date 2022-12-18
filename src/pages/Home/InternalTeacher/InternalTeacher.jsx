@@ -248,19 +248,20 @@ function InternalTeacherSignUp() {
     return (
         <>
             <div id="internalTeacher">
-                <div className="left">
-                    <h1>Sign Up
+                <div className="left bigForm">
+                    <h1>Internal Teacher Register
                         <button className="btn btn-secondary mx-4">
                             <Link to={"/"}>Home</Link>
                         </button></h1>
-                    <p>Existing user? <Link to="/internal_teacher_login">Login Here.</Link></p>
-                    <div className="input_row">
-                        <label htmlFor="">First Name</label>
-                        <input type="text" name="fname" onChange={onchange} value={state.fname} />
-                    </div>
-                    <div className="input_row">
-                        <label htmlFor="">Last Name</label>
-                        <input type="text" name="lname" onChange={onchange} value={state.lname} />
+                    <div className="one_row">
+                        <div className="input_row">
+                            <label htmlFor="">First Name</label>
+                            <input type="text" name="fname" onChange={onchange} value={state.fname} />
+                        </div>
+                        <div className="input_row">
+                            <label htmlFor="">Last Name</label>
+                            <input type="text" name="lname" onChange={onchange} value={state.lname} />
+                        </div>
                     </div>
                     <div className="input_row">
                         <label htmlFor="">Phone Number</label>
@@ -278,17 +279,21 @@ function InternalTeacherSignUp() {
                         <label htmlFor="">Confirm Password</label>
                         <input type="text" name="confPass" onChange={onchange} value={state.confPass} />
                     </div>
-                    <div className="input_row">
+                    <div className="input_row checkboxInput">
                         <input type="checkbox" name="" id="" />
                         <p>By signing up you agree to recieve updates and special offers.</p>
                     </div>
-                    {
-                        state.phone == "" || state.phone.length < 10 ||
-                            state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "" ||
-                            state.password !== state.confPass || !/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(state.password) ?
-                            <button className="btn submitBtn" onClick={sendPhoneOTP}>Submit</button> :
-                            <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
-                    }
+                    <div className="submit_row_signUP">
+                        <p>Existing user? <Link to="/internal_teacher_login">Login Here.</Link></p>
+
+                        {
+                            state.phone == "" || state.phone.length < 10 ||
+                                state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "" ||
+                                state.password !== state.confPass || !/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(state.password) ?
+                                <button className="btn submitBtn" onClick={sendPhoneOTP}>Submit</button> :
+                                <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
+                        }
+                    </div>
                 </div>
                 <div className="right">
                     <img src={require("./sideImage.png")} />

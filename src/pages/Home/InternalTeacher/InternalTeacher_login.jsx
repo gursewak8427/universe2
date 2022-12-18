@@ -76,7 +76,6 @@ function InternalTeacherLogin() {
                             <Link to={"/"}>Home</Link>
                         </button>
                     </h1>
-                    <p>Not a user? <Link to="/internal_teacher_signup">Sign Up Here.</Link></p>
                     <div className="input_row">
                         <label htmlFor="">Email</label>
                         <input type="text" placeholder="Enter your email here" onChange={onchange} value={state.email} name="email" />
@@ -85,8 +84,9 @@ function InternalTeacherLogin() {
                         <label htmlFor="">Password</label>
                         <input type="password" placeholder="Enter your password here" onChange={onchange} value={state.password} name="password" />
                     </div>
-                    <div className="input_row">
+                    <div className="input_row forgot">
                         <span>
+                            <p>Not a user? <Link to="/internal_teacher_signup">Sign Up Here.</Link></p>
                             <Link to={"/forgotpassword"}>Forgot Password</Link>
                         </span>
                     </div>

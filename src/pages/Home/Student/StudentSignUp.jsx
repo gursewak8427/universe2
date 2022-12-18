@@ -110,7 +110,7 @@ function StudentSignUp() {
         }
 
         var regularExpressionStrongPassword = /^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/;
-        if(!regularExpressionStrongPassword.test(state.password)){
+        if (!regularExpressionStrongPassword.test(state.password)) {
             dispatch(setErrorMsg("Please use Strong password"))
             return;
         }
@@ -251,20 +251,22 @@ function StudentSignUp() {
     return (
         <>
             <div id="internalTeacher">
-                <div className="left">
-                    <h1>Sign Up
+                <div className="left bigForm">
+                    <h1>Student Register
                         <button className="btn btn-secondary mx-4">
                             <Link to={"/"}>Home</Link>
                         </button>
                     </h1>
-                    <p>Existing user? <Link to="/student_login">Login Here.</Link></p>
-                    <div className="input_row">
-                        <label htmlFor="">First Name</label>
-                        <input type="text" name="fname" onChange={onchange} value={state.fname} />
-                    </div>
-                    <div className="input_row">
-                        <label htmlFor="">Last Name</label>
-                        <input type="text" name="lname" onChange={onchange} value={state.lname} />
+                    <div className="one_row">
+                        <div className="input_row">
+                            <label htmlFor="">First Name</label>
+                            <input type="text" name="fname" onChange={onchange} value={state.fname} />
+                        </div>
+                        <div className="input_row">
+                            <label htmlFor="">Last Name</label>
+                            <input type="text" name="lname" onChange={onchange} value={state.lname} />
+                        </div>
+
                     </div>
                     <div className="input_row">
                         <label htmlFor="">Mobile Number</label>
@@ -287,15 +289,21 @@ function StudentSignUp() {
                         <p>By signing up you agree to recieve updates and special offers.</p>
                     </div>
                     {/* so much for model opening */}
-                    {
-                        state.phone == "" || state.phone.length < 10 ||
-                            state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "" ||
-                            state.password !== state.confPass || !/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(state.password) ? 
-                            <button className="btn submitBtn" onClick={sendPhoneOTP}>Submit</button> :
-                            <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
-                    }
+                    <div className="submit_row_signUP">
+
+                        <p>Existing user? <Link to="/student_login">Login Here.</Link></p>
+                        {
+                            state.phone == "" || state.phone.length < 10 ||
+                                state.fname == "" || state.lname == "" || state.phone == "" || state.email == "" || state.password == "" || state.confPass == "" ||
+                                state.password !== state.confPass || !/^(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{6,16}$/.test(state.password) ?
+                                <button className="btn submitBtn" onClick={sendPhoneOTP}>Submit</button> :
+                                <button className="btn submitBtn" data-toggle="modal" data-target="#verifierModel" onClick={sendPhoneOTP}>Submit</button>
+                        }
+                    </div>
+
+
                 </div>
-                <div className="right">
+                <div className="right bigForm">
                     <img src={require("./sideImage.png")} />
                 </div>
             </div>

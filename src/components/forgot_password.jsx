@@ -55,16 +55,23 @@ function ForgotPassword() {
         <>
             <div id="internalTeacher">
                 <div className="left">
-                    <h1>Forgot Password</h1>
+                    <h1>Forgot Password
+                        <button className="btn btn-secondary mx-4">
+                            <Link to={"/"}>Home</Link>
+                        </button>
+                    </h1>
+                    <p>
+                        Enter your email and we'll send you a link to get back into your email account
+                    </p>
                     <div className="input_row">
                         <label htmlFor="">Email</label>
                         <input type="text" placeholder="Enter your email here" onChange={onchange} value={state.email} name="email" />
                     </div>
                     <div className="input_row">
                         <span>
-                            <span><Link to={"/student_login"}>Student Login</Link></span>
-                            <br />
-                            <big><b><Link to={"/internal_teacher_login"}>Internal Teacher Login</Link></b></big>
+                            {/* <span><Link to={"/student_login"}>Home</Link></span> */}
+                            {/* <br />
+                            <big><b><Link to={"/internal_teacher_login"}>Internal Teacher Login</Link></b></big> */}
                         </span>
                     </div>
                     <button className="btn submitBtn b" onClick={() => forgotPasswordApi()}>
